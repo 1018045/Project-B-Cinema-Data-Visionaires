@@ -15,20 +15,17 @@ public class ReservationModel
     [JsonPropertyName("seats")]
     public List<int> Seats { get; set; }
 
-    [JsonPropertyName("amountPayed")]
-    public double AmountPayed { get; set; }
+    [JsonPropertyName("paymentComplete")]
+    public bool PaymentComplete { get; set; }
 
-    [JsonPropertyName("totalBill")]
-    public double TotalBill { get; set; }
 
-    public ReservationModel(int id, int userId, int showingId, List<int> seats, double amountPayed, double totalBill)
+    public ReservationModel(int id, int userId, int showingId, List<int> seats, bool paymentComplete)
     {
         Id = id;
         UserId = userId;
         ShowingId = showingId;
         Seats = seats;
-        AmountPayed = amountPayed;
-        TotalBill = totalBill;
+        PaymentComplete = paymentComplete;
     }
 
 }

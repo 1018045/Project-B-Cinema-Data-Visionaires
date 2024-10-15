@@ -18,7 +18,4 @@ static class ReservationsAccess
         string json = JsonSerializer.Serialize(reservations, options);
         File.WriteAllText(path, json);
     }
-
-
-
 }
