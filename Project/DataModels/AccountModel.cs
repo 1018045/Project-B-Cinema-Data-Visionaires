@@ -24,7 +24,3 @@ public class AccountModel
     }
 
 }
-
-
-
-
