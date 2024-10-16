@@ -7,16 +7,10 @@ public class ReservationsLogic
         _reservations = ReservationsAccess.LoadAll();
     }
 
-    public bool AddReservation(int userId, int showingId, List<int> seats, bool paymentComplete, string bankDetails)
-    {
-        if (MakePayment(bankDetails))
-        {
-            _reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete));
-            ReservationsAccess.WriteAll(_reservations);
-            return true;
-        }
-        else
-            return false;
+    public void AddReservation(int userId, int showingId, string seats, bool paymentComplete)
+{
+        _reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete));
+        ReservationsAccess.WriteAll(_reservations);
     }
 
     public bool MakePayment(string bankDetails)

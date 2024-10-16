@@ -13,13 +13,13 @@ public class ReservationModel
     public int ShowingId { get; set; }
 
     [JsonPropertyName("seats")]
-    public List<int> Seats { get; set; }
+    public string Seats { get; set; }
 
     [JsonPropertyName("paymentComplete")]
     public bool PaymentComplete { get; set; }
 
 
-    public ReservationModel(int id, int userId, int showingId, List<int> seats, bool paymentComplete)
+    public ReservationModel(int id, int userId, int showingId, string seats, bool paymentComplete)
     {
         Id = id;
         UserId = userId;
@@ -29,7 +29,3 @@ public class ReservationModel
     }
 
 }
-
-
-
-

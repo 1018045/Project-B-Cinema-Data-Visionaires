@@ -5,7 +5,7 @@
         "date": "20 october",
 		"time": "18:00",
         "room": 1,
-        "ageRestriction": 16
+        "minimumAge": 16
 	},
 	{
         "id": 2,
@@ -13,6 +13,6 @@
         "date": "20 october",
 		"time": "16:00",
         "room": 3,
-        "ageRestriction": 16
+        "minimumAge": 16
 	}
 ]

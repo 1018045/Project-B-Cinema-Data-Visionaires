@@ -1,18 +1,30 @@
 [
-	{
-		"id": 1,
-		"userId": 1,
-		"showingId": 1,
-        "seats": [1,2,3],
-        "amountPayed": 12.6,
-        "totalBill": 30.0 
-	},
-	{
-        "id": 2,
-		"userId": 2,
-		"showingId": 2,
-        "seats": [1,2,3],
-        "amountPayed": 37.5,
-        "totalBill": 37.5
-	}
+  {
+    "id": 1,
+    "userId": 1,
+    "showingId": 1,
+    "seats": "1,2,3",
+    "paymentComplete": true
+  },
+  {
+    "id": 2,
+    "userId": 2,
+    "showingId": 2,
+    "seats": "1,2,3",
+    "paymentComplete": true
+  },
+  {
+    "id": 0,
+    "userId": 1,
+    "showingId": 1,
+    "seats": "4,5,6",
+    "paymentComplete": true
+  },
+  {
+    "id": 3,
+    "userId": 1,
+    "showingId": 1,
+    "seats": "5,10",
+    "paymentComplete": true
+  }
 ]
