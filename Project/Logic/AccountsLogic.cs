@@ -62,7 +62,6 @@ public class AccountsLogic
     {
         if(account.Password.Length < 8)
         {
-            System.Console.WriteLine("Password must contain atleast 8 characters");
             return false;
         }
         return true;
@@ -70,16 +69,62 @@ public class AccountsLogic
 
     } 
 
-    public bool VerifyEmail(AccountModel account)
+    public static bool VerifyEmail(string email)
     {
         var emailValidation = new EmailAddressAttribute();
         
-        return emailValidation.IsValid(account.EmailAddress);
+        return emailValidation.IsValid(email);
     }
- 
+
+    // public static bool CheckForValidInput(int input)
+    // {
+    //     int userinput;
+    //     bool validinput = false; 
+    //     while(validinput == false || input != 1)
+    //     {
+    //       AccountCreation.ForFaultyInput();
+    //       try
+    //       {
+    //         userinput = Convert.ToInt32(input);
+    //       }
+    //       catch
+    //       {
+    //         AccountCreation.ForFaultyInput();
+    //         validinput = false;
+    //       }
+    //     }
+    //     return validinput;
+        
+    // }
+//    public static int ParseMethod(string userinput)
+//    {
+//         bool parseResult; 
+
+//         int number; 
+
+//         parseResult = int.TryParse(userinput, out number);
+
+//         return number;
+
+//    } 
+
+     public static bool ParseMethod()
+   {
+        bool parseResult; 
+
+        int number; 
+
+        string str = "ye";
+
+        parseResult = int.TryParse(str, out number);
+
+        return parseResult;
+   } 
+    
 }
    
-
+//  System.Console.WriteLine("Invalid input. Try Again");
+           // userinput = Convert.ToInt32(Console.ReadLine());
 
 
 
