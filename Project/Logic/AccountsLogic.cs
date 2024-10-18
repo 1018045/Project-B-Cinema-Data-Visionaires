@@ -76,37 +76,6 @@ public class AccountsLogic
         return emailValidation.IsValid(email);
     }
 
-    // public static bool CheckForValidInput(int input)
-    // {
-    //     int userinput;
-    //     bool validinput = false; 
-    //     while(validinput == false || input != 1)
-    //     {
-    //       AccountCreation.ForFaultyInput();
-    //       try
-    //       {
-    //         userinput = Convert.ToInt32(input);
-    //       }
-    //       catch
-    //       {
-    //         AccountCreation.ForFaultyInput();
-    //         validinput = false;
-    //       }
-    //     }
-    //     return validinput;
-        
-    // }
-//    public static int ParseMethod(string userinput)
-//    {
-//         bool parseResult; 
-
-//         int number; 
-
-//         parseResult = int.TryParse(userinput, out number);
-
-//         return number;
-
-//    } 
 
      public static bool ParseAge(string userinput)
    {
@@ -121,8 +90,6 @@ public class AccountsLogic
     
 }
    
-//  System.Console.WriteLine("Invalid input. Try Again");
-           // userinput = Convert.ToInt32(Console.ReadLine());
 
 
 

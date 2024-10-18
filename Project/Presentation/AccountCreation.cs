@@ -9,7 +9,7 @@ public class AccountCreation
         System.Console.WriteLine("Choose the from the options below");
         System.Console.WriteLine("1)User");
         int userinput = Convert.ToInt32(Console.ReadLine());
-        // AccountsLogic.CheckForValidInput(userinput);
+   
         
             System.Console.WriteLine("Enter the information below");
             System.Console.WriteLine("Email: ");
@@ -37,11 +37,9 @@ public class AccountCreation
                 System.Console.WriteLine("Input is not valid. Please enter a number");
                 userAge = Console.ReadLine();
             }
-            // int AgeConverted = AccountsLogic.ParseMethod(userAge);
-           
 
             AccountsLogic accountsLogic = new();
-            // accountsLogic.UpdateList(userEmail, userPassword, fullName,userAge);
+            accountsLogic.UpdateList(userEmail, userPassword, fullName,Convert.ToInt32(userAge));
             // accountsLogic.UpdateList(new AccountModel(userEmail, userPassword, fullName));
             
         
@@ -50,15 +48,7 @@ public class AccountCreation
         //    System.Console.WriteLine("4)Employee");
     }
 
-    // public static int ForFaultyInput(bool result)
-    // {
-    //     if(result == false)
-    //     {
-    //         System.Console.WriteLine("Invalid input. Try Again");
-    //         int userinput = Convert.ToInt32(Console.ReadLine());
-    //         return userinput;
-    //     }
-    // }
+    
 
 
 }
