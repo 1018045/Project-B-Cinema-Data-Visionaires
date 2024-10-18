@@ -23,6 +23,11 @@ public class AccountCreation
             }
             System.Console.WriteLine("Password");
             string userPassword = Console.ReadLine();
+            while(AccountsLogic.VerifyPassword(userPassword) == false)
+            {
+                System.Console.WriteLine("Password needs to be atleast 8 characters. Try again.");
+                userPassword = Console.ReadLine();
+            }
             System.Console.WriteLine("Your fullname: ");
             string fullName = Console.ReadLine();
             System.Console.WriteLine("Your age");

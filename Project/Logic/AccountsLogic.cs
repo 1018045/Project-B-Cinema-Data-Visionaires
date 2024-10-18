@@ -58,9 +58,9 @@ public class AccountsLogic
         return CurrentAccount;
     }
 
-    public bool VerifyPassword(AccountModel account)
+    public static bool VerifyPassword(string password)
     {
-        if(account.Password.Length < 8)
+        if(password.Length < 8)
         {
             return false;
         }
