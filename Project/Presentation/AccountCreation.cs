@@ -32,7 +32,11 @@ public class AccountCreation
             string fullName = Console.ReadLine();
             System.Console.WriteLine("Your age");
             string userAge = Console.ReadLine();
-            
+            while(AccountsLogic.ParseAge(userAge)== false)
+            {
+                System.Console.WriteLine("Input is not valid. Please enter a number");
+                userAge = Console.ReadLine();
+            }
             // int AgeConverted = AccountsLogic.ParseMethod(userAge);
            
 
@@ -56,10 +60,6 @@ public class AccountCreation
     //     }
     // }
 
-    public void PasswordMessage()
-{
-    System.Console.WriteLine("Password must contain atleast 8 characters");
-}
 
 }
 

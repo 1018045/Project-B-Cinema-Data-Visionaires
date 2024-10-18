@@ -108,15 +108,13 @@ public class AccountsLogic
 
 //    } 
 
-     public static bool ParseMethod()
+     public static bool ParseAge(string userinput)
    {
         bool parseResult; 
 
         int number; 
 
-        string str = "ye";
-
-        parseResult = int.TryParse(str, out number);
+        parseResult = int.TryParse(userinput, out number);
 
         return parseResult;
    } 
