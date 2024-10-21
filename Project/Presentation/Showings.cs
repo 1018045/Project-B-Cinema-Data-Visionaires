@@ -6,4 +6,9 @@ public static class Showings
     {
         Console.WriteLine(_showingsLogic.ShowAll());
     }
+
+    public static void ShowUpcoming()
+    {
+        Console.WriteLine(_showingsLogic.ShowUpcoming());
+    }
 }

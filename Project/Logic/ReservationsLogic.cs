@@ -8,7 +8,7 @@ public class ReservationsLogic
     }
 
     public void AddReservation(int userId, int showingId, string seats, bool paymentComplete)
-{
+    {
         _reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete));
         ReservationsAccess.WriteAll(_reservations);
     }

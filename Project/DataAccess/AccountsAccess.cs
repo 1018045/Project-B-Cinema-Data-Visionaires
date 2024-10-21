@@ -11,14 +11,11 @@ static class AccountsAccess
         return JsonSerializer.Deserialize<List<AccountModel>>(json);
     }
 
-
     public static void WriteAll(List<AccountModel> accounts)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(accounts, options);
         File.WriteAllText(path, json);
     }
-
-
 
 }

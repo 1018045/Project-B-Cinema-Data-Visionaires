@@ -1,3 +1,5 @@
+using System.Globalization;
+
 public class ShowingsLogic
 {
     private List<ShowingModel> _showings;
@@ -7,7 +9,7 @@ public class ShowingsLogic
         _showings = ShowingsAccess.LoadAll();
     }
 
-    public bool AddShowing(int id, string title, string date, string time, int room, int minimumAge)
+    public bool AddShowing(int id, string title, string date, int room, int minimumAge)
     {
         // TODO
         return false;
@@ -41,7 +43,7 @@ public class ShowingsLogic
     {
 
         string output = $"{showing.Id}: {showing.Title}\n";
-        output += $"    {showing.Date} {showing.Time}\n";
+        output += $"    {showing.Date}\n";
         output += $"    Room: {showing.Room}; Aged {showing.MinimumAge} and above.\n";
         return output;
     }
@@ -52,6 +54,17 @@ public class ShowingsLogic
         foreach (ShowingModel showing in _showings)
         {
             output += ToString(showing);
+        }
+        return output;
+    }
+
+    public string ShowUpcoming() 
+    {
+        string output = "";
+        foreach (ShowingModel showing in _showings)
+        {
+            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
+                output += ToString(showing);
         }
         return output;
     }

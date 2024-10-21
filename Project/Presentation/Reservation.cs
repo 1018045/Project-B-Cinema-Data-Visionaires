@@ -1,14 +1,11 @@
-using Microsoft.VisualBasic;
-
 public static class Reservation
 {
     static private ReservationsLogic _reservationsLogic = new();
 
     public static void Make()
     {
-        System.Console.WriteLine("Welcome to the reservation screen!");
         System.Console.WriteLine("Choose a showing from the list:");
-        Showings.ShowAll();
+        Showings.ShowUpcoming();
 
         System.Console.WriteLine("Enter the id-number your showing of choice:");
         string id = Console.ReadLine();
