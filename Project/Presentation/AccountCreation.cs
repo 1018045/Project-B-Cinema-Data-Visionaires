@@ -9,6 +9,11 @@ public class AccountCreation
         System.Console.WriteLine("Choose the from the options below");
         System.Console.WriteLine("1)User");
         int userinput = Convert.ToInt32(Console.ReadLine());
+        while(userinput != 1)
+        {
+            System.Console.WriteLine("Input was incorrect. Try again");
+            userinput = Convert.ToInt32(Console.ReadLine());
+        }
    
         
             System.Console.WriteLine("Enter the information below");
