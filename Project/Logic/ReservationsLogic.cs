@@ -1,31 +1,40 @@
+using System.Text.RegularExpressions;
+
 public class ReservationsLogic
 {
-    private List<ReservationModel> _reservations;
+    public List<ReservationModel> Reservations {get; private set;}
 
     public ReservationsLogic()
     {
-        _reservations = ReservationsAccess.LoadAll();
+        Reservations = ReservationsAccess.LoadAll();
     }
 
     public void AddReservation(int userId, int showingId, string seats, bool paymentComplete)
     {
-        _reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete));
-        ReservationsAccess.WriteAll(_reservations);
+        Reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete));
+        ReservationsAccess.WriteAll(Reservations);
+    }
+    public void AddReservation(ReservationModel reservation)
+    {
+        Reservations.Add(reservation);
+        ReservationsAccess.WriteAll(Reservations);
     }
 
-    public bool MakePayment(string bankDetails)
+    public bool ValidateBankDetails(string bankDetails)
     {
-        // TODO: process payment details here...
-
-
-        return true;
+        if (bankDetails is null)
+            return false;
+        if (Regex.IsMatch(bankDetails.ToLower().Trim(), "^[a-z]{2}[0-9]{2}[a-z]{4}[0-9]{10}$"))
+            return true;
+        else
+            return false;
     }
 
     // Returns all reservations of a particular user
     public List<ReservationModel> FindReservationByUserID(int userId)
     {
         List<ReservationModel> output = new();
-        foreach (ReservationModel reservation in _reservations)
+        foreach (ReservationModel reservation in Reservations)
         {
             if (reservation.UserId == userId)
                 output.Add(reservation);
@@ -37,7 +46,7 @@ public class ReservationsLogic
     private int FindFirstAvailableID()
     {
         int pointer = 0;
-        List<ReservationModel> tempList = _reservations.OrderBy(r => r.Id).ToList<ReservationModel>();
+        List<ReservationModel> tempList = Reservations.OrderBy(r => r.Id).ToList<ReservationModel>();
         foreach (ReservationModel reservation in tempList)
         {
             if (pointer != reservation.Id)
