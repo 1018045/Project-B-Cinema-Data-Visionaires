@@ -8,11 +8,11 @@ public class AccountCreation
         System.Console.WriteLine("What type of account would you like to create?");
         System.Console.WriteLine("Choose the from the options below");
         System.Console.WriteLine("1)User");
-        int userinput = Convert.ToInt32(Console.ReadLine());
-        while(userinput != 1)
+        string userinput = Console.ReadLine();
+        while(AccountsLogic.ParseInt(userinput) != 1)
         {
             System.Console.WriteLine("Input was incorrect. Try again");
-            userinput = Convert.ToInt32(Console.ReadLine());
+            userinput = Console.ReadLine();
         }
    
         

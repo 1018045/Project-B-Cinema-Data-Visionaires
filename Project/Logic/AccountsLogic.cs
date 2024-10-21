@@ -87,6 +87,17 @@ public class AccountsLogic
 
         return parseResult;
    } 
+
+   public static int ParseInt(string input)
+   {
+        bool parseResult; 
+
+        int number; 
+
+        parseResult = int.TryParse(input, out number);
+
+        return number;
+   }
     
 }
    
