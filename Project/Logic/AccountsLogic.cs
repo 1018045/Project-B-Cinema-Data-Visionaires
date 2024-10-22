@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 //This class is not static so later on we can use inheritance and interfaces
@@ -43,12 +39,12 @@ public class AccountsLogic
 
     }
 
-    public AccountModel GetById(int id)
+    public AccountModel? GetById(int id)
     {
         return _accounts.Find(i => i.Id == id);
     }
 
-    public AccountModel CheckLogin(string email, string password)
+    public AccountModel? CheckLogin(string? email, string? password)
     {
         if (email == null || password == null)
         {
@@ -60,43 +56,26 @@ public class AccountsLogic
 
     public static bool VerifyPassword(string password)
     {
-        if(password.Length < 8)
-        {
-            return false;
-        }
-        return true;
-
-
+        return password.Length >= 8;
     } 
 
     public static bool VerifyEmail(string email)
     {
         var emailValidation = new EmailAddressAttribute();
-        
         return emailValidation.IsValid(email);
     }
 
+    //helper method to test if the age is valid
+    public static bool IsInt(string userinput)
+    {
+        return int.TryParse(userinput, out _);
+   }
 
-     public static bool ParseAge(string userinput)
-   {
-        bool parseResult; 
-
-        int number; 
-
-        parseResult = int.TryParse(userinput, out number);
-
-        return parseResult;
-   } 
-
+   //returns -1 if the result is not a success
    public static int ParseInt(string input)
    {
-        bool parseResult; 
-
-        int number; 
-
-        parseResult = int.TryParse(input, out number);
-
-        return number;
+        var success = int.TryParse(input, out var number);
+        return !success ? -1 : number;
    }
     
 }

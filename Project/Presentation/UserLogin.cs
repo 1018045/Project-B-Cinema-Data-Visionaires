@@ -21,6 +21,7 @@ static class UserLogin
         else
         {
             Console.WriteLine("No account found with that email and password");
+            Menu.Start();
         }
     }
 }

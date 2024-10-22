@@ -38,7 +38,7 @@ public class TestAccountLogic
     [DataRow("15", true)]
     public void CheckParseAge(string input, bool expected)
     {
-        bool actual = AccountsLogic.ParseAge(input);
+        bool actual = AccountsLogic.IsInt(input);
         Assert.AreEqual(expected, actual);
     }
     
