@@ -1,5 +1,12 @@
 [
   {
+    "id": 0,
+    "userId": 1,
+    "showingId": 2,
+    "seats": "3",
+    "paymentComplete": true
+  },
+  {
     "id": 1,
     "userId": 1,
     "showingId": 1,

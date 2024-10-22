@@ -8,17 +8,21 @@ static class Menu
     {
 
         Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 3 to make a reservation");
-        Console.WriteLine("Enter 2 To create an account");
+        Console.WriteLine("Enter 2 to make a reservation");
+        Console.WriteLine("Enter 3 To create an account");
 
         string input = Console.ReadLine();
         if (input == "1")
         {
             UserLogin.Start();
         }
-        else if (input == "3")
+        else if (input == "2")
         {
             Reservation.Make();
+          
+        }
+        else if( input == "3")
+        {
             AccountCreation.ChooseAccount();
         }
         else
