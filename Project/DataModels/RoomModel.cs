@@ -7,14 +7,14 @@ public class RoomModel
     public int Id { get; set; }
 
     [JsonPropertyName("row")]
-    public List<int> Row { get; set; }
+    public List<List<int>> Row { get; set; }
 
     [JsonPropertyName("price")]
     public int Price { get; set; }
 
 
 
-    public RoomModel(int id, List<int> row, int price)
+    public RoomModel(int id, List<List<int>> row, int price)
     {
         Id = id;
         Row = row;
