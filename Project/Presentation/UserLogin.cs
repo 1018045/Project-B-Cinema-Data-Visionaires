@@ -2,7 +2,6 @@ static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
 
-
     public static void Start()
     {
         Console.WriteLine("Welcome to the login page");
@@ -17,7 +16,7 @@ static class UserLogin
             Console.WriteLine("Your email is " + acc.EmailAddress);
 
             //Write some code to go back to the menu
-            //Menu.Start();
+            Menu.Start();
         }
         else
         {

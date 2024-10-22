@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "showingId": 1,
+    "seats": "1,2,3",
+    "paymentComplete": true
+  },
+  {
+    "id": 2,
+    "userId": 2,
+    "showingId": 2,
+    "seats": "1,2,3",
+    "paymentComplete": true
+  }
+]
