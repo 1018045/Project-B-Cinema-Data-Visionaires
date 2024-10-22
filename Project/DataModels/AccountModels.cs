@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 
 public class AccountModel
@@ -24,7 +24,3 @@ public class AccountModel
     }
 
 }
-
-
-
-
