@@ -18,10 +18,10 @@ public class AccountsLogic
         _accounts = AccountsAccess.LoadAll();
     }
 
-    public void UpdateList(string email, string password, string fullname, int age)
+    public AccountModel UpdateList(string email, string password, string fullname, int age)
     {
         int id = 13;
-        AccountModel acc = new AccountModel(13, email, password, fullname, age);
+        AccountModel acc = new AccountModel(FindFirstAvailableID(), email, password, fullname, age);
         //Find if there is already an model with the same id
         int index = _accounts.FindIndex(s => s.Id == acc.Id);
 
@@ -36,6 +36,8 @@ public class AccountsLogic
             _accounts.Add(acc);
         }
         AccountsAccess.WriteAll(_accounts);
+
+        return acc;
 
     }
 
@@ -69,14 +71,34 @@ public class AccountsLogic
     public static bool IsInt(string userinput)
     {
         return int.TryParse(userinput, out _);
-   }
+    }
 
    //returns -1 if the result is not a success
-   public static int ParseInt(string input)
-   {
+    public static int ParseInt(string input)
+    {
         var success = int.TryParse(input, out var number);
         return !success ? -1 : number;
-   }
+    }
+
+    private int FindFirstAvailableID()
+    {
+        int pointer = 0;
+        List<AccountModel> tempList = _accounts.OrderBy(a => a.Id).ToList<AccountModel>();
+        foreach (AccountModel account in tempList)
+        {
+            if (pointer != account.Id)
+            {
+                return pointer;
+            }
+            pointer++;
+        }
+        return pointer;
+    }
+
+    public static void LogOut()
+    {
+        CurrentAccount = null;
+    }
     
 }
    

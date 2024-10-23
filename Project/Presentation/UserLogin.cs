@@ -12,16 +12,18 @@ static class UserLogin
         AccountModel acc = accountsLogic.CheckLogin(email, password);
         if (acc != null)
         {
+            System.Console.WriteLine("\n");
+            Console.WriteLine(new string('-', Console.WindowWidth));
             Console.WriteLine("Welcome back " + acc.FullName);
             Console.WriteLine("Your email is " + acc.EmailAddress);
-
+            
             //Write some code to go back to the menu
             Menu.Start();
         }
         else
         {
             Console.WriteLine("No account found with that email and password");
-            Menu.Start();
+            LoginMenu.Start();
         }
     }
 }

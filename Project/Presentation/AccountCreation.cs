@@ -42,14 +42,16 @@ public class AccountCreation
         }
 
         AccountsLogic accountsLogic = new();
-        accountsLogic.UpdateList(userEmail, userPassword, fullName,Convert.ToInt32(userAge));
+        accountsLogic.UpdateList(userEmail, userPassword, fullName, Convert.ToInt32(userAge));
 
         Console.WriteLine($"\nSuccessfully created your account, welcome {fullName}!");
+
+        accountsLogic.CheckLogin(userEmail, userPassword);
 
         //wait so that it is more clear
         Thread.Sleep(1500);
 
-        Console.WriteLine("\\n");
+        Console.WriteLine("\n");
         Menu.Start();
         // accountsLogic.UpdateList(new AccountModel(userEmail, userPassword, fullName));
             

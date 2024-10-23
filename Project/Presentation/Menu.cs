@@ -6,24 +6,22 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
-
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to make a reservation");
-        Console.WriteLine("Enter 3 To create an account");
+        Console.WriteLine("\n" + new string('-', Console.WindowWidth));
+        System.Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.FullName}");
+        Console.WriteLine(new string('-', Console.WindowWidth));
+        Console.WriteLine("Enter 1 to make a reservation");
+        Console.WriteLine("Enter 2 to log out");
 
         string input = Console.ReadLine();
         if (input == "1")
         {
-            UserLogin.Start();
+            Reservation.Make();
         }
         else if (input == "2")
         {
-            Reservation.Make();
-          
-        }
-        else if( input == "3")
-        {
-            AccountCreation.ChooseAccount();
+            AccountsLogic.LogOut();
+            System.Console.WriteLine("\nYou are now logged out\n");
+            LoginMenu.Start();
         }
         else
         {
