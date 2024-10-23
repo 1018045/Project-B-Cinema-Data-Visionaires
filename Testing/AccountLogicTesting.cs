@@ -44,12 +44,12 @@ public class TestAccountLogic
     
     [TestMethod]
     [DataRow("123", 123)]
-    [DataRow("abc",0)]
+    [DataRow("abc", -1)]
     public void CheckParseInt(string input, int expected)
     {
         int actual = AccountsLogic.ParseInt(input);
        
-       Assert.AreEqual(expected,actual);
+       Assert.AreEqual(expected, actual);
         
     }
 
