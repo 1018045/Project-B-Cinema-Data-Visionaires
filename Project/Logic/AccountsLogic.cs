@@ -79,7 +79,14 @@ public class AccountsLogic
     //helper method to test if the age is valid
     public static bool IsInt(string userinput)
     {
-        return int.TryParse(userinput, out _);
+        if (int.TryParse(userinput, out int age))
+        {
+            if(age >= 0 && age <= 166)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
    //returns -1 if the result is not a success
