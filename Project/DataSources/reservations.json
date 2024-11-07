@@ -26,5 +26,12 @@
     "showingId": 2,
     "seats": "1,2,3",
     "paymentComplete": true
+  },
+  {
+    "id": 4,
+    "userId": 1,
+    "showingId": 1,
+    "seats": "10",
+    "paymentComplete": true
   }
 ]
