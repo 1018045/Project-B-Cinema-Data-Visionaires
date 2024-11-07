@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 
 //This class is not static so later on we can use inheritance and interfaces
@@ -58,7 +59,15 @@ public class AccountsLogic
 
     public static bool VerifyPassword(string password)
     {
-        return password.Length >= 8;
+        if (password.Length < 8)
+        {
+            return false;
+        }
+
+        string pattern = @"^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$";
+
+
+        return Regex.IsMatch(password, pattern);
     } 
 
     public static bool VerifyEmail(string email)

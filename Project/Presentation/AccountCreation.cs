@@ -24,11 +24,11 @@ public class AccountCreation
             Console.WriteLine("Email: ");
             userEmail = Console.ReadLine();
         }
-        Console.WriteLine("Password");
+        Console.WriteLine("Enter your password. It must contain atleast 8 characters which consists of 1 capital letter, 1 number and 1 special character e.g. $,#,% etc.");
         var userPassword = Console.ReadLine();
         while(AccountsLogic.VerifyPassword(userPassword) == false)
         {
-            Console.WriteLine("Password needs to be atleast 8 characters. Try again.");
+            Console.WriteLine("Password was not valid. Try again.");
             userPassword = Console.ReadLine();
         }
         Console.WriteLine("Your fullname: ");
