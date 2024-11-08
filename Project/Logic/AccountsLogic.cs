@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using System.Security;
 
 
 //This class is not static so later on we can use inheritance and interfaces
@@ -115,6 +116,35 @@ public class AccountsLogic
     {
         CurrentAccount = null;
     }
+
+    public static SecureString MaskInputstring()
+{
+    SecureString pass = new SecureString();
+    ConsoleKeyInfo keyInfo;
+
+    do
+    {
+        keyInfo = Console.ReadKey(true);  
+
+       
+        if (!char.IsControl(keyInfo.KeyChar))
+        {
+            pass.AppendChar(keyInfo.KeyChar);  
+            Console.Write("*");  
+        }
+       
+        else if (keyInfo.Key == ConsoleKey.Backspace && pass.Length > 0)
+        {
+            
+            pass.RemoveAt(pass.Length - 1);
+            Console.Write("\b \b");  
+        }
+
+    } while (keyInfo.Key != ConsoleKey.Enter);  
+
+    Console.WriteLine();  
+    return pass;
+}
     
 }
    

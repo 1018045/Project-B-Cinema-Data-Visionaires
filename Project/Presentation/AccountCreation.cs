@@ -1,3 +1,5 @@
+using System.Security;
+
 public class AccountCreation
 {
     
@@ -24,13 +26,23 @@ public class AccountCreation
             Console.WriteLine("Email: ");
             userEmail = Console.ReadLine();
         }
-        Console.WriteLine("Enter your password. It must contain atleast 8 characters which consists of 1 capital letter, 1 number and 1 special character e.g. $,#,% etc.");
-        var userPassword = Console.ReadLine();
-        while(AccountsLogic.VerifyPassword(userPassword) == false)
-        {
-            Console.WriteLine("Password was not valid. Try again.");
-            userPassword = Console.ReadLine();
-        }
+
+
+    Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
+    SecureString pass = AccountsLogic.MaskInputstring();  
+    string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+   
+    while (AccountsLogic.VerifyPassword(Password) == false)
+    {
+        Console.WriteLine("Password was not valid. Try again.");
+        
+        
+        pass = AccountsLogic.MaskInputstring();  
+        Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+    }
+
+  
+
         Console.WriteLine("Your fullname: ");
         var fullName = Console.ReadLine();
         Console.WriteLine("Your age");
@@ -42,11 +54,11 @@ public class AccountCreation
         }
 
         AccountsLogic accountsLogic = new();
-        accountsLogic.UpdateList(userEmail, userPassword, fullName, Convert.ToInt32(userAge));
+        accountsLogic.UpdateList(userEmail, Password, fullName, Convert.ToInt32(userAge));
 
         Console.WriteLine($"\nSuccessfully created your account, welcome {fullName}!");
 
-        accountsLogic.CheckLogin(userEmail, userPassword);
+        accountsLogic.CheckLogin(userEmail, Password);
 
         //wait so that it is more clear
         Thread.Sleep(1500);
