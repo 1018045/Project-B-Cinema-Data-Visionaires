@@ -25,4 +25,3 @@ static class AdminLogin
         }
     }
 }
-// ... bestaande code ... 
