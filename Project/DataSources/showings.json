@@ -1,19 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Star Wars",
-    "date": "20-10-2024 21:00:00",
-    "room": 1,
-    "minimumAge": 16
-  },
-  {
-    "id": 2,
-    "title": "Harry Potter",
-    "date": "24-10-2024 18:00:00",
-    "room": 3,
-    "minimumAge": 16
-  },
-  {
     "id": 3,
     "title": "test",
     "date": "11-10--1021",
@@ -38,6 +24,13 @@
     "id": 6,
     "title": "halllooo",
     "date": "11-10-2002",
+    "room": 1,
+    "minimumAge": 12
+  },
+  {
+    "id": 7,
+    "title": "yoyoyo",
+    "date": "11-10-2001",
     "room": 1,
     "minimumAge": 12
   }

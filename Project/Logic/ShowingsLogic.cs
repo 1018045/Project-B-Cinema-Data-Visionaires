@@ -9,11 +9,7 @@ public class ShowingsLogic
         _showings = ShowingsAccess.LoadAll();
     }
 
-    public bool AddShowing(int id, string title, string date, int room, int minimumAge)
-    {
-        // TODO
-        return false;
-    }
+    
 
     // Returns all reservations of a particular user
     public List<ShowingModel> FindReservationByUserID(int id)
@@ -105,7 +101,7 @@ public class ShowingsLogic
         List<ShowingModel> showings = ShowingsAccess.LoadAll();
         if (showings.Count == 0)
         {
-            return 1; // Begin met ID 1 als er geen vertoningen zijn
+           return 1; // Begin met ID 1 als er geen vertoningen zijn
         }
         return showings.Max(s => s.Id) + 1; // Vind het hoogste ID en verhoog met 1
     }

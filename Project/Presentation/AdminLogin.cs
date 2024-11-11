@@ -4,9 +4,9 @@ static class AdminLogin
 {
     public static void Start()
     {
-        Console.WriteLine("Voer uw e-mailadres in:");
+        Console.WriteLine("Enter your email address:");
         string email = Console.ReadLine();
-        Console.WriteLine("Voer uw wachtwoord in:");
+        Console.WriteLine("Enter your password:");
         string password = Console.ReadLine();
 
         var admins = AdminAccess.LoadAll();
@@ -14,13 +14,13 @@ static class AdminLogin
 
         if (admin != null)
         {
-            Console.WriteLine("Login succesvol! Welkom, " + admin.EmailAddress);
+            Console.WriteLine("Login successful! Welcome," + admin.EmailAddress);
             AdminMenu.Start();
             
         }
         else
         {
-            Console.WriteLine("Ongeldige inloggegevens. Probeer het opnieuw.");
+            Console.WriteLine("Invalid login credentials. Please try again.");
             Start(); // Herstart de login
         }
     }

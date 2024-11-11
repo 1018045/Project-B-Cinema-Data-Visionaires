@@ -7,18 +7,10 @@
     "Age": 0
   },
   {
-    "id": 2,
-    "emailAddress": "t@b.c",
-    "password": "xyz",
-    "fullName": "Thomas Edison",
-    "Age": 0
-  },
-  {
     "id": 13,
     "emailAddress": "xxx@x.com",
     "password": "xxxxxxxx",
     "fullName": "mister X",
     "Age": 99
   }
-
 ]

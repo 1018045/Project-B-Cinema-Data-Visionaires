@@ -6,12 +6,12 @@ static class AdminMenu
     public static void Start()
     {
         Console.WriteLine("Admin Menu:");
-        Console.WriteLine("1. Voeg een film toe");
-        Console.WriteLine("2. Verwijder een gebruiker");
-        Console.WriteLine("3. Bekijk alle gebruikers");
-        Console.WriteLine("4. Verwijder een filmvertoning");
-        Console.WriteLine("5. Bekijk alle films");
-        Console.WriteLine("6. Terug naar hoofdmenu");
+        Console.WriteLine("1. Add a movie");
+        Console.WriteLine("2. Remove a user");
+        Console.WriteLine("3. View all users");
+        Console.WriteLine("4. Remove a movie screening");
+        Console.WriteLine("5. View all movies");
+        Console.WriteLine("6. Return to main menu");
 
         string input = Console.ReadLine();
         switch (input)
@@ -35,7 +35,7 @@ static class AdminMenu
                 LoginMenu.Start();
                 break;
             default:
-                Console.WriteLine("Ongeldige keuze, probeer het opnieuw.");
+                Console.WriteLine("Invalid choice, please try again.");
                 Start();
                 break;
         }
@@ -43,16 +43,16 @@ static class AdminMenu
 
     private static void AddMovie()
     {
-        Console.WriteLine("Voer de filmtitel in:");
+        Console.WriteLine("Enter the movie title:");
         string title = Console.ReadLine();
 
-        Console.WriteLine("Voer de datum in (dd-MM-yyyy HH:mm:ss):");
+        Console.WriteLine("Enter the date (dd-MM-yyyy HH:mm:ss):");
         string date = Console.ReadLine();
 
-        Console.WriteLine("Voer de zaal in:");
+        Console.WriteLine("Enter the hall:");
         int room = int.Parse(Console.ReadLine());
 
-        Console.WriteLine("Voer de minimumleeftijd in:");
+        Console.WriteLine("Enter the minimum age:");
         int minimumAge = int.Parse(Console.ReadLine());
 
         // Maak een instantie van ShowingsLogic
@@ -61,13 +61,13 @@ static class AdminMenu
         // Voeg de nieuwe vertoning toe via de logica-laag
         showingsLogic.AddShowing(title, date, room, minimumAge);
 
-        Console.WriteLine($"Filmvertoning '{title}' is toegevoegd.");
+        Console.WriteLine($"Movie screening ‘{title}’ has been added.");
         Start(); // Terug naar het adminmenu
     }
 
     private static void RemoveUser()
     {
-        Console.WriteLine("Voer het e-mailadres van de gebruiker in die je wilt verwijderen:");
+        Console.WriteLine("Enter the email address of the user you want to remove:");
         string email = Console.ReadLine();
 
         AccountsLogic accountsLogic = new AccountsLogic();
@@ -75,11 +75,11 @@ static class AdminMenu
 
         if (isRemoved)
         {
-            Console.WriteLine($"Gebruiker met e-mailadres '{email}' is verwijderd.");
+            Console.WriteLine($"User with email address ‘{email}’ has been removed.");
         }
         else
         {
-            Console.WriteLine($"Geen gebruiker gevonden met e-mailadres '{email}'.");
+            Console.WriteLine($"No user found with email address ‘{email}'.");
         }
         
         Start(); // Terug naar het adminmenu
@@ -100,7 +100,7 @@ static class AdminMenu
         var users = AccountsAccess.LoadAll(); 
         foreach (var user in users)
         {
-            Console.WriteLine($"Gebruiker: {user.EmailAddress}");
+            Console.WriteLine($"User: {user.EmailAddress}");
         }
         Start(); 
     }
@@ -108,19 +108,18 @@ static class AdminMenu
     private static void ViewMovies()
     {
         ShowingsLogic showingsLogic = new ShowingsLogic();
-        var movies = showingsLogic.GetAllShowings();
 
-        Console.WriteLine("\nAlle filmvertoningen:");
-        Console.WriteLine("ID | Titel | Datum | Zaal | Minimumleeftijd");
+        Console.WriteLine("\nAll movie screenings:");
+        
         Console.WriteLine("----------------------------------------");
         
-        foreach (var movie in movies)
-        {
-            Console.WriteLine($"{movie.Id} | {movie.Title} | {movie.Date} | Zaal {movie.Room} | {movie.MinimumAge}+");
-        }
+        
+        string allShowings = showingsLogic.ShowAll();
+        Console.WriteLine(allShowings);
 
-        Console.WriteLine("\nDruk op een toets om terug te gaan...");
+        Console.WriteLine("\nPress any key to go back…");
         Console.ReadKey();
         Start();
+        
     }
 } 
