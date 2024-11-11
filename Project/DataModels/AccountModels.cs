@@ -15,14 +15,12 @@ public class AccountModel
     [JsonPropertyName("fullName")]
     public string FullName { get; set; }
 
-   
+    [JsonPropertyName("age")]
     public int Age {get;set;}
-
-    
 
     public AccountModel(int id, string emailAddress, string password, string fullName, int age)
     {   
-        Id++;
+        Id = id;
         EmailAddress = emailAddress;
         Password = password;
         FullName = fullName;
