@@ -16,7 +16,7 @@ public class AccountModel
     public string FullName { get; set; }
 
     [JsonPropertyName("age")]
-    public int Age {get;set;}
+    public int Age { get; set; }
 
     public AccountModel(int id, string emailAddress, string password, string fullName, int age)
     {   
