@@ -10,7 +10,8 @@ static class AdminMenu
         Console.WriteLine("2. Verwijder een gebruiker");
         Console.WriteLine("3. Bekijk alle gebruikers");
         Console.WriteLine("4. Verwijder een filmvertoning");
-        Console.WriteLine("5. Terug naar hoofdmenu");
+        Console.WriteLine("5. Bekijk alle films");
+        Console.WriteLine("6. Terug naar hoofdmenu");
 
         string input = Console.ReadLine();
         switch (input)
@@ -28,6 +29,9 @@ static class AdminMenu
                 RemoveMovie();
                 break;
             case "5":
+                ViewMovies();
+                break;
+            case "6":
                 LoginMenu.Start();
                 break;
             default:
@@ -65,8 +69,19 @@ static class AdminMenu
     {
         Console.WriteLine("Voer het e-mailadres van de gebruiker in die je wilt verwijderen:");
         string email = Console.ReadLine();
-        // Voeg hier logica toe om de gebruiker te verwijderen
-        Console.WriteLine($"Gebruiker met e-mailadres '{email}' is verwijderd.");
+
+        AccountsLogic accountsLogic = new AccountsLogic();
+        bool isRemoved = accountsLogic.RemoveUser(email);
+
+        if (isRemoved)
+        {
+            Console.WriteLine($"Gebruiker met e-mailadres '{email}' is verwijderd.");
+        }
+        else
+        {
+            Console.WriteLine($"Geen gebruiker gevonden met e-mailadres '{email}'.");
+        }
+        
         Start(); // Terug naar het adminmenu
     }
 
@@ -88,5 +103,24 @@ static class AdminMenu
             Console.WriteLine($"Gebruiker: {user.EmailAddress}");
         }
         Start(); 
+    }
+
+    private static void ViewMovies()
+    {
+        ShowingsLogic showingsLogic = new ShowingsLogic();
+        var movies = showingsLogic.GetAllShowings();
+
+        Console.WriteLine("\nAlle filmvertoningen:");
+        Console.WriteLine("ID | Titel | Datum | Zaal | Minimumleeftijd");
+        Console.WriteLine("----------------------------------------");
+        
+        foreach (var movie in movies)
+        {
+            Console.WriteLine($"{movie.Id} | {movie.Title} | {movie.Date} | Zaal {movie.Room} | {movie.MinimumAge}+");
+        }
+
+        Console.WriteLine("\nDruk op een toets om terug te gaan...");
+        Console.ReadKey();
+        Start();
     }
 } 

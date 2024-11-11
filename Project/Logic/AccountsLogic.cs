@@ -99,6 +99,19 @@ public class AccountsLogic
     {
         CurrentAccount = null;
     }
+
+    public bool RemoveUser(string email)
+    {
+        var userToRemove = _accounts.FirstOrDefault(a => a.EmailAddress.ToLower() == email.ToLower());
+        
+        if (userToRemove != null)
+        {
+            _accounts.Remove(userToRemove);
+            AccountsAccess.WriteAll(_accounts);
+            return true;
+        }
+        return false;
+    }
     
 }
    

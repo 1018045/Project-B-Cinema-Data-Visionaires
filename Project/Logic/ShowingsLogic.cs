@@ -109,4 +109,9 @@ public class ShowingsLogic
         }
         return showings.Max(s => s.Id) + 1; // Vind het hoogste ID en verhoog met 1
     }
+
+    public List<ShowingModel> GetAllShowings()
+    {
+        return ShowingsAccess.LoadAll();
+    }
 }
