@@ -12,14 +12,14 @@ public static class Reservation
         System.Console.WriteLine("\nWhich seats do you want?");
         // communicate with the seating layer to recieve, print, and then send back the seating config
         string seats = Console.ReadLine();
-        bool paymentSuccesfull = false;
-        while (!paymentSuccesfull)
+        string payment = "X";
+        while (payment != "")
         {
             System.Console.WriteLine("\nBank details:");
-            paymentSuccesfull = _reservationsLogic.ValidateBankDetails(Console.ReadLine());
+            payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine());
         }
 
-        _reservationsLogic.AddReservation(1, Convert.ToInt32(id), seats, paymentSuccesfull);
+        _reservationsLogic.AddReservation(1, Convert.ToInt32(id), seats, true);
         System.Console.WriteLine("\nYou have succesfully booked your tickets!\n");
         Menu.Start();
     }
