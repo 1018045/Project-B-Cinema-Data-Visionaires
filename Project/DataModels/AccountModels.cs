@@ -21,8 +21,8 @@ public class AccountModel
     
 
     public AccountModel(int id, string emailAddress, string password, string fullName, int age)
-    {
-        Id = id;
+    {   
+        Id++;
         EmailAddress = emailAddress;
         Password = password;
         FullName = fullName;

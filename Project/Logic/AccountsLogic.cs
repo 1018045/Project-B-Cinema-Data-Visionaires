@@ -6,9 +6,8 @@ using System.Security;
 //This class is not static so later on we can use inheritance and interfaces
 public class AccountsLogic
 {
+    public static AccountsLogic Logic { get; } = new ();
     private List<AccountModel> _accounts;
-
-    
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
@@ -22,7 +21,7 @@ public class AccountsLogic
 
     public AccountModel UpdateList(string email, string password, string fullname, int age)
     {
-        int id = 13;
+        
         AccountModel acc = new AccountModel(FindFirstAvailableID(), email, password, fullname, age);
         //Find if there is already an model with the same id
         int index = _accounts.FindIndex(s => s.Id == acc.Id);
@@ -37,6 +36,7 @@ public class AccountsLogic
             //add new model
             _accounts.Add(acc);
         }
+        
         AccountsAccess.WriteAll(_accounts);
 
         return acc;

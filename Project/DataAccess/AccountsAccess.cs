@@ -18,6 +18,4 @@ static class AccountsAccess
         File.WriteAllText(path, json);
     }
 
-
-
 }

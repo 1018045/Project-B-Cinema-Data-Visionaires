@@ -28,18 +28,18 @@ public class AccountCreation
         }
 
 
-    Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
-    SecureString pass = AccountsLogic.MaskInputstring();  
-    string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+        Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
+        SecureString pass = AccountsLogic.MaskInputstring();  
+        string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
    
-    while (AccountsLogic.VerifyPassword(Password) == false)
-    {
-        Console.WriteLine("Password was not valid. Try again.");
+        while (AccountsLogic.VerifyPassword(Password) == false)
+        {
+            Console.WriteLine("Password was not valid. Try again.");
         
         
-        pass = AccountsLogic.MaskInputstring();  
-        Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
-    }
+            pass = AccountsLogic.MaskInputstring();  
+            Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+        }
 
   
 
