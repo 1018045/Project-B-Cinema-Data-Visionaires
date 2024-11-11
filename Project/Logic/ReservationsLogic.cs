@@ -1,9 +1,15 @@
 using System.Linq;
 
+
 public class ReservationsLogic
 {
     public List<ReservationModel> Reservations {get; private set;}
 
+    private List<string> ApprovedBankCodes = new List<string>
+                {
+                    "ABNA","INGB","RABO","SNSB","ASNB","TRIO","KNAB","BUNQ","MOYO","FVLN","FRBK","REVO"
+                };
+        
     public ReservationsLogic()
     {
         Reservations = ReservationsAccess.LoadAll();
@@ -36,12 +42,8 @@ public class ReservationsLogic
         {
             return "The first 2 characters after the Country signature should only be numbers. Please try again!";
         }
-        List<string> IbanBankCodesc = new List<string>
-            {
-                "ABNA","INGB","RABO","SNSB","ASNB","TRIO","KNAB","BUNQ","MOYO","FVLN","FRBK","REVO"
-            };
 
-        if (!bankDetails.Substring(4,4).All(char.IsLetter) || !IbanBankCodesc.Contains(bankDetails.Substring(4,4)))
+        if (!bankDetails.Substring(4,4).All(char.IsLetter) || !ApprovedBankCodes.Contains(bankDetails.Substring(4,4)))
         {
             return "Please check the bank identifiers in your IBAN. Please try again!";
         }

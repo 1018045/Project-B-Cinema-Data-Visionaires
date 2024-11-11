@@ -17,6 +17,7 @@ public static class Reservation
         {
             System.Console.WriteLine("\nBank details:");
             payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine());
+            Console.WriteLine(payment);
         }
 
         _reservationsLogic.AddReservation(1, Convert.ToInt32(id), seats, true);
