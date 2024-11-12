@@ -1,6 +1,5 @@
 public class AccountCreation
 {
-    
     public static void ChooseAccount()
     {
         Console.WriteLine("What type of account would you like to create?");
