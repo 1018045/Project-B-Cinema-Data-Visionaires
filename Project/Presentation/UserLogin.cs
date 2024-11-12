@@ -17,11 +17,12 @@ public class UserLogin
             Console.WriteLine("Your email is " + acc.EmailAddress);
 
             //Write some code to go back to the menu
-            //Menu.Start();
+            Menu.Start();
         }
         else
         {
             Console.WriteLine("No account found with that email and password");
+            LoginMenu.Start();
         }
     }
 }

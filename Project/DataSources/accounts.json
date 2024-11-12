@@ -19,5 +19,12 @@
     "password": "xxxxxxxx",
     "fullName": "mister X",
     "age": 0
+  },
+  {
+    "id": 3,
+    "emailAddress": "hoi@doei.nl",
+    "password": "K@mala Harr1s",
+    "fullName": "Kamala",
+    "age": 89
   }
 ]
