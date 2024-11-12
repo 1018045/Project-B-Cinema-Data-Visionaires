@@ -12,6 +12,7 @@ public static class SeatSelectionLogic
         var room = GetRoomByShowing(showingId);
         var maxYPos = room.Rows - 1;
         var maxXPos = room.SeatDepth - 1;
+        var takenSeats = GetTakenSeats(showingId);
 
         var curPos = (0, 0); //x,y
         List<string> selectedSeats = [];
@@ -41,7 +42,7 @@ public static class SeatSelectionLogic
                     break;
                 case ConsoleKey.Enter:
                     var seat = $"({curPos.Item2 + 1};{curPos.Item1 + 1})"; //(row;seat_number)
-                    if (selectedSeats.Contains(seat))
+                    if (selectedSeats.Contains(seat) || takenSeats.Contains(curPos))
                         continue;
 
                     selectedSeats.Add(seat);
@@ -73,7 +74,25 @@ public static class SeatSelectionLogic
         return sb.ToString();
     }
 
-    private static void BuildSeatingString(StringBuilder sb, int rows, int seatDepth, List<int> takenSeats, List<(int, int)> selectedSeats, (int, int) cursorPos)
+    public static List<(int, int)> StringSeatsToPositions(string input)
+    {
+        var result = new List<(int, int)>();
+        var seats = input.Split(',');
+
+        foreach (var seat in seats)
+        {
+            var parts = seat.Trim('(', ')').Split(';');
+
+            int first = int.Parse(parts[0]);
+            int second = int.Parse(parts[1]);
+
+            result.Add((first, second));
+        }
+
+        return result;
+    }
+
+    private static void BuildSeatingString(StringBuilder sb, int rows, int seatDepth, List<(int, int)> takenSeats, List<(int, int)> selectedSeats, (int, int) cursorPos)
     {
         for (var y = 1; y <= rows; y++)
         {
@@ -82,7 +101,7 @@ public static class SeatSelectionLogic
 
             for (var x = 1; x <= seatDepth; x++)
             {
-                var characters = !takenSeats.Contains(x) ? $"[{x}]" : "[x]";
+                var characters = !takenSeats.Contains((y,x)) ? $"[{x}]" : "[x]";
                 var currentGenPos = (x - 1, y - 1);
 
                 if (selectedSeats.Contains(currentGenPos))
@@ -120,9 +139,14 @@ public static class SeatSelectionLogic
         return GetRoom(showing.Room);
     }
 
-    private static List<int> GetTakenSeats(int showingId)
+    private static List<(int, int)> GetTakenSeats(int showingId)
     {
         var relevantReservations = ReservationsAccess.LoadAll().FindAll(rm => rm.ShowingId == showingId);
-        return relevantReservations.Select(rm => rm.Id).ToList();
+        List<(int, int)> taken = [];
+        relevantReservations
+            .ForEach(r => StringSeatsToPositions(r.Seats)
+                .ForEach(p => taken.Add(p))
+        );
+        return taken;
     }
 }
