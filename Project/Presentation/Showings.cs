@@ -16,11 +16,11 @@ public static class Showings
 
     public static void ShowUpcomingOnDate()
     {     
-        DateTime date = ParseDateTime();
+        DateTime date = AskAndParseDateTime();
         Console.WriteLine(_showingsLogic.ShowUpcoming(date));       
     }
 
-    private static DateTime ParseDateTime()
+    private static DateTime AskAndParseDateTime()
     {  
         string dateInput;
         do
@@ -30,6 +30,5 @@ public static class Showings
         }
         while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime _));             
         return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-    
     }
 }

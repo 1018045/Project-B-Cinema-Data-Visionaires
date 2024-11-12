@@ -85,7 +85,7 @@ public class ShowingsLogic
         string output = "";
         foreach (ShowingModel showing in _showings)
         {
-            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture) == date.Date)
+            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).Date == date.Date)
                 output += ToString(showing);
         }
         return output;
