@@ -104,4 +104,50 @@ public class ShowingsLogic
         }
         return showings;
     }
+
+    public void AddShowing(string title, string date, int room, int minimumAge)
+    {
+        // Vind het volgende beschikbare ID
+        int newId = FindNextAvailableId();
+
+        // Maak een nieuw ShowingModel object aan
+        ShowingModel newShowing = new ShowingModel(newId, title, date, room, minimumAge);
+
+        // Laad bestaande vertoningen, voeg de nieuwe vertoning toe en schrijf alles terug
+        List<ShowingModel> showings = ShowingsAccess.LoadAll();
+        showings.Add(newShowing);
+        ShowingsAccess.WriteAll(showings);
+    }
+
+     public void RemoveShowing(int id)
+    {
+        List<ShowingModel> showings = ShowingsAccess.LoadAll();
+        ShowingModel showingToRemove = showings.FirstOrDefault(s => s.Id == id);
+        
+        if (showingToRemove != null)
+        {
+            showings.Remove(showingToRemove);
+            ShowingsAccess.WriteAll(showings);
+            Console.WriteLine($"Filmvertoning met ID '{id}' is verwijderd.");
+        }
+        else
+        {
+            Console.WriteLine($"Geen filmvertoning gevonden met ID '{id}'.");
+        }
+    }
+
+    private int FindNextAvailableId()
+    {
+        List<ShowingModel> showings = ShowingsAccess.LoadAll();
+        if (showings.Count == 0)
+        {
+           return 1; // Begin met ID 1 als er geen vertoningen zijn
+        }
+        return showings.Max(s => s.Id) + 1; // Vind het hoogste ID en verhoog met 1
+    }
+
+    public List<ShowingModel> GetAllShowings()
+    {
+        return ShowingsAccess.LoadAll();
+    }
 }
