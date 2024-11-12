@@ -5,6 +5,7 @@ public static class AccountantMenu
         if (!Login())
         {
             Console.WriteLine("Login failed. Returning to main menu.");
+            Start();
             return;
         }
 
@@ -41,10 +42,12 @@ public static class AccountantMenu
                     //ViewTotalTickets();
                     break;
                 case "5":
-                    return; // Ga terug naar hoofdmenu
+                    LoginMenu.Start();
+                    break; // Ga terug naar hoofdmenu
                 default:
                     Console.WriteLine("Invalid choice. Press any key to try again.");
                     Console.ReadKey();
+                    Menu.Start();
                     break;
             }
         }
@@ -57,7 +60,7 @@ public static class AccountantMenu
         Console.WriteLine("Enter password:");
         string password = Console.ReadLine();
 
-        // Simpele inlogcontrole (vervang dit met een echte controle)
+        // Simpele inlogcontrole6
         return username == "accountant" && password == "accountant123";
     }
 
