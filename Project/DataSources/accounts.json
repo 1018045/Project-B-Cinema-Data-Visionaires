@@ -4,20 +4,20 @@
     "emailAddress": "mr47@gmail.com",
     "password": "Kl@rashond3nbist4",
     "fullName": "Donald",
-    "Age": 77
+    "age": 0
   },
   {
     "id": 1,
     "emailAddress": "t@b.c",
     "password": "xyz",
     "fullName": "Thomas Edison",
-    "Age": 0
+    "age": 0
   },
   {
     "id": 2,
     "emailAddress": "xxx@x.com",
     "password": "xxxxxxxx",
     "fullName": "mister X",
-    "Age": 99
+    "age": 0
   }
 ]

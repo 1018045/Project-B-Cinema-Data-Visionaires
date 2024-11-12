@@ -18,13 +18,12 @@ public class AccountCreation
         Console.WriteLine("Enter the information below");
         Console.WriteLine("Email: ");
         var userEmail = Console.ReadLine();
-        while(AccountsLogic.VerifyEmail(userEmail) == false)
+        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true)
         {
-                
-            Console.WriteLine("Enter the information below");
             Console.WriteLine("Email: ");
             userEmail = Console.ReadLine();
         }
+
 
 
         Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");

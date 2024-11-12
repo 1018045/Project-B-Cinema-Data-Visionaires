@@ -19,6 +19,18 @@ public class AccountsLogic
         _accounts = AccountsAccess.LoadAll();
     }
 
+    public static bool CheckForExistingEmail(string email)
+    {
+        foreach(AccountModel account in Logic._accounts)
+        {
+            if(account.EmailAddress == email)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public AccountModel UpdateList(string email, string password, string fullname, int age)
     {
         
