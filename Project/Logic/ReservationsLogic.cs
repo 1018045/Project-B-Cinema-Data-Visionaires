@@ -1,9 +1,15 @@
-using System.Text.RegularExpressions;
+using System.Linq;
+
 
 public class ReservationsLogic
 {
     public List<ReservationModel> Reservations {get; private set;}
 
+    private List<string> ApprovedBankCodes = new List<string>
+                {
+                    "ABNA","INGB","RABO","SNSB","ASNB","TRIO","KNAB","BUNQ","MOYO","FVLN","FRBK","REVO"
+                };
+        
     public ReservationsLogic()
     {
         Reservations = ReservationsAccess.LoadAll();
@@ -20,14 +26,32 @@ public class ReservationsLogic
         ReservationsAccess.WriteAll(Reservations);
     }
 
-    public bool ValidateBankDetails(string bankDetails)
+    public string ValidateBankDetails(string bankDetails)
     {
-        if (bankDetails is null)
-            return false;
-        if (Regex.IsMatch(bankDetails.ToLower().Trim(), "^[a-z]{2}[0-9]{2}[a-z]{4}[0-9]{10}$"))
-            return true;
-        else
-            return false;
+        bankDetails = bankDetails.Trim();
+        if (bankDetails is null || bankDetails == "")
+            return "Error: no details given. Please try again!";
+        if (bankDetails.Length != 18)
+            return "Error: incorrect IBAN length. Please try again!";
+        
+        if (!bankDetails.Substring(0,2).All(char.IsLetter))
+        {
+            return "The first 2 characters of the IBAN should only be letters (Country signature). Please try again!";
+        }
+        if (!bankDetails.Substring(2,2).All(char.IsNumber))
+        {
+            return "The first 2 characters after the Country signature should only be numbers. Please try again!";
+        }
+
+        if (!bankDetails.Substring(4,4).All(char.IsLetter) || !ApprovedBankCodes.Contains(bankDetails.Substring(4,4)))
+        {
+            return "Please check the bank identifiers in your IBAN. Please try again!";
+        }
+        if (!bankDetails.Substring(8,10).All(char.IsNumber))
+        {
+            return "The last 10 characters in your IBAN should only be numbers. Please try again!";
+        }
+        return "";
     }
 
     // Returns all reservations of a particular user
@@ -56,5 +80,31 @@ public class ReservationsLogic
             pointer++;
         }
         return pointer;
+    }
+
+    public List<ReservationModel> ShowAllUserReservations(int userId)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in Reservations)
+        {
+            if (reservation.UserId == userId)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public string ToString(ReservationModel reservation)
+    {
+        string output = $"";
+
+        return output;
+    }
+
+    public void RemoveReservation(ReservationModel reservation)
+    {
+        Reservations.Remove(reservation);
+        ReservationsAccess.WriteAll(Reservations);
     }
 }

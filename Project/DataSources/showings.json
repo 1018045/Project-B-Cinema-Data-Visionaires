@@ -1,16 +1,716 @@
 [
-	{
-		"id": 1,
-		"title": "Star Wars",
-		"date": "20-10-2024 21:00:00",
+    {
+        "id": 1,
+        "title": "Star Wars",
+        "date": "20-10-2024 21:00:00",
         "room": 1,
         "minimumAge": 16
-	},
-	{
+    },
+    {
         "id": 2,
 		"title": "Harry Potter",
-        "date": "24-10-2024 18:00:00",
+        "date": "24-12-2024 18:00:00",
         "room": 3,
         "minimumAge": 16
-	}
+	},
+    {
+        "id": 3,
+		"title": "Harry Potter",
+        "date": "24-01-2025 18:00:00",
+        "room": 3,
+        "minimumAge": 16
+	},
+    {
+        "id": 4,
+		"title": "Harry Potter",
+        "date": "24-02-2025 18:00:00",
+        "room": 3,
+        "minimumAge": 16
+    },
+    {
+        "id": 3,
+        "title": "The Matrix",
+        "date": "12-11-2024 20:00:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 4,
+        "title": "Inception",
+        "date": "16-07-2024 19:00:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 5,
+        "title": "Jurassic Park",
+        "date": "15-06-2024 21:30:00",
+        "room": 3,
+        "minimumAge": 10
+    },
+    {
+        "id": 6,
+        "title": "The Godfather",
+        "date": "05-09-2024 18:00:00",
+        "room": 1,
+        "minimumAge": 18
+    },
+    {
+        "id": 7,
+        "title": "The Dark Knight",
+        "date": "23-03-2024 20:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 8,
+        "title": "Pulp Fiction",
+        "date": "17-01-2025 22:00:00",
+        "room": 3,
+        "minimumAge": 18
+    },
+    {
+        "id": 9,
+        "title": "Forrest Gump",
+        "date": "09-08-2024 17:30:00",
+        "room": 1,
+        "minimumAge": 10
+    },
+    {
+        "id": 10,
+        "title": "Titanic",
+        "date": "06-05-2024 20:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 11,
+        "title": "Fight Club",
+        "date": "11-02-2024 21:30:00",
+        "room": 3,
+        "minimumAge": 18
+    },
+    {
+        "id": 12,
+        "title": "The Shawshank Redemption",
+        "date": "18-12-2024 19:00:00",
+        "room": 1,
+        "minimumAge": 16
+    },
+    {
+        "id": 13,
+        "title": "Schindler's List",
+        "date": "14-10-2024 20:30:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 14,
+        "title": "Gladiator",
+        "date": "03-07-2024 18:30:00",
+        "room": 3,
+        "minimumAge": 16
+    },
+    {
+        "id": 15,
+        "title": "Avatar",
+        "date": "28-11-2024 17:00:00",
+        "room": 1,
+        "minimumAge": 10
+    },
+    {
+        "id": 16,
+        "title": "The Lion King",
+        "date": "14-03-2024 19:30:00",
+        "room": 2,
+        "minimumAge": 6
+    },
+    {
+        "id": 17,
+        "title": "Back to the Future",
+        "date": "22-06-2024 21:00:00",
+        "room": 3,
+        "minimumAge": 10
+    },
+    {
+        "id": 18,
+        "title": "The Lord of the Rings: The Fellowship of the Ring",
+        "date": "01-08-2024 20:30:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 19,
+        "title": "Star Wars: The Empire Strikes Back",
+        "date": "17-09-2024 22:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 20,
+        "title": "Toy Story",
+        "date": "19-02-2024 16:00:00",
+        "room": 3,
+        "minimumAge": 6
+    },
+    {
+        "id": 21,
+        "title": "Indiana Jones: Raiders of the Lost Ark",
+        "date": "10-05-2024 18:30:00",
+        "room": 1,
+        "minimumAge": 10
+    },
+    {
+        "id": 22,
+        "title": "Finding Nemo",
+        "date": "20-07-2024 15:00:00",
+        "room": 2,
+        "minimumAge": 6
+    },
+    {
+        "id": 23,
+        "title": "The Avengers",
+        "date": "12-09-2024 20:00:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 24,
+        "title": "Frozen",
+        "date": "03-11-2024 15:30:00",
+        "room": 1,
+        "minimumAge": 6
+    },
+    {
+        "id": 25,
+        "title": "The Hunger Games",
+        "date": "05-02-2024 19:30:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 26,
+        "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+        "date": "19-10-2024 20:00:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 27,
+        "title": "The Incredibles",
+        "date": "08-03-2024 16:30:00",
+        "room": 1,
+        "minimumAge": 6
+    },
+    {
+        "id": 28,
+        "title": "Spider-Man",
+        "date": "17-04-2024 18:00:00",
+        "room": 2,
+        "minimumAge": 10
+    },
+    {
+        "id": 29,
+        "title": "Iron Man",
+        "date": "10-06-2024 20:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 30,
+        "title": "The Notebook",
+        "date": "05-11-2024 17:30:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 31,
+        "title": "Interstellar",
+        "date": "23-02-2024 20:30:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 32,
+        "title": "Braveheart",
+        "date": "15-03-2024 18:30:00",
+        "room": 3,
+        "minimumAge": 16
+    },
+    {
+        "id": 33,
+        "title": "Django Unchained",
+        "date": "18-11-2024 22:00:00",
+        "room": 1,
+        "minimumAge": 18
+    },
+    {
+        "id": 34,
+        "title": "The Silence of the Lambs",
+        "date": "27-06-2024 21:00:00",
+        "room": 2,
+        "minimumAge": 18
+    },
+    {
+        "id": 35,
+        "title": "Shrek",
+        "date": "12-01-2025 17:00:00",
+        "room": 3,
+        "minimumAge": 6
+    },
+    {
+        "id": 36,
+        "title": "The Wolf of Wall Street",
+        "date": "14-12-2024 20:30:00",
+        "room": 1,
+        "minimumAge": 18
+    },
+    {
+        "id": 37,
+        "title": "Goodfellas",
+        "date": "09-04-2024 21:30:00",
+        "room": 2,
+        "minimumAge": 18
+    },
+    {
+        "id": 38,
+        "title": "Casino Royale",
+        "date": "11-07-2024 18:00:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 39,
+        "title": "The Terminator",
+        "date": "29-10-2024 21:30:00",
+        "room": 1,
+        "minimumAge": 16
+    },
+    {
+        "id": 40,
+        "title": "Alien",
+        "date": "25-02-2024 22:00:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 41,
+        "title": "Rocky",
+        "date": "16-05-2024 19:00:00",
+        "room": 3,
+        "minimumAge": 10
+    },
+    {
+        "id": 42,
+        "title": "The Sixth Sense",
+        "date": "04-08-2024 18:30:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 43,
+        "title": "Blade Runner",
+        "date": "20-03-2024 21:00:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 44,
+        "title": "The Big Lebowski",
+        "date": "22-12-2024 20:30:00",
+        "room": 3,
+        "minimumAge": 16
+    },
+    {
+        "id": 45,
+        "title": "Die Hard",
+        "date": "26-07-2024 21:30:00",
+        "room": 1,
+        "minimumAge": 18
+    },
+    {
+        "id": 46,
+        "title": "Kill Bill",
+        "date": "08-11-2024 22:00:00",
+        "room": 2,
+        "minimumAge": 18
+    },
+    {
+        "id": 47,
+        "title": "The Exorcist",
+        "date": "13-06-2024 21:00:00",
+        "room": 3,
+        "minimumAge": 18
+    },
+    {
+        "id": 48,
+        "title": "It",
+        "date": "28-02-2024 20:30:00",
+        "room": 1,
+        "minimumAge": 18
+    },
+    {
+        "id": 49,
+        "title": "A Beautiful Mind",
+        "date": "23-10-2024 18:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 50,
+        "title": "No Country for Old Men",
+        "date": "06-09-2024 21:30:00",
+        "room": 3,
+        "minimumAge": 18
+    },
+    {
+        "id": 51,
+        "title": "Mad Max: Fury Road",
+        "date": "17-10-2024 21:00:00",
+        "room": 1,
+        "minimumAge": 16
+    },
+    {
+        "id": 52,
+        "title": "The Bourne Identity",
+        "date": "02-03-2024 20:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 53,
+        "title": "Black Panther",
+        "date": "08-05-2024 17:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 54,
+        "title": "Beauty and the Beast",
+        "date": "18-07-2024 16:00:00",
+        "room": 1,
+        "minimumAge": 6
+    },
+    {
+        "id": 55,
+        "title": "The Social Network",
+        "date": "01-12-2024 20:30:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 56,
+        "title": "The Shining",
+        "date": "14-04-2024 22:00:00",
+        "room": 3,
+        "minimumAge": 18
+    },
+    {
+        "id": 57,
+        "title": "The Grand Budapest Hotel",
+        "date": "19-06-2024 20:30:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 58,
+        "title": "The Prestige",
+        "date": "24-01-2025 21:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 59,
+        "title": "The Truman Show",
+        "date": "03-02-2024 18:30:00",
+        "room": 3,
+        "minimumAge": 10
+    },
+    {
+        "id": 60,
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "date": "07-07-2024 19:30:00",
+        "room": 1,
+        "minimumAge": 16
+    },
+    {
+        "id": 61,
+        "title": "Moonlight",
+        "date": "12-08-2024 21:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 62,
+        "title": "Parasite",
+        "date": "24-11-2024 21:30:00",
+        "room": 3,
+        "minimumAge": 16
+    },
+    {
+        "id": 63,
+        "title": "The Green Mile",
+        "date": "15-09-2024 20:00:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 64,
+        "title": "Doctor Strange",
+        "date": "26-03-2024 18:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 65,
+        "title": "The Great Gatsby",
+        "date": "30-06-2024 20:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 66,
+        "title": "Gone Girl",
+        "date": "15-01-2025 21:00:00",
+        "room": 1,
+        "minimumAge": 18
+    },
+    {
+        "id": 67,
+        "title": "The Irishman",
+        "date": "20-05-2024 19:30:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 68,
+        "title": "Once Upon a Time in Hollywood",
+        "date": "08-08-2024 21:30:00",
+        "room": 3,
+        "minimumAge": 18
+    },
+    {
+        "id": 69,
+        "title": "Her",
+        "date": "20-12-2024 19:00:00",
+        "room": 1,
+        "minimumAge": 16
+    },
+    {
+        "id": 70,
+        "title": "Whiplash",
+        "date": "07-03-2024 21:30:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 71,
+        "title": "A Star is Born",
+        "date": "15-11-2024 18:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 72,
+        "title": "Bohemian Rhapsody",
+        "date": "15-02-2024 20:00:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 73,
+        "title": "The Pursuit of Happyness",
+        "date": "21-07-2024 18:00:00",
+        "room": 2,
+        "minimumAge": 10
+    },
+    {
+        "id": 74,
+        "title": "La La Land",
+        "date": "19-05-2024 19:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 75,
+        "title": "Les Mis\u00e9rables",
+        "date": "01-06-2024 20:30:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 76,
+        "title": "The Conjuring",
+        "date": "30-10-2024 21:30:00",
+        "room": 2,
+        "minimumAge": 18
+    },
+    {
+        "id": 77,
+        "title": "Zootopia",
+        "date": "25-04-2024 16:30:00",
+        "room": 3,
+        "minimumAge": 6
+    },
+    {
+        "id": 78,
+        "title": "The Revenant",
+        "date": "18-09-2024 20:30:00",
+        "room": 1,
+        "minimumAge": 16
+    },
+    {
+        "id": 79,
+        "title": "Spotlight",
+        "date": "14-05-2024 18:00:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 80,
+        "title": "The Theory of Everything",
+        "date": "07-10-2024 19:00:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 81,
+        "title": "1917",
+        "date": "30-03-2024 21:00:00",
+        "room": 1,
+        "minimumAge": 16
+    },
+    {
+        "id": 82,
+        "title": "The Shape of Water",
+        "date": "05-06-2024 18:30:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 83,
+        "title": "Call Me by Your Name",
+        "date": "04-09-2024 20:00:00",
+        "room": 3,
+        "minimumAge": 16
+    },
+    {
+        "id": 84,
+        "title": "Room",
+        "date": "06-02-2024 19:30:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 85,
+        "title": "Coco",
+        "date": "14-08-2024 17:30:00",
+        "room": 2,
+        "minimumAge": 6
+    },
+    {
+        "id": 86,
+        "title": "Green Book",
+        "date": "25-05-2024 19:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 87,
+        "title": "The King's Speech",
+        "date": "18-07-2024 21:00:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 88,
+        "title": "12 Years a Slave",
+        "date": "20-09-2024 20:00:00",
+        "room": 2,
+        "minimumAge": 16
+    },
+    {
+        "id": 89,
+        "title": "The Imitation Game",
+        "date": "28-11-2024 18:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 90,
+        "title": "Silver Linings Playbook",
+        "date": "10-06-2024 20:00:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 91,
+        "title": "Moneyball",
+        "date": "02-02-2024 18:00:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 92,
+        "title": "Dallas Buyers Club",
+        "date": "22-09-2024 20:00:00",
+        "room": 3,
+        "minimumAge": 18
+    },
+    {
+        "id": 93,
+        "title": "Slumdog Millionaire",
+        "date": "01-04-2024 21:30:00",
+        "room": 1,
+        "minimumAge": 13
+    },
+    {
+        "id": 94,
+        "title": "Gravity",
+        "date": "21-01-2025 19:30:00",
+        "room": 2,
+        "minimumAge": 13
+    },
+    {
+        "id": 95,
+        "title": "Am\u00e9lie",
+        "date": "21-03-2024 20:30:00",
+        "room": 3,
+        "minimumAge": 13
+    },
+    {
+        "id": 96,
+        "title": "The Hurt Locker",
+        "date": "27-10-2024 21:30:00",
+        "room": 1,
+        "minimumAge": 18
+    },
+    {
+        "id": 97,
+        "title": "Up",
+        "date": "17-08-2024 17:00:00",
+        "room": 2,
+        "minimumAge": 6
+    },
+    {
+        "id": 98,
+        "title": "The Pianist",
+        "date": "07-12-2024 19:00:00",
+        "room": 3,
+        "minimumAge": 16
+    },
+    {
+        "id": 99,
+        "title": "The Blind Side",
+        "date": "01-09-2024 18:30:00",
+        "room": 1,
+        "minimumAge": 10
+    },
+    {
+        "id": 100,
+        "title": "Black Swan",
+        "date": "28-04-2024 21:00:00",
+        "room": 2,
+        "minimumAge": 16
+    }
 ]

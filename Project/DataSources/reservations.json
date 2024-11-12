@@ -2,7 +2,7 @@
   {
     "id": 0,
     "userId": 1,
-    "showingId": 2,
+    "showingId": 4,
     "seats": "3",
     "paymentComplete": true
   },
@@ -25,6 +25,13 @@
     "userId": 1,
     "showingId": 2,
     "seats": "1,2,3",
+    "paymentComplete": true
+  },
+  {
+    "id": 4,
+    "userId": 1,
+    "showingId": 44,
+    "seats": "12,13,14",
     "paymentComplete": true
   }
 ]
