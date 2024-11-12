@@ -15,7 +15,7 @@ public class ShowingsLogic
         return false;
     }
 
-    // Returns all reservations of a particular user
+    // Returns all showings a particular user has reserved
     public List<ShowingModel> FindReservationByUserID(int id)
     {
         List<ShowingModel> output = new();
@@ -39,10 +39,21 @@ public class ShowingsLogic
         return "Showing not found!";
     }
 
+    public ShowingModel FindShowingByIdReturnShowing(int id)
+    {
+        foreach (ShowingModel showing in _showings)
+        {
+            if (showing.Id == id)
+            {
+                return showing;
+            }
+        }
+        return null;
+    }
+
     public string ToString(ShowingModel showing) 
     {
-
-        string output = $"{showing.Id}: {showing.Title}\n";
+        string output = $"{showing.Title}\n";
         output += $"    {showing.Date}\n";
         output += $"    Room: {showing.Room}; Aged {showing.MinimumAge} and above.\n";
         return output;
@@ -74,9 +85,20 @@ public class ShowingsLogic
         string output = "";
         foreach (ShowingModel showing in _showings)
         {
-            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).Date == date)
+            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture) == date.Date)
                 output += ToString(showing);
         }
         return output;
+    }
+
+    public List<ShowingModel> GetUpcomingShowingsOfMovie(string movieName)
+    {
+        List<ShowingModel> showings = new();
+        foreach (ShowingModel showing in _showings)
+        {
+            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now && showing.Title == movieName)
+                showings.Add(showing);
+        }
+        return showings;
     }
 }

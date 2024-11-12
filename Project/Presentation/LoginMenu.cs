@@ -8,7 +8,6 @@ static class LoginMenu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
-
         Console.WriteLine("Enter 1 to login");
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");

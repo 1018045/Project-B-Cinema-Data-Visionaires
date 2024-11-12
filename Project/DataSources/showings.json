@@ -8,8 +8,22 @@
     },
     {
         "id": 2,
-        "title": "Harry Potter and the Sorcerer's Stone",
-        "date": "24-10-2024 18:00:00",
+		"title": "Harry Potter",
+        "date": "24-12-2024 18:00:00",
+        "room": 3,
+        "minimumAge": 16
+	},
+    {
+        "id": 3,
+		"title": "Harry Potter",
+        "date": "24-01-2025 18:00:00",
+        "room": 3,
+        "minimumAge": 16
+	},
+    {
+        "id": 4,
+		"title": "Harry Potter",
+        "date": "24-02-2025 18:00:00",
         "room": 3,
         "minimumAge": 16
     },
