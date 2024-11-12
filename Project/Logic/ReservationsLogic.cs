@@ -57,4 +57,30 @@ public class ReservationsLogic
         }
         return pointer;
     }
+
+    public List<ReservationModel> ShowAllUserReservations(int userId)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in Reservations)
+        {
+            if (reservation.UserId == userId)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public string ToString(ReservationModel reservation)
+    {
+        string output = $"";
+
+        return output;
+    }
+
+    public void RemoveReservation(ReservationModel reservation)
+    {
+        Reservations.Remove(reservation);
+        ReservationsAccess.WriteAll(Reservations);
+    }
 }
