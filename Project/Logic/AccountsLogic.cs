@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+using System.Security;
 
 
 //This class is not static so later on we can use inheritance and interfaces
 public class AccountsLogic
 {
+    public static AccountsLogic Logic { get; } = new ();
     private List<AccountModel> _accounts;
-
-    
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
@@ -20,7 +21,7 @@ public class AccountsLogic
 
     public AccountModel UpdateList(string email, string password, string fullname, int age)
     {
-        int id = 13;
+        
         AccountModel acc = new AccountModel(FindFirstAvailableID(), email, password, fullname, age);
         //Find if there is already an model with the same id
         int index = _accounts.FindIndex(s => s.Id == acc.Id);
@@ -35,6 +36,7 @@ public class AccountsLogic
             //add new model
             _accounts.Add(acc);
         }
+        
         AccountsAccess.WriteAll(_accounts);
 
         return acc;
@@ -58,7 +60,15 @@ public class AccountsLogic
 
     public static bool VerifyPassword(string password)
     {
-        return password.Length >= 8;
+        if (password.Length < 8)
+        {
+            return false;
+        }
+
+        string pattern = @"^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$";
+
+
+        return Regex.IsMatch(password, pattern);
     } 
 
     public static bool VerifyEmail(string email)
@@ -70,7 +80,14 @@ public class AccountsLogic
     //helper method to test if the age is valid
     public static bool IsInt(string userinput)
     {
-        return int.TryParse(userinput, out _);
+        if (int.TryParse(userinput, out int age))
+        {
+            if(age >= 0 && age <= 166)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
    //returns -1 if the result is not a success
@@ -99,6 +116,35 @@ public class AccountsLogic
     {
         CurrentAccount = null;
     }
+
+    public static SecureString MaskInputstring()
+{
+    SecureString pass = new SecureString();
+    ConsoleKeyInfo keyInfo;
+
+    do
+    {
+        keyInfo = Console.ReadKey(true);  
+
+       
+        if (!char.IsControl(keyInfo.KeyChar))
+        {
+            pass.AppendChar(keyInfo.KeyChar);  
+            Console.Write("*");  
+        }
+       
+        else if (keyInfo.Key == ConsoleKey.Backspace && pass.Length > 0)
+        {
+            
+            pass.RemoveAt(pass.Length - 1);
+            Console.Write("\b \b");  
+        }
+
+    } while (keyInfo.Key != ConsoleKey.Enter);  
+
+    Console.WriteLine();  
+    return pass;
+}
 
     public bool RemoveUser(string email)
     {
