@@ -7,7 +7,7 @@ static class Menu
     static public void Start()
     {
         Console.WriteLine("\n" + new string('-', Console.WindowWidth));
-        System.Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.FullName}");
+        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.FullName}");
         Console.WriteLine(new string('-', Console.WindowWidth));
         Console.WriteLine("Enter 1 to make a reservation");
         Console.WriteLine("Enter 2 to show upcoming movie showings");
@@ -42,7 +42,7 @@ static class Menu
         else if (input == "6")
         {
             AccountsLogic.LogOut();
-            System.Console.WriteLine("\nYou are now logged out\n");
+            Console.WriteLine("\nYou are now logged out\n");
             LoginMenu.Start();
         }
         else
