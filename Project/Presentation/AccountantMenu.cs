@@ -32,13 +32,13 @@ public static class AccountantMenu
                     ViewAllRecords();
                     break;
                 case "2":
-                    ViewRecordsByDate();
+                    //ViewRecordsByDate();
                     break;
                 case "3":
-                    ViewTotalMoney();
+                    //ViewTotalMoney();
                     break;
                 case "4":
-                    ViewTotalTickets();
+                    //ViewTotalTickets();
                     break;
                 case "5":
                     return; // Ga terug naar hoofdmenu
@@ -80,58 +80,9 @@ public static class AccountantMenu
         WaitForKey();
     }
 
-    private static void ViewRecordsByDate()
-    {
-        Console.WriteLine("\nEnter date (yyyy-MM-dd):");
-        string date = Console.ReadLine();
-
-        // Haal alle records op en filter op datum
-        var records = AccountantAccess.LoadAll().Where(r => r.Date == date).ToList();
-
-        if(records.Any())
-        {
-            Console.WriteLine($"\nRecords for {date}:");
-            foreach(var record in records)
-            {
-                Console.WriteLine($"Movie: {record.MovieTitle}");
-                Console.WriteLine($"Tickets sold: {record.TicketsSold}");
-                Console.WriteLine($"Money earned: ${record.Revenue}");
-                Console.WriteLine($"Room: {record.Room}");
-                Console.WriteLine("---------------");
-            }
-        }
-        else
-        {
-            Console.WriteLine($"No records found for {date}");
-        }
-
-        WaitForKey();
-    }
-
-    private static void ViewTotalMoney()
-    {
-        // Haal alle records op en tel de inkomsten bij elkaar op
-        var records = AccountantAccess.LoadAll();
-        decimal totalMoney = records.Sum(r => r.Revenue);
-
-        Console.WriteLine($"\nTotal money earned: ${totalMoney}");
-        WaitForKey();
-    }
-
-    private static void ViewTotalTickets()
-    {
-        // Haal alle records op en tel de tickets bij elkaar op
-        var records = AccountantAccess.LoadAll();
-        int totalTickets = records.Sum(r => r.TicketsSold);
-
-        Console.WriteLine($"\nTotal tickets sold: {totalTickets}");
-        WaitForKey();
-    }
-
-    // Hulpmethode om te wachten op gebruikersinput
     private static void WaitForKey()
     {
-        Console.WriteLine("\nPress any key to go back...");
+        Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
     }
 }
