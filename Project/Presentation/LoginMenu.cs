@@ -40,7 +40,7 @@ static class LoginMenu
         else
         {
             Console.WriteLine("Invalid input");
-            Menu.Start();
+            Start();
         }
     }
 }

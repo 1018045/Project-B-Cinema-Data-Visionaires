@@ -7,14 +7,17 @@ public static class Reservation
 
     public static void Make()
     {
-        System.Console.WriteLine("\nUpcoming showings:");
-        Showings.ShowUpcoming();
+        System.Console.WriteLine("\nUpcoming showings:\n");
+        Showings.ShowUpcoming(makingReservation: true);
 
         System.Console.WriteLine("Select a showing (Enter the number in front of the showing to continue)");
+
         string id = Console.ReadLine();
         System.Console.WriteLine("\nWhich seats do you want?");
         // communicate with the seating layer to recieve, print, and then send back the seating config
         string seats = Console.ReadLine();
+        // communicate with the seating layer to recieve, print, and then send back the seating config
+        
         string payment = "X";
         while (payment != "")
         {

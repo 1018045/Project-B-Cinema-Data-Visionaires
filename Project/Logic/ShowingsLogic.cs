@@ -51,7 +51,7 @@ public class ShowingsLogic
         return null;
     }
 
-    public string ToString(ShowingModel showing) 
+    public string ToString(ShowingModel showing, bool showId = false) 
     {
         string output = $"{showing.Title}\n";
         output += $"    {showing.Date}\n";
@@ -69,13 +69,16 @@ public class ShowingsLogic
         return output;
     }
 
-    public string ShowUpcoming() 
+    public string ShowUpcoming(bool showId = false) 
     {
         string output = "";
         foreach (ShowingModel showing in _showings)
         {
             if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
-                output += ToString(showing);
+            {
+                output += showId ? $"{showing.Id}. " : "";
+                output += ToString(showing) + "\n";
+            }
         }
         return output;
     }
