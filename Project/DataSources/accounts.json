@@ -1,12 +1,5 @@
 [
   {
-    "id": 1,
-    "emailAddress": "n@b.c",
-    "password": "xyz",
-    "fullName": "Nikola Tesla",
-    "Age": 0
-  },
-  {
     "id": 13,
     "emailAddress": "xxx@x.com",
     "password": "xxxxxxxx",

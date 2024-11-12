@@ -20,9 +20,9 @@ static class LoginMenu
             case "3":
                 AccountCreation.ChooseAccount();
                 break;
-            //case "4":
-               // AccountantMenu.Start();
-               // break;
+            case "4":
+                AccountantMenu.Start();
+                break;
             case "5":
                 Environment.Exit(0);
                 break;

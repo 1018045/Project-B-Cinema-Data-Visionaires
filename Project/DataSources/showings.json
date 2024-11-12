@@ -26,12 +26,5 @@
     "date": "11-10-2002",
     "room": 1,
     "minimumAge": 12
-  },
-  {
-    "id": 7,
-    "title": "yoyoyo",
-    "date": "11-10-2001",
-    "room": 1,
-    "minimumAge": 12
   }
 ]
