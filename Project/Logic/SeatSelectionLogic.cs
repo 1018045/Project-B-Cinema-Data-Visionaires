@@ -19,7 +19,7 @@ public static class SeatSelectionLogic
         List<(int, int)> selectedSeatsPos = [];
         for (;;)
         {
-            SeatingPresentation.UpdateSeatingPresentation(GenerateSeatingLayout(room.Id, showingId, curPos, selectedSeatsPos));
+            SeatingPresentation.UpdateSeatingPresentation(GenerateSeatingLayout(room.Id, showingId, curPos, selectedSeatsPos), seatCount - selectedSeats.Count);
 
             var keyInfo = Console.ReadKey(intercept: true);
             switch (keyInfo.Key)
@@ -42,7 +42,10 @@ public static class SeatSelectionLogic
                     break;
                 case ConsoleKey.Enter:
                     var seat = $"({curPos.Item2 + 1};{curPos.Item1 + 1})"; //(row;seat_number)
-                    if (selectedSeats.Contains(seat) || takenSeats.Contains(curPos))
+                    if (selectedSeats.Contains(seat) || takenSeats.Contains((curPos.Item1 + 1, curPos.Item2 + 1)))
+                        continue;
+
+                    if (!IsAdjacentSeat(curPos, selectedSeatsPos) && selectedSeatsPos.Count > 0)
                         continue;
 
                     selectedSeats.Add(seat);
@@ -52,7 +55,8 @@ public static class SeatSelectionLogic
                     if (selectedSeats.Count < seatCount)
                         break;
 
-                    Console.Clear();
+                    var seatDisplay = string.Join(", ", selectedSeatsPos.Select(s => $"row {s.Item2 + 1} seat {s.Item1 + 1}"));
+                    SeatingPresentation.SuccessfulSelection(seatDisplay);
                     return selectedSeats;
                 default:
                     continue;
@@ -92,7 +96,22 @@ public static class SeatSelectionLogic
         return result;
     }
 
-    private static void BuildSeatingString(StringBuilder sb, int rows, int seatDepth, List<(int, int)> takenSeats, List<(int, int)> selectedSeats, (int, int) cursorPos)
+    private static bool IsAdjacentSeat((int, int) curPos, List<(int, int)> selectedSeats)
+    {
+        foreach (var seat in selectedSeats)
+        {
+            // Check if the seat is on the same row (y level) and has an x value of curPos.x ± 1
+            if (seat.Item2 == curPos.Item2 &&
+                (seat.Item1 == curPos.Item1 - 1 || seat.Item1 == curPos.Item1 + 1))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void BuildSeatingString(StringBuilder sb, int rows, int seatDepth, List<(int, int)> takenSeats,
+        List<(int, int)> selectedSeats, (int, int) cursorPos)
     {
         for (var y = 1; y <= rows; y++)
         {
@@ -101,7 +120,7 @@ public static class SeatSelectionLogic
 
             for (var x = 1; x <= seatDepth; x++)
             {
-                var characters = !takenSeats.Contains((y,x)) ? $"[{x}]" : "[x]";
+                var characters = !takenSeats.Contains((x,y)) ? $"[{x}]" : "[x]";
                 var currentGenPos = (x - 1, y - 1);
 
                 if (selectedSeats.Contains(currentGenPos))
@@ -145,7 +164,7 @@ public static class SeatSelectionLogic
         List<(int, int)> taken = [];
         relevantReservations
             .ForEach(r => StringSeatsToPositions(r.Seats)
-                .ForEach(p => taken.Add(p))
+                .ForEach(p => taken.Add((p.Item2, p.Item1)))
         );
         return taken;
     }
