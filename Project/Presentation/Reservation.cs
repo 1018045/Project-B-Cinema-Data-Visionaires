@@ -29,7 +29,7 @@ public static class Reservation
         }
 
         //add the all the reserved seats
-        ReservationsLogic.AddReservation(1, showingId, string.Join(",", selectedSeats), true);
+        ReservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");
         Menu.Start();

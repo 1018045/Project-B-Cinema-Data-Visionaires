@@ -54,5 +54,12 @@
     "showingId": 300,
     "seats": "(4;8)",
     "paymentComplete": true
+  },
+  {
+    "id": 8,
+    "userId": 3,
+    "showingId": 298,
+    "seats": "(7;2)",
+    "paymentComplete": true
   }
 ]
