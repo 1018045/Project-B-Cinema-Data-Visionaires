@@ -26,5 +26,12 @@
     "password": "K@mala Harr1s",
     "fullName": "Kamala",
     "age": 89
+  },
+  {
+    "id": 4,
+    "emailAddress": "JoeBiden@gmail.com",
+    "password": "1@mSleepy",
+    "fullName": "Joe Biden",
+    "age": 92
   }
 ]

@@ -38,6 +38,29 @@ public class AccountCreation
             pass = AccountsLogic.MaskInputstring();  
             Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
         }
+        Console.WriteLine("Confirm your password");
+        
+        string confirmPassword = string.Empty;
+        bool passwordsMatch = false;
+
+    while (!passwordsMatch)
+    {
+        SecureString confirmPass = AccountsLogic.MaskInputstring();  
+        confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
+
+        
+        if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+        {
+            passwordsMatch = true;
+        }
+        else
+        {
+            Console.WriteLine("Passwords do not match or are not valid. Try again.");
+        }
+    }
+
+    Console.WriteLine("Password confirmed successfully.");
+
 
   
 
