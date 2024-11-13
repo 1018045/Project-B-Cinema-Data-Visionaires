@@ -3,6 +3,7 @@ using Project.Presentation;
 
 namespace Project.Logic;
 
+//todo convert to non-static and write a seat class that holds methods and logic
 public static class SeatSelectionLogic
 {
     private const string SelectedSymbol = "()";
@@ -50,7 +51,7 @@ public static class SeatSelectionLogic
 
                     selectedSeats.Add(seat);
                     selectedSeatsPos.Add(curPos);
-                    curPos = (0, 0);
+                    //curPos = (0, 0);
 
                     if (selectedSeats.Count < seatCount)
                         break;
@@ -94,6 +95,12 @@ public static class SeatSelectionLogic
         }
 
         return result;
+    }
+
+    //todo implement
+    public static bool CheckCapacity(int showingId, int seatCount)
+    {
+        throw new NotImplementedException();
     }
 
     private static bool IsAdjacentSeat((int, int) curPos, List<(int, int)> selectedSeats)
