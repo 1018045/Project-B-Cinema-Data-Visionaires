@@ -2112,12 +2112,6 @@
     "date": "20-03-2025 15:00:36",
     "room": 1,
     "minimumAge": 13
-  },
-  {
-    "id": 301,
-    "title": "The Simpsons",
-    "date": "05-05-2026",
-    "room": 5,
-    "minimumAge": 8
   }
+ 
 ]

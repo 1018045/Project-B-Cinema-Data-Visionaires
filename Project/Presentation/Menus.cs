@@ -6,7 +6,7 @@ static class Menus
 {
     static public void Start()
     {
-        Console.Clear();
+
         Console.WriteLine("Enter 1 to login as User");
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");
@@ -66,7 +66,7 @@ static class Menus
             Console.WriteLine("Your email is " + acc.EmailAddress);
 
             //Write some code to go back to the menu
-            Start();
+            LoggedInMenu();
         }
         else
         {
