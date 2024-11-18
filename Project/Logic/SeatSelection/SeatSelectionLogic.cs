@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Project.Presentation;
 
-namespace Project.Logic;
+namespace Project.Logic.SeatSelection;
 
 public static class SeatSelectionLogic
 {
