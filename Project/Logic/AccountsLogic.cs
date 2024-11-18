@@ -34,7 +34,7 @@ public class AccountsLogic
     public AccountModel UpdateList(string email, string password, string fullname, int age)
     {
         
-        AccountModel acc = new AccountModel(FindFirstAvailableID(), email, password, fullname, age);
+        AccountModel acc = new UserModel(FindFirstAvailableID(), email, password, fullname, age);
         //Find if there is already an model with the same id
         int index = _accounts.FindIndex(s => s.Id == acc.Id);
 

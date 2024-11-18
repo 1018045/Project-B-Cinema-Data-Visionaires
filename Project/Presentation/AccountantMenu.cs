@@ -60,7 +60,7 @@ public static class AccountantMenu
         Console.WriteLine("Enter password:");
         string password = Console.ReadLine();
 
-        // Simpele inlogcontrole6
+        // Simpele inlogcontrole
         return username == "accountant" && password == "accountant123";
     }
 
@@ -76,8 +76,8 @@ public static class AccountantMenu
         // Toon elk record
         foreach(var record in records)
         {
-            Console.WriteLine($"{record.Id} | {record.Date} | {record.MovieTitle} | " +
-                            $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
+            // Console.WriteLine($"{record.Id} | {record.Date} | {record.MovieTitle} | " +
+                           // $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
         }
 
         WaitForKey();

@@ -4,14 +4,12 @@ static class LoginMenu
 {
     static public void Start()
     {
-        Console.Clear();
+        // Console.Clear();
         Console.WriteLine("Enter 1 to login as User");
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");
         Console.WriteLine("Enter 4 to show upcoming movie showings on a specific date");
-        Console.WriteLine("Enter 5 to login as Admin");
-        Console.WriteLine("Enter 6 to login as Accountant");
-        Console.WriteLine("Enter 7 to exit program");
+        Console.WriteLine("Enter 5 to exit program");
 
         string input = Console.ReadLine();
         switch (input)
@@ -31,12 +29,6 @@ static class LoginMenu
                 Start();
                 break;
             case "5":
-                AdminLogin.Start();
-                break;
-            case "6":
-                AccountantMenu.Start();
-                break;
-            case "7":
                 Environment.Exit(0);
                 break;
             default:

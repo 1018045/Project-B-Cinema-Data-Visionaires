@@ -43,23 +43,23 @@ public class AccountCreation
         string confirmPassword = string.Empty;
         bool passwordsMatch = false;
 
-    while (!passwordsMatch)
-    {
-        SecureString confirmPass = AccountsLogic.MaskInputstring();  
-        confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
-
-        
-        if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+        while (!passwordsMatch)
         {
-            passwordsMatch = true;
-        }
-        else
-        {
-            Console.WriteLine("Passwords do not match or are not valid. Try again.");
-        }
-    }
+            SecureString confirmPass = AccountsLogic.MaskInputstring();  
+            confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
 
-    Console.WriteLine("Password confirmed successfully.");
+            
+            if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+            {
+                passwordsMatch = true;
+            }
+            else
+            {
+                Console.WriteLine("Passwords do not match or are not valid. Try again.");
+            }
+        }
+
+        Console.WriteLine("Password confirmed successfully.");
 
 
   

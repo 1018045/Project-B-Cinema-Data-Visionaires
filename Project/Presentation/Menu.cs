@@ -7,7 +7,7 @@ static class Menu
     static public void Start()
     {
         Console.WriteLine("\n" + new string('-', Console.WindowWidth));
-        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.FullName}");
+        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.EmailAddress}");
         Console.WriteLine(new string('-', Console.WindowWidth));
         Console.WriteLine("Enter 1 to make a reservation");
         Console.WriteLine("Enter 2 to show upcoming movie showings");

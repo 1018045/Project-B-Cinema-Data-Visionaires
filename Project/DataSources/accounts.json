@@ -1,6 +1,7 @@
 [
   {
     "id": 0,
+    "role": "user",
     "emailAddress": "mr47@gmail.com",
     "password": "Kl@rashond3nbist4",
     "fullName": "Donald",
@@ -8,6 +9,7 @@
   },
   {
     "id": 1,
+    "role": "user",
     "emailAddress": "t@b.c",
     "password": "xyz",
     "fullName": "Thomas Edison",
@@ -15,6 +17,7 @@
   },
   {
     "id": 2,
+    "role": "user",
     "emailAddress": "xxx@x.com",
     "password": "xxxxxxxx",
     "fullName": "mister X",
@@ -22,6 +25,7 @@
   },
   {
     "id": 3,
+    "role": "user",
     "emailAddress": "hoi@doei.nl",
     "password": "K@mala Harr1s",
     "fullName": "Kamala",
@@ -29,9 +33,28 @@
   },
   {
     "id": 4,
-    "emailAddress": "JoeBiden@gmail.com",
+    "role": "user",
+    "emailAddress": "JoeBiden@gmail.nl",
     "password": "1@mSleepy",
     "fullName": "Joe Biden",
     "age": 92
+  },
+  {
+    "id": 5,
+    "role": "admin",
+    "emailAddress": "admin@cinema.nl",
+    "password": "admin123"
+  },
+  {
+    "id": 6,
+    "role": "admin",
+    "emailAddress": "admin2@cinema.nl",
+    "password": "admin456"
+  },
+  {
+    "id": 7,
+    "role": "accountant",
+    "emailAddress": "accountant@cinema.nl",
+    "password": "Account@nt123"
   }
 ]
