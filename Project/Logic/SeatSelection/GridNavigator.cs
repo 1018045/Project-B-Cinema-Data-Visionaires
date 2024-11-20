@@ -1,43 +1,66 @@
 ﻿using System.Data;
+using System.Drawing;
 
 namespace Project.Logic.SeatSelection;
 
 //WARNING: the limits start from 0
 public class GridNavigator(int xLimit, int yLimit)
 {
-    public int X { get; protected set; }
-    public int Y { get; protected set; }
-    public Action<GridNavigator>? Action { get; init; }
-    public Action<GridNavigator>? Confirmation { get; init; }
-
-    public void Start()
+    public Position Cursor { get; } = new(0, 0);
+    public int X
     {
-        if (Action == null)
-            throw new DataException("DEVELOPER: Action is not set which should've been done before calling start");
-        for (;;)
+        get => Cursor.X;
+        set => Cursor.X = value;
+    }
+    public int Y
+    {
+        get => Cursor.Y;
+        set => Cursor.Y = value;
+    }
+    public Func<GridNavigator, bool>? SelectAction { get; set; }
+    public Action<GridNavigator>? MoveAction { get; set; }
+    public Func<GridNavigator, bool>? ConfirmationAction { get; set; }
+
+    public void Start(ConsoleKey confirmKey = ConsoleKey.Enter, ConsoleKey cancelKey = ConsoleKey.Escape)
+    {
+        if (SelectAction == null || MoveAction == null)
+            throw new DataException("DEVELOPER: SelectAction || MoveAction is not set which should've been done before calling start");
+
+        for (var done = false; !done;)
         {
+            MoveAction.Invoke(this);
+
             var keyInfo = Console.ReadKey(intercept: true);
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    //Move up if not already at the top boundary
                     Y = Math.Max(0, Y - 1);
                     break;
                 case ConsoleKey.DownArrow:
-                    //Move down if not already at the bottom boundary
                     Y = Math.Min(yLimit, Y + 1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    //Move left if not already at the left boundary
                     X = Math.Max(0, X - 1);
                     break;
                 case ConsoleKey.RightArrow:
-                    //Move right if not already at the right boundary
                     X = Math.Min(xLimit, X + 1);
+                    break;
+                case var key when key == confirmKey:
+                    if (ConfirmationAction?.Invoke(this) ?? true)
+                        done = SelectAction.Invoke(this);
+                    break;
+                case var key when key == cancelKey:
+                    done = true;
                     break;
                 default:
                     continue;
             }
         }
+    }
+
+    public record Position(int X, int Y)
+    {
+        public int X { get; set; } = X;
+        public int Y { get; set;  } = Y;
     }
 }

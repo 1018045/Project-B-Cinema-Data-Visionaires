@@ -1,128 +1,51 @@
-﻿using System.Text;
-using Project.Presentation;
+﻿using static Project.Helpers.SeatSelectionHelpers;
+using static Project.Logic.SeatSelection.GridNavigator;
+using static Project.Presentation.SeatingPresentation;
 
 namespace Project.Logic.SeatSelection;
 
-public static class SeatSelectionLogic
+public class SeatSelectionLogic
 {
-    private const string SelectedSymbol = "()";
+    public GridNavigator GridGenerator { get; }
+    public LayoutGenerator LayoutGenerator { get; }
 
-    public static List<string> StartSeatSelection(int showingId, int seatCount)
+    private readonly int _seatCount;
+    private readonly RoomModel _room;
+    private readonly List<Position> _selectedSeats = [];
+
+    public SeatSelectionLogic(int showingId, int seatCount)
     {
         var room = GetRoomByShowing(showingId);
-        var maxYPos = room.Rows - 1;
-        var maxXPos = room.SeatDepth - 1;
 
-        var curPos = (0, 0); //x,y
-        List<string> selectedSeats = [];
-        List<(int, int)> selectedSeatsPos = [];
-        for (;;)
-        {
-            SeatingPresentation.UpdateSeatingPresentation(GenerateSeatingLayout(room.Id, showingId, curPos, selectedSeatsPos));
-
-            var keyInfo = Console.ReadKey(intercept: true);
-            switch (keyInfo.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    //Move up if not already at the top boundary
-                    curPos.Item2 = Math.Max(0, curPos.Item2 - 1);
-                    break;
-                case ConsoleKey.DownArrow:
-                    //Move down if not already at the bottom boundary
-                    curPos.Item2 = Math.Min(maxYPos, curPos.Item2 + 1);
-                    break;
-                case ConsoleKey.LeftArrow:
-                    //Move left if not already at the left boundary
-                    curPos.Item1 = Math.Max(0, curPos.Item1 - 1);
-                    break;
-                case ConsoleKey.RightArrow:
-                    //Move right if not already at the right boundary
-                    curPos.Item1 = Math.Min(maxXPos, curPos.Item1 + 1);
-                    break;
-                case ConsoleKey.Enter:
-                    var seat = $"({curPos.Item2 + 1};{curPos.Item1 + 1})"; //(row;seat_number)
-                    if (selectedSeats.Contains(seat))
-                        continue;
-
-                    selectedSeats.Add(seat);
-                    selectedSeatsPos.Add(curPos);
-                    curPos = (0, 0);
-
-                    if (selectedSeats.Count < seatCount)
-                        break;
-
-                    Console.Clear();
-                    return selectedSeats;
-                default:
-                    continue;
-            }
-        }
+        _room = room;
+        _seatCount = seatCount;
+        GridGenerator = new GridNavigator(room.SeatDepth, room.Rows);
+        LayoutGenerator = new LayoutGenerator(room.Id,  showingId, GridGenerator, ref _selectedSeats);
     }
 
-    public static string GenerateSeatingLayout(int roomId, int showingId, (int, int) cursorPos, List<(int, int)> selectedSeats)
+    public List<string> StartSeatSelection()
     {
-        var room = GetRoom(roomId);
-
-        var rows = room.Rows;
-        var seatDepth = room.SeatDepth;
-        var takenSeats = GetTakenSeats(showingId);
-        var sb = new StringBuilder();
-
-        BuildSeatingString(sb, rows, seatDepth, takenSeats, selectedSeats, cursorPos);
-
-        return sb.ToString();
+        GridGenerator.SelectAction = ActionMethod;
+        GridGenerator.MoveAction = _ => UpdateSeatingPresentation(LayoutGenerator.GenerateSeatingLayout());
+        GridGenerator.Start();
+        return PositionsToStrings(_selectedSeats);
     }
 
-    private static void BuildSeatingString(StringBuilder sb, int rows, int seatDepth, List<int> takenSeats, List<(int, int)> selectedSeats, (int, int) cursorPos)
+    //return true if the WHOLE selection is done
+    private bool ActionMethod(GridNavigator navigator)
     {
-        for (var y = 1; y <= rows; y++)
-        {
-            sb.Append(y + ": ");
-            if (y < 10) sb.Append(' ');
+        var curPos = navigator.Cursor;
+        if (_selectedSeats.Contains(curPos))
+            return false;
 
-            for (var x = 1; x <= seatDepth; x++)
-            {
-                var characters = !takenSeats.Contains(x) ? $"[{x}]" : "[x]";
-                var currentGenPos = (x - 1, y - 1);
+        _selectedSeats.Add(curPos with {});
 
-                if (selectedSeats.Contains(currentGenPos))
-                    characters = $"{SelectedSymbol}"; //already selected seat
-                if (cursorPos.Equals(currentGenPos))
-                    characters = $" {SelectedSymbol} "; //cursor position
+        if (_selectedSeats.Count < _seatCount)
+            return false;
 
-                sb.Append(characters);
-            }
-
-            if (y != rows)
-                sb.Append('\n');
-        }
-    }
-
-    private static RoomModel GetRoom(int roomId)
-    {
-        var data = RoomAccess.LoadAll();
-        var room = data.Find(rm => rm.Id == roomId);
-
-        //Exception that should only be called during development when the data isn't correctly linked
-        if (room == null)
-            throw new ArgumentException("Logic error: The roomId was not found");
-
-        return room;
-    }
-
-    private static RoomModel GetRoomByShowing(int showingId)
-    {
-        var showing = ShowingsAccess.LoadAll().Find(s => s.Id == showingId);
-
-        if (showing == null)
-            throw new ArgumentException($"Logic error: Showing with id {showingId} not found");
-
-        return GetRoom(showing.Room);
-    }
-
-    private static List<int> GetTakenSeats(int showingId)
-    {
-        var relevantReservations = ReservationsAccess.LoadAll().FindAll(rm => rm.ShowingId == showingId);
-        return relevantReservations.Select(rm => rm.Id).ToList();
+        Console.Clear();
+        return true;
     }
 }
+
+

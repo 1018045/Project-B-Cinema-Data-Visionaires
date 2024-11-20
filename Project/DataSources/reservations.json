@@ -2,36 +2,8 @@
   {
     "id": 0,
     "userId": 1,
-    "showingId": 4,
-    "seats": "3",
-    "paymentComplete": true
-  },
-  {
-    "id": 1,
-    "userId": 1,
-    "showingId": 1,
-    "seats": "1,2,3",
-    "paymentComplete": true
-  },
-  {
-    "id": 2,
-    "userId": 2,
-    "showingId": 2,
-    "seats": "1,2,3",
-    "paymentComplete": true
-  },
-  {
-    "id": 3,
-    "userId": 1,
-    "showingId": 2,
-    "seats": "1,2,3",
-    "paymentComplete": true
-  },
-  {
-    "id": 4,
-    "userId": 1,
-    "showingId": 44,
-    "seats": "12,13,14",
+    "showingId": 98,
+    "seats": "6;1,6;2,6;4",
     "paymentComplete": true
   }
 ]

@@ -20,7 +20,8 @@ public class SeatingPresentation
         if (seatCount == -1)
             return [];
 
-        return SeatSelectionLogic.StartSeatSelection(showingId, seatCount);
+        var logic = new SeatSelectionLogic(showingId, seatCount);
+        return logic.StartSeatSelection();
     }
 
     //used to constantly refresh the seating
