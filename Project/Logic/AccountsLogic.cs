@@ -130,33 +130,33 @@ public class AccountsLogic
     }
 
     public static SecureString MaskInputstring()
-{
-    SecureString pass = new SecureString();
-    ConsoleKeyInfo keyInfo;
-
-    do
     {
-        keyInfo = Console.ReadKey(true);  
+        SecureString pass = new SecureString();
+        ConsoleKeyInfo keyInfo;
 
-       
-        if (!char.IsControl(keyInfo.KeyChar))
+        do
         {
-            pass.AppendChar(keyInfo.KeyChar);  
-            Console.Write("*");  
-        }
-       
-        else if (keyInfo.Key == ConsoleKey.Backspace && pass.Length > 0)
-        {
-            
-            pass.RemoveAt(pass.Length - 1);
-            Console.Write("\b \b");  
-        }
+            keyInfo = Console.ReadKey(true);  
 
-    } while (keyInfo.Key != ConsoleKey.Enter);  
+        
+            if (!char.IsControl(keyInfo.KeyChar))
+            {
+                pass.AppendChar(keyInfo.KeyChar);  
+                Console.Write("*");  
+            }
+        
+            else if (keyInfo.Key == ConsoleKey.Backspace && pass.Length > 0)
+            {
+                
+                pass.RemoveAt(pass.Length - 1);
+                Console.Write("\b \b");  
+            }
 
-    Console.WriteLine();  
-    return pass;
-}
+        } while (keyInfo.Key != ConsoleKey.Enter);  
+
+        Console.WriteLine();  
+        return pass;
+    }
 
     public bool RemoveUser(string email)
     {
