@@ -16,7 +16,8 @@ public class UserLogin
         if (acc != null)
         {
             // Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email is " + acc.EmailAddress);
+            Console.WriteLine("Login succesfull");
+            Console.WriteLine($"Your email is {acc.EmailAddress}");
 
             switch (acc.Role)
             {

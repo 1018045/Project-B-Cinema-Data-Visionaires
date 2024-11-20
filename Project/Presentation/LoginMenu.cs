@@ -5,7 +5,7 @@ static class LoginMenu
     static public void Start()
     {
         // Console.Clear();
-        Console.WriteLine("Enter 1 to login as User");
+        Console.WriteLine("Enter 1 to login");
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");
         Console.WriteLine("Enter 4 to show upcoming movie showings on a specific date");
