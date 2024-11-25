@@ -1,10 +1,13 @@
 using System.Text.Json.Serialization;
 
 
-public class AccountModel
+public abstract class AccountModel
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
+
+    [JsonPropertyName("role")]
+    public string Role { get; set; }
 
     [JsonPropertyName("emailAddress")]
     public string EmailAddress { get; set; }
@@ -12,22 +15,12 @@ public class AccountModel
     [JsonPropertyName("password")]
     public string Password { get; set; }
 
-    [JsonPropertyName("fullName")]
-    public string FullName { get; set; }
 
-   
-    public int Age {get;set;}
-
-    
-
-    public AccountModel(int id, string emailAddress, string password, string fullName, int age)
-    {
+    public AccountModel(int id, string role, string emailAddress, string password)
+    {   
         Id = id;
+        Role = role;
         EmailAddress = emailAddress;
         Password = password;
-        FullName = fullName;
-        Age = age;
-        
     }
-
 }

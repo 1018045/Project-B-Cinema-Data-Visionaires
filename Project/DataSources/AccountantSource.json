@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "date": "2024-03-20",
+        "movieTitle": "The Matrix",
+        "ticketsSold": 45,
+        "revenue": 495.00,
+        "room": 1
+    },
+    {
+        "id": 2,
+        "date": "2024-03-21",
+        "movieTitle": "Inception",
+        "ticketsSold": 38,
+        "revenue": 418.00,
+        "room": 2
+    }
+]

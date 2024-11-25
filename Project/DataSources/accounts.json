@@ -1,23 +1,49 @@
 [
   {
-    "id": 1,
-    "emailAddress": "n@b.c",
-    "password": "xyz",
-    "fullName": "Nikola Tesla",
-    "Age": 0
+    "id": 0,
+    "role": "user",
+    "emailAddress": "mr47@gmail.com",
+    "password": "Kl@rashond3nbist4",
+    "fullName": "Donald",
+    "age": 0
   },
   {
-    "id": 2,
+    "id": 1,
+    "role": "user",
     "emailAddress": "t@b.c",
     "password": "xyz",
     "fullName": "Thomas Edison",
-    "Age": 0
+    "age": 0
   },
   {
-    "id": 13,
+    "id": 2,
+    "role": "user",
     "emailAddress": "xxx@x.com",
     "password": "xxxxxxxx",
     "fullName": "mister X",
-    "Age": 99
+    "age": 0
+  },
+  {
+    "id": 3,
+    "role": "user",
+    "emailAddress": "hoi@doei.nl",
+    "password": "K@mala Harr1s",
+    "fullName": "Kamala",
+    "age": 89
+  },
+  {
+    "id": 4,
+    "role": "user",
+    "emailAddress": "JoeBiden@gmail.nl",
+    "password": "1@mSleepy",
+    "fullName": "Joe Biden",
+    "age": 92
+  },
+  {
+    "id": 5,
+    "emailAddress": "ethanmeulens@gmail.com",
+    "password": "L3tsgof@m",
+    "fullName": "Ethan Meulens",
+    "age": 24
   }
 ]

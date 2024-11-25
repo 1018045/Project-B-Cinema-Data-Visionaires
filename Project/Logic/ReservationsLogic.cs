@@ -1,6 +1,3 @@
-using System.Linq;
-
-
 public class ReservationsLogic
 {
     public List<ReservationModel> Reservations {get; private set;}
