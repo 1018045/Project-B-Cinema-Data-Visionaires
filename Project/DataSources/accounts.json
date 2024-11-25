@@ -41,9 +41,8 @@
   },
   {
     "id": 5,
+    "role": "admin",
     "emailAddress": "ethanmeulens@gmail.com",
-    "password": "L3tsgof@m",
-    "fullName": "Ethan Meulens",
-    "age": 24
+    "password": "L3tsgof@m"
   }
 ]

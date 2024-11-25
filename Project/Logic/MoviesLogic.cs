@@ -10,6 +10,7 @@ public class MoviesLogic
     public void AddMovie(string title, int duration, int minimumAge)
     {
         _movies.Add(new MovieModel(FindFirstAvailableID(), title, duration, minimumAge));
+        MoviesAccess.WriteAll(_movies);
     }
 
     public MovieModel FindMovieByTitle(string title)
@@ -53,7 +54,7 @@ public class MoviesLogic
         string output = "";
         foreach (MovieModel movie in _movies)
         {
-            output += $"{movie.Id}: {movie.Title}\n";
+            output += $"{movie.Id + 1}: {movie.Title}\n";
         }
         return output;
     }

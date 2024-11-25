@@ -2,7 +2,10 @@ using System.Globalization;
 
 public class ShowingsLogic
 {
+    private const int CLEANUP_TIME_BETWEEN_SHOWINGS = 30;
+    
     private List<ShowingModel> _showings;
+
 
     public ShowingsLogic()
     {
@@ -33,6 +36,19 @@ public class ShowingsLogic
         return "Showing not found!";
     }
 
+    public List<ShowingModel> FindShowingsByMovieId(int id)
+    {
+        List<ShowingModel> showings = new();
+        foreach (ShowingModel showing in _showings)
+        {
+            if (showing.MovieId == id)
+            {
+                showings.Add(showing);
+            }
+        }
+        return showings;
+    }
+
     public ShowingModel FindShowingByIdReturnShowing(int id)
     {
         foreach (ShowingModel showing in _showings)
@@ -47,9 +63,10 @@ public class ShowingsLogic
 
     public string ToString(ShowingModel showing, bool showId = false) 
     {
-        string output = $"{showing.Title}\n";
+        MoviesLogic log = new();
+        string output = $"{log.GetMovieById(showing.MovieId).Title}\n";
         output += $"    {showing.Date}\n";
-        output += $"    Room: {showing.Room}; Aged {showing.MinimumAge} and above.\n";
+        output += $"    Room: {showing.Room}; Aged {log.GetMovieById(showing.MovieId).MinimumAge} and above.\n";
         return output;
     }
 
@@ -68,7 +85,7 @@ public class ShowingsLogic
         string output = "";
         foreach (ShowingModel showing in _showings)
         {
-            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
+            if (showing.Date > DateTime.Now)
             {
                 output += showId ? $"{showing.Id}. " : "";
                 output += ToString(showing) + "\n";
@@ -82,7 +99,7 @@ public class ShowingsLogic
         string output = "";
         foreach (ShowingModel showing in _showings)
         {
-            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture).Date == date.Date)
+            if (showing.Date.Date == date.Date)
                 output += ToString(showing);
         }
         return output;
@@ -90,37 +107,43 @@ public class ShowingsLogic
 
     public List<ShowingModel> GetUpcomingShowingsOfMovie(string movieName)
     {
+        MoviesLogic log = new();
         List<ShowingModel> showings = new();
         foreach (ShowingModel showing in _showings)
         {
-            if (DateTime.ParseExact(showing.Date, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now && showing.Title == movieName)
+            if (showing.Date > DateTime.Now && log.GetMovieById(showing.MovieId).Title == movieName)
                 showings.Add(showing);
         }
         return showings;
     }
 
-    public void AddShowing(int movieId, string date, int room)
+    public void AddShowing(int movieId, DateTime date, int room)
     {
         ShowingModel newShowing = new ShowingModel(FindNextAvailableId(), movieId, date, room);
         _showings.Add(newShowing);
         ShowingsAccess.WriteAll(_showings);
     }
 
-     public void RemoveShowing(int id)
+    public void RemoveShowing(int id)
     {
-        List<ShowingModel> showings = ShowingsAccess.LoadAll();
-        ShowingModel showingToRemove = showings.FirstOrDefault(s => s.Id == id);
-        
+        ShowingModel showingToRemove = _showings.FirstOrDefault(s => s.Id == id);      
         if (showingToRemove != null)
         {
-            showings.Remove(showingToRemove);
-            ShowingsAccess.WriteAll(showings);
-            Console.WriteLine($"Showing with ID '{id}' has been removed.");
+            _showings.Remove(showingToRemove);
+            ShowingsAccess.WriteAll(_showings);
+            Console.WriteLine($"Showing with ID {id} has been removed.");
         }
         else
         {
-            Console.WriteLine($"No showing found with ID '{id}'.");
+            Console.WriteLine($"No showing found with ID {id}.");
         }
+    }
+
+    public void RemoveShowing(ShowingModel showing)
+    {
+        _showings.Remove(showing);
+        ShowingsAccess.WriteAll(_showings);
+        Console.WriteLine($"Showing at {showing.Date} has been removed.");
     }
 
     private int FindNextAvailableId()
@@ -131,5 +154,24 @@ public class ShowingsLogic
            return 0; // Begin met ID 1 als er geen vertoningen zijn
         }
         return showings.Max(s => s.Id) + 1; // Vind het hoogste ID en verhoog met 1
+    }
+
+    public bool IsRoomFree(DateTime newDate, int room, int showingDuration, MoviesLogic log)
+    {
+        foreach (ShowingModel showing in _showings)
+        {
+            if (showing.Room == room)
+            {
+                if (newDate.Date == showing.Date)
+                {
+                    if (!(newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) < showing.Date) ||
+                        !(showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + log.GetMovieById(showing.MovieId).Duration) < newDate));
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
