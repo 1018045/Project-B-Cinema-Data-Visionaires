@@ -38,12 +38,5 @@
     "password": "1@mSleepy",
     "fullName": "Joe Biden",
     "age": 92
-  },
-  {
-    "id": 5,
-    "emailAddress": "ethanmeulens@gmail.com",
-    "password": "L3tsgof@m",
-    "fullName": "Ethan Meulens",
-    "age": 24
   }
 ]

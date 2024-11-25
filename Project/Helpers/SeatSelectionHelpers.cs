@@ -39,7 +39,7 @@ public static class SeatSelectionHelpers
             {
                 // Remove parentheses and split into coordinates
                 var coordinates = seat.Trim('(', ')').Split(';');
-                return new Position(int.Parse(coordinates[1]), int.Parse(coordinates[0]));
+                return new Position(int.Parse(coordinates[1]) - 1, int.Parse(coordinates[0]) - 1);
             })
             .ToList();
 

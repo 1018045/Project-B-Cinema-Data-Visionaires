@@ -23,7 +23,7 @@ public class SeatSelectionLogic
     public List<string> StartSeatSelection()
     {
         GridGenerator.SelectAction = ActionMethod;
-        GridGenerator.RefreshAction = _ => UpdateSeatingPresentation(LayoutGenerator.GenerateSeatingLayout());
+        GridGenerator.RefreshAction = _ => UpdateSeatingPresentation(LayoutGenerator.GenerateSeatingLayout(), _seatCount - _selectedSeats.Count);
         GridGenerator.Start();
         return PositionsToStrings(_selectedSeats);
     }
