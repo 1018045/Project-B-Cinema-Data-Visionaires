@@ -7,19 +7,17 @@ static class Menus
     static public void Start()
     {
 
-        Console.WriteLine("Enter 1 to login as User");
+        Console.WriteLine("Enter 1 to login");
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");
         Console.WriteLine("Enter 4 to show upcoming movie showings on a specific date");
-        Console.WriteLine("Enter 5 to login as Admin");
-        Console.WriteLine("Enter 6 to login as Accountant");
-        Console.WriteLine("Enter 7 to exit program");
+        Console.WriteLine("Enter 5 to exit program");
 
         string input = Console.ReadLine();
         switch (input)
         {
             case "1":
-                UserLogin();
+                Login();
                 break;
             case "2":
                 ChooseAccount();
@@ -33,12 +31,6 @@ static class Menus
                 Start();
                 break;
             case "5":
-                AdminLogin();
-                break;
-            case "6":
-                AccountantMenu();
-                break;
-            case "7":
                 Environment.Exit(0);
                 break;
             default:
@@ -49,7 +41,7 @@ static class Menus
     }
 
 
-      public static void UserLogin()
+    public static void Login()
     {
         Console.WriteLine("Welcome to the login page");
         Console.WriteLine("Please enter your email address");
@@ -60,45 +52,31 @@ static class Menus
         string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
 
         AccountModel acc = AccountsLogic.Logic.CheckLogin(email, Password);
-        if (acc != null)
-        {
-            Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email is " + acc.EmailAddress);
-
-            //Write some code to go back to the menu
-            LoggedInMenu();
-        }
-        else
+        if (acc == null)
         {
             Console.WriteLine("No account found with that email and password");
             Start();
         }
-    }
-
-
-    public static void AdminLogin()
-    {
-        Console.WriteLine("Enter your email address:");
-        string email = Console.ReadLine();
-        Console.WriteLine("Enter your password:");
-        string password = Console.ReadLine();
-
-        var admins = AdminAccess.LoadAll();
-        var admin = admins.FirstOrDefault(a => a.EmailAddress == email && a.Password == password);
-
-        if (admin != null)
+        if (acc is UserModel user)
         {
-            Console.WriteLine("Login successful! Welcome," + admin.EmailAddress);
+            Console.WriteLine("Welcome back " + user.FullName);
+            LoggedInMenu();
+        }
+        else if (acc is AdminModel admin)
+        {
+            Console.WriteLine("Welcome back " + admin.EmailAddress);
             AdminMenu();
-            
+
         }
-        else
+        else if (acc is AccountantModel accountant)
         {
-            Console.WriteLine("Invalid login credentials. Please try again.");
-            Start(); // Herstart de login
-        }
+            System.Console.WriteLine("Welcome back " + accountant.EmailAddress);
+            AccountantMenu();
+
+        }   
     }
-public static void AdminMenu()
+
+    public static void AdminMenu()
     {
         Console.WriteLine("Admin Menu:");
         Console.WriteLine("1. Add a movie");
@@ -218,11 +196,10 @@ public static void AdminMenu()
         
     }
 
-
     static public void LoggedInMenu()
     {
         Console.WriteLine("\n" + new string('-', Console.WindowWidth));
-        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.FullName}");
+        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.EmailAddress}");
         Console.WriteLine(new string('-', Console.WindowWidth));
         Console.WriteLine("Enter 1 to make a reservation");
         Console.WriteLine("Enter 2 to show upcoming movie showings");
@@ -267,7 +244,7 @@ public static void AdminMenu()
         }
     }
 
-      public static void ChooseAccount()
+    public static void ChooseAccount()
     {
         Console.WriteLine("What type of account would you like to create?");
         Console.WriteLine("Choose the from the options below");
@@ -308,26 +285,23 @@ public static void AdminMenu()
         string confirmPassword = string.Empty;
         bool passwordsMatch = false;
 
-    while (!passwordsMatch)
-    {
-        SecureString confirmPass = AccountsLogic.MaskInputstring();  
-        confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
-
-        
-        if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+        while (!passwordsMatch)
         {
-            passwordsMatch = true;
+            SecureString confirmPass = AccountsLogic.MaskInputstring();  
+            confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
+
+            
+            if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+            {
+                passwordsMatch = true;
+            }
+            else
+            {
+                Console.WriteLine("Passwords do not match or are not valid. Try again.");
+            }
         }
-        else
-        {
-            Console.WriteLine("Passwords do not match or are not valid. Try again.");
-        }
-    }
 
-    Console.WriteLine("Password confirmed successfully.");
-
-
-  
+        Console.WriteLine("Password confirmed successfully.");
 
         Console.WriteLine("Your fullname: ");
         var fullName = Console.ReadLine();
@@ -361,13 +335,6 @@ public static void AdminMenu()
 
     public static void AccountantMenu()
     {
-        if (!AccountantLogin())
-        {
-            Console.WriteLine("Login failed. Returning to main menu.");
-            Start();
-            return;
-        }
-
         while (true)
         {
             // Maak het scherm leeg voor betere leesbaarheid
@@ -412,17 +379,6 @@ public static void AdminMenu()
         }
     }
 
-    private static bool AccountantLogin()
-    {
-        Console.WriteLine("Enter accountant username:");
-        string username = Console.ReadLine();
-        Console.WriteLine("Enter password:");
-        string password = Console.ReadLine();
-
-        // Simpele inlogcontrole6
-        return username == "accountant" && password == "accountant123";
-    }
-
     private static void ViewAllRecords()
     {
         // Haal alle records op via AccountantAccess
@@ -433,11 +389,11 @@ public static void AdminMenu()
         Console.WriteLine("----------------------------------------");
         
         // Toon elk record
-        foreach(var record in records)
-        {
-            Console.WriteLine($"{record.Id} | {record.Date} | {record.MovieTitle} | " +
-                            $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
-        }
+        // foreach(var record in records)
+        // {
+        //     Console.WriteLine($"{record.Id} | {record.Date} | {record.MovieTitle} | " +
+        //                     $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
+        // }
 
         WaitForKey();
     }
