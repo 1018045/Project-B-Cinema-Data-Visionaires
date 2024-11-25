@@ -18,17 +18,17 @@ public class GridNavigator(int xLimit, int yLimit)
         set => Cursor.Y = value;
     }
     public Func<GridNavigator, bool>? SelectAction { get; set; }
-    public Action<GridNavigator>? MoveAction { get; set; }
+    public Action<GridNavigator>? RefreshAction { get; set; }
     public Func<GridNavigator, bool>? ConfirmationAction { get; set; }
 
     public void Start(ConsoleKey confirmKey = ConsoleKey.Enter, ConsoleKey cancelKey = ConsoleKey.Escape)
     {
-        if (SelectAction == null || MoveAction == null)
-            throw new DataException("DEVELOPER: SelectAction || MoveAction is not set which should've been done before calling start");
+        if (SelectAction == null || RefreshAction == null)
+            throw new DataException("DEVELOPER: SelectAction || RefreshAction is not set which should've been done before calling start");
 
         for (var done = false; !done;)
         {
-            MoveAction.Invoke(this);
+            RefreshAction.Invoke(this);
 
             var keyInfo = Console.ReadKey(intercept: true);
             switch (keyInfo.Key)

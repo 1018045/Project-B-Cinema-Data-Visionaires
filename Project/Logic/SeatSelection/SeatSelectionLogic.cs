@@ -10,14 +10,11 @@ public class SeatSelectionLogic
     public LayoutGenerator LayoutGenerator { get; }
 
     private readonly int _seatCount;
-    private readonly RoomModel _room;
     private readonly List<Position> _selectedSeats = [];
 
     public SeatSelectionLogic(int showingId, int seatCount)
     {
         var room = GetRoomByShowing(showingId);
-
-        _room = room;
         _seatCount = seatCount;
         GridGenerator = new GridNavigator(room.SeatDepth, room.Rows);
         LayoutGenerator = new LayoutGenerator(room.Id,  showingId, GridGenerator, ref _selectedSeats);
@@ -26,7 +23,7 @@ public class SeatSelectionLogic
     public List<string> StartSeatSelection()
     {
         GridGenerator.SelectAction = ActionMethod;
-        GridGenerator.MoveAction = _ => UpdateSeatingPresentation(LayoutGenerator.GenerateSeatingLayout());
+        GridGenerator.RefreshAction = _ => UpdateSeatingPresentation(LayoutGenerator.GenerateSeatingLayout());
         GridGenerator.Start();
         return PositionsToStrings(_selectedSeats);
     }
@@ -38,7 +35,10 @@ public class SeatSelectionLogic
         if (_selectedSeats.Contains(curPos))
             return false;
 
-        _selectedSeats.Add(curPos with {});
+        if (!IsAdjacentOnSameRow(curPos, _selectedSeats) && _selectedSeats.Count != 0)
+            return false;
+
+        _selectedSeats.Add(curPos with {}); //deep copy
 
         if (_selectedSeats.Count < _seatCount)
             return false;

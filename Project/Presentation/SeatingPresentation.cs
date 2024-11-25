@@ -1,5 +1,6 @@
 ﻿using Project.Logic;
 using Project.Logic.SeatSelection;
+using static Project.Helpers.SeatSelectionHelpers;
 
 namespace Project.Presentation;
 
@@ -13,8 +14,8 @@ public class SeatingPresentation
         {
             Console.WriteLine("How many seats would you like to book?");
             var seatAmountInput = Console.ReadLine() ?? "";
-
-            resolved = int.TryParse(seatAmountInput, out seatCount);
+            resolved = int.TryParse(seatAmountInput, out seatCount)
+                       && CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14]); //TODO add seating dimensions to json and read it
         }
 
         if (seatCount == -1)

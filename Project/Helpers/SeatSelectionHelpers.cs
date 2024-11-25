@@ -50,4 +50,43 @@ public static class SeatSelectionHelpers
     {
         return positions.Select(p => $"{p.Y + 1};{p.X + 1}").ToList();
     }
+
+    public static bool IsAdjacentOnSameRow(Position newSeat, List<Position> selectedSeats)
+    {
+        return selectedSeats.Any(selectedSeat =>
+            selectedSeat.Y == newSeat.Y &&
+            (selectedSeat.X == newSeat.X - 1 || selectedSeat.X == newSeat.X + 1));
+    }
+
+    public static bool CanFitAdjacentSeats(int seatCount, List<Position> takenSeats, List<int> roomDimensions)
+    {
+        for (var row = 0; row < roomDimensions.Count; row++)
+        {
+            var rowDepth = roomDimensions[row];
+
+            var takenPositionsInRow = takenSeats
+                .Where(seat => seat.Y == row)
+                .Select(seat => seat.X)
+                .ToHashSet();
+
+            var currentStreak = 0;
+            for (var x = 0; x < rowDepth; x++)
+            {
+                if (!takenPositionsInRow.Contains(x))
+                {
+                    currentStreak++;
+                    if (currentStreak >= seatCount)
+                    {
+                        // Found enough adjacent seats
+                        return true;
+                    }
+                }
+                else
+                {
+                    currentStreak = 0;
+                }
+            }
+        }
+        return false;
+    }
 }
