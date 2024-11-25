@@ -1,0 +1,602 @@
+[
+    {
+        "id": 0,
+        "title": "The Matrix",
+        "duration": 136,
+        "minimumAge": 16
+    },
+    {
+        "id": 1,
+        "title": "The Godfather",
+        "duration": 91,
+        "minimumAge": 14
+    },
+    {
+        "id": 2,
+        "title": "The Dark Knight",
+        "duration": 92,
+        "minimumAge": 15
+    },
+    {
+        "id": 3,
+        "title": "Pulp Fiction",
+        "duration": 93,
+        "minimumAge": 16
+    },
+    {
+        "id": 4,
+        "title": "Forrest Gump",
+        "duration": 94,
+        "minimumAge": 17
+    },
+    {
+        "id": 5,
+        "title": "Inception",
+        "duration": 95,
+        "minimumAge": 13
+    },
+    {
+        "id": 6,
+        "title": "Fight Club",
+        "duration": 96,
+        "minimumAge": 14
+    },
+    {
+        "id": 7,
+        "title": "The Lord of the Rings: The Fellowship of the Ring",
+        "duration": 97,
+        "minimumAge": 15
+    },
+    {
+        "id": 8,
+        "title": "The Lord of the Rings: The Two Towers",
+        "duration": 98,
+        "minimumAge": 16
+    },
+    {
+        "id": 9,
+        "title": "The Lord of the Rings: The Return of the King",
+        "duration": 99,
+        "minimumAge": 17
+    },
+    {
+        "id": 10,
+        "title": "Star Wars: Episode IV - A New Hope",
+        "duration": 100,
+        "minimumAge": 13
+    },
+    {
+        "id": 11,
+        "title": "Star Wars: Episode V - The Empire Strikes Back",
+        "duration": 101,
+        "minimumAge": 14
+    },
+    {
+        "id": 12,
+        "title": "Star Wars: Episode VI - Return of the Jedi",
+        "duration": 102,
+        "minimumAge": 15
+    },
+    {
+        "id": 13,
+        "title": "The Shawshank Redemption",
+        "duration": 103,
+        "minimumAge": 16
+    },
+    {
+        "id": 14,
+        "title": "The Silence of the Lambs",
+        "duration": 104,
+        "minimumAge": 17
+    },
+    {
+        "id": 15,
+        "title": "Schindler's List",
+        "duration": 105,
+        "minimumAge": 13
+    },
+    {
+        "id": 16,
+        "title": "The Green Mile",
+        "duration": 106,
+        "minimumAge": 14
+    },
+    {
+        "id": 17,
+        "title": "Saving Private Ryan",
+        "duration": 107,
+        "minimumAge": 15
+    },
+    {
+        "id": 18,
+        "title": "Gladiator",
+        "duration": 108,
+        "minimumAge": 16
+    },
+    {
+        "id": 19,
+        "title": "Braveheart",
+        "duration": 109,
+        "minimumAge": 17
+    },
+    {
+        "id": 20,
+        "title": "The Lion King",
+        "duration": 110,
+        "minimumAge": 13
+    },
+    {
+        "id": 21,
+        "title": "Toy Story",
+        "duration": 111,
+        "minimumAge": 14
+    },
+    {
+        "id": 22,
+        "title": "Toy Story 2",
+        "duration": 112,
+        "minimumAge": 15
+    },
+    {
+        "id": 23,
+        "title": "Toy Story 3",
+        "duration": 113,
+        "minimumAge": 16
+    },
+    {
+        "id": 24,
+        "title": "Finding Nemo",
+        "duration": 114,
+        "minimumAge": 17
+    },
+    {
+        "id": 25,
+        "title": "The Incredibles",
+        "duration": 115,
+        "minimumAge": 13
+    },
+    {
+        "id": 26,
+        "title": "WALL-E",
+        "duration": 116,
+        "minimumAge": 14
+    },
+    {
+        "id": 27,
+        "title": "Up",
+        "duration": 117,
+        "minimumAge": 15
+    },
+    {
+        "id": 28,
+        "title": "Coco",
+        "duration": 118,
+        "minimumAge": 16
+    },
+    {
+        "id": 29,
+        "title": "Avengers: Endgame",
+        "duration": 119,
+        "minimumAge": 17
+    },
+    {
+        "id": 30,
+        "title": "Avengers: Infinity War",
+        "duration": 90,
+        "minimumAge": 13
+    },
+    {
+        "id": 31,
+        "title": "Spider-Man: No Way Home",
+        "duration": 91,
+        "minimumAge": 14
+    },
+    {
+        "id": 32,
+        "title": "Iron Man",
+        "duration": 92,
+        "minimumAge": 15
+    },
+    {
+        "id": 33,
+        "title": "The Avengers",
+        "duration": 93,
+        "minimumAge": 16
+    },
+    {
+        "id": 34,
+        "title": "Black Panther",
+        "duration": 94,
+        "minimumAge": 17
+    },
+    {
+        "id": 35,
+        "title": "Doctor Strange",
+        "duration": 95,
+        "minimumAge": 13
+    },
+    {
+        "id": 36,
+        "title": "Guardians of the Galaxy",
+        "duration": 96,
+        "minimumAge": 14
+    },
+    {
+        "id": 37,
+        "title": "Thor: Ragnarok",
+        "duration": 97,
+        "minimumAge": 15
+    },
+    {
+        "id": 38,
+        "title": "Captain America: Civil War",
+        "duration": 98,
+        "minimumAge": 16
+    },
+    {
+        "id": 39,
+        "title": "Batman Begins",
+        "duration": 99,
+        "minimumAge": 17
+    },
+    {
+        "id": 40,
+        "title": "The Dark Knight Rises",
+        "duration": 100,
+        "minimumAge": 13
+    },
+    {
+        "id": 41,
+        "title": "Joker",
+        "duration": 101,
+        "minimumAge": 14
+    },
+    {
+        "id": 42,
+        "title": "The Prestige",
+        "duration": 102,
+        "minimumAge": 15
+    },
+    {
+        "id": 43,
+        "title": "Dunkirk",
+        "duration": 103,
+        "minimumAge": 16
+    },
+    {
+        "id": 44,
+        "title": "Interstellar",
+        "duration": 104,
+        "minimumAge": 17
+    },
+    {
+        "id": 45,
+        "title": "Tenet",
+        "duration": 105,
+        "minimumAge": 13
+    },
+    {
+        "id": 46,
+        "title": "Memento",
+        "duration": 106,
+        "minimumAge": 14
+    },
+    {
+        "id": 47,
+        "title": "Goodfellas",
+        "duration": 107,
+        "minimumAge": 15
+    },
+    {
+        "id": 48,
+        "title": "The Departed",
+        "duration": 108,
+        "minimumAge": 16
+    },
+    {
+        "id": 49,
+        "title": "The Irishman",
+        "duration": 109,
+        "minimumAge": 17
+    },
+    {
+        "id": 50,
+        "title": "Casino",
+        "duration": 110,
+        "minimumAge": 13
+    },
+    {
+        "id": 51,
+        "title": "Heat",
+        "duration": 111,
+        "minimumAge": 14
+    },
+    {
+        "id": 52,
+        "title": "Reservoir Dogs",
+        "duration": 112,
+        "minimumAge": 15
+    },
+    {
+        "id": 53,
+        "title": "Kill Bill: Vol. 1",
+        "duration": 113,
+        "minimumAge": 16
+    },
+    {
+        "id": 54,
+        "title": "Kill Bill: Vol. 2",
+        "duration": 114,
+        "minimumAge": 17
+    },
+    {
+        "id": 55,
+        "title": "Django Unchained",
+        "duration": 115,
+        "minimumAge": 13
+    },
+    {
+        "id": 56,
+        "title": "Inglourious Basterds",
+        "duration": 116,
+        "minimumAge": 14
+    },
+    {
+        "id": 57,
+        "title": "Once Upon a Time in Hollywood",
+        "duration": 117,
+        "minimumAge": 15
+    },
+    {
+        "id": 58,
+        "title": "The Hateful Eight",
+        "duration": 118,
+        "minimumAge": 16
+    },
+    {
+        "id": 59,
+        "title": "Whiplash",
+        "duration": 119,
+        "minimumAge": 17
+    },
+    {
+        "id": 60,
+        "title": "La La Land",
+        "duration": 90,
+        "minimumAge": 13
+    },
+    {
+        "id": 61,
+        "title": "The Social Network",
+        "duration": 91,
+        "minimumAge": 14
+    },
+    {
+        "id": 62,
+        "title": "Parasite",
+        "duration": 92,
+        "minimumAge": 15
+    },
+    {
+        "id": 63,
+        "title": "Oldboy",
+        "duration": 93,
+        "minimumAge": 16
+    },
+    {
+        "id": 64,
+        "title": "Train to Busan",
+        "duration": 94,
+        "minimumAge": 17
+    },
+    {
+        "id": 65,
+        "title": "Spirited Away",
+        "duration": 95,
+        "minimumAge": 13
+    },
+    {
+        "id": 66,
+        "title": "My Neighbor Totoro",
+        "duration": 96,
+        "minimumAge": 14
+    },
+    {
+        "id": 67,
+        "title": "Princess Mononoke",
+        "duration": 97,
+        "minimumAge": 15
+    },
+    {
+        "id": 68,
+        "title": "Howl's Moving Castle",
+        "duration": 98,
+        "minimumAge": 16
+    },
+    {
+        "id": 69,
+        "title": "Akira",
+        "duration": 99,
+        "minimumAge": 17
+    },
+    {
+        "id": 70,
+        "title": "Ghost in the Shell",
+        "duration": 100,
+        "minimumAge": 13
+    },
+    {
+        "id": 71,
+        "title": "Blade Runner",
+        "duration": 101,
+        "minimumAge": 14
+    },
+    {
+        "id": 72,
+        "title": "Blade Runner 2049",
+        "duration": 102,
+        "minimumAge": 15
+    },
+    {
+        "id": 73,
+        "title": "Alien",
+        "duration": 103,
+        "minimumAge": 16
+    },
+    {
+        "id": 74,
+        "title": "Aliens",
+        "duration": 104,
+        "minimumAge": 17
+    },
+    {
+        "id": 75,
+        "title": "The Terminator",
+        "duration": 105,
+        "minimumAge": 13
+    },
+    {
+        "id": 76,
+        "title": "Terminator 2: Judgment Day",
+        "duration": 106,
+        "minimumAge": 14
+    },
+    {
+        "id": 77,
+        "title": "Mad Max: Fury Road",
+        "duration": 107,
+        "minimumAge": 15
+    },
+    {
+        "id": 78,
+        "title": "The Grand Budapest Hotel",
+        "duration": 108,
+        "minimumAge": 16
+    },
+    {
+        "id": 79,
+        "title": "Moonrise Kingdom",
+        "duration": 109,
+        "minimumAge": 17
+    },
+    {
+        "id": 80,
+        "title": "Fantastic Mr. Fox",
+        "duration": 110,
+        "minimumAge": 13
+    },
+    {
+        "id": 81,
+        "title": "Isle of Dogs",
+        "duration": 111,
+        "minimumAge": 14
+    },
+    {
+        "id": 82,
+        "title": "Shutter Island",
+        "duration": 112,
+        "minimumAge": 15
+    },
+    {
+        "id": 83,
+        "title": "Se7en",
+        "duration": 113,
+        "minimumAge": 16
+    },
+    {
+        "id": 84,
+        "title": "Zodiac",
+        "duration": 114,
+        "minimumAge": 17
+    },
+    {
+        "id": 85,
+        "title": "Gone Girl",
+        "duration": 115,
+        "minimumAge": 13
+    },
+    {
+        "id": 86,
+        "title": "The Girl with the Dragon Tattoo",
+        "duration": 116,
+        "minimumAge": 14
+    },
+    {
+        "id": 87,
+        "title": "The Curious Case of Benjamin Button",
+        "duration": 117,
+        "minimumAge": 15
+    },
+    {
+        "id": 88,
+        "title": "Am\u00e9lie",
+        "duration": 118,
+        "minimumAge": 16
+    },
+    {
+        "id": 89,
+        "title": "The Big Lebowski",
+        "duration": 119,
+        "minimumAge": 17
+    },
+    {
+        "id": 90,
+        "title": "No Country for Old Men",
+        "duration": 90,
+        "minimumAge": 13
+    },
+    {
+        "id": 91,
+        "title": "Fargo",
+        "duration": 91,
+        "minimumAge": 14
+    },
+    {
+        "id": 92,
+        "title": "The Truman Show",
+        "duration": 92,
+        "minimumAge": 15
+    },
+    {
+        "id": 93,
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "duration": 93,
+        "minimumAge": 16
+    },
+    {
+        "id": 94,
+        "title": "Requiem for a Dream",
+        "duration": 94,
+        "minimumAge": 17
+    },
+    {
+        "id": 95,
+        "title": "Donnie Darko",
+        "duration": 95,
+        "minimumAge": 13
+    },
+    {
+        "id": 96,
+        "title": "A Clockwork Orange",
+        "duration": 96,
+        "minimumAge": 14
+    },
+    {
+        "id": 97,
+        "title": "2001: A Space Odyssey",
+        "duration": 97,
+        "minimumAge": 15
+    },
+    {
+        "id": 98,
+        "title": "Movie 98",
+        "duration": 98,
+        "minimumAge": 16
+    },
+    {
+        "id": 99,
+        "title": "Movie 99",
+        "duration": 99,
+        "minimumAge": 17
+    }
+]

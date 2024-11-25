@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Security;
 
 static class Menus
@@ -11,15 +9,13 @@ static class Menus
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");
         Console.WriteLine("Enter 4 to show upcoming movie showings on a specific date");
-        Console.WriteLine("Enter 5 to login as Admin");
-        Console.WriteLine("Enter 6 to login as Accountant");
         Console.WriteLine("Enter 7 to exit program");
 
         string input = Console.ReadLine();
         switch (input)
         {
             case "1":
-                UserLogin();
+                Login();
                 break;
             case "2":
                 ChooseAccount();
@@ -48,8 +44,7 @@ static class Menus
         }
     }
 
-
-      public static void UserLogin()
+    public static void Login()
     {
         Console.WriteLine("Welcome to the login page");
         Console.WriteLine("Please enter your email address");
@@ -62,8 +57,7 @@ static class Menus
         AccountModel acc = AccountsLogic.Logic.CheckLogin(email, Password);
         if (acc != null)
         {
-            Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email is " + acc.EmailAddress);
+            Console.WriteLine("Welcome back " + acc.EmailAddress);
 
             //Write some code to go back to the menu
             LoggedInMenu();
@@ -98,7 +92,8 @@ static class Menus
             Start(); // Herstart de login
         }
     }
-public static void AdminMenu()
+    
+    public static void AdminMenu()
     {
         Console.WriteLine("Admin Menu:");
         Console.WriteLine("1. Add a movie");
@@ -170,11 +165,11 @@ public static void AdminMenu()
 
         if (isRemoved)
         {
-            Console.WriteLine($"User with email address ‘{email}’ has been removed.");
+            Console.WriteLine($"User with email address '{email}' has been removed.");
         }
         else
         {
-            Console.WriteLine($"No user found with email address ‘{email}'.");
+            Console.WriteLine($"No user found with email address '{email}'.");
         }
         
         Start(); // Terug naar het adminmenu
@@ -218,11 +213,10 @@ public static void AdminMenu()
         
     }
 
-
     static public void LoggedInMenu()
     {
         Console.WriteLine("\n" + new string('-', Console.WindowWidth));
-        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.FullName}");
+        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.EmailAddress}");
         Console.WriteLine(new string('-', Console.WindowWidth));
         Console.WriteLine("Enter 1 to make a reservation");
         Console.WriteLine("Enter 2 to show upcoming movie showings");
@@ -267,7 +261,7 @@ public static void AdminMenu()
         }
     }
 
-      public static void ChooseAccount()
+    public static void ChooseAccount()
     {
         Console.WriteLine("What type of account would you like to create?");
         Console.WriteLine("Choose the from the options below");
@@ -308,26 +302,23 @@ public static void AdminMenu()
         string confirmPassword = string.Empty;
         bool passwordsMatch = false;
 
-    while (!passwordsMatch)
-    {
-        SecureString confirmPass = AccountsLogic.MaskInputstring();  
-        confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
-
-        
-        if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+        while (!passwordsMatch)
         {
-            passwordsMatch = true;
+            SecureString confirmPass = AccountsLogic.MaskInputstring();  
+            confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
+
+            
+            if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+            {
+                passwordsMatch = true;
+            }
+            else
+            {
+                Console.WriteLine("Passwords do not match or are not valid. Try again.");
+            }
         }
-        else
-        {
-            Console.WriteLine("Passwords do not match or are not valid. Try again.");
-        }
-    }
 
-    Console.WriteLine("Password confirmed successfully.");
-
-
-  
+        Console.WriteLine("Password confirmed successfully.");  
 
         Console.WriteLine("Your fullname: ");
         var fullName = Console.ReadLine();
@@ -433,11 +424,11 @@ public static void AdminMenu()
         Console.WriteLine("----------------------------------------");
         
         // Toon elk record
-        foreach(var record in records)
-        {
-            Console.WriteLine($"{record.Id} | {record.Date} | {record.MovieTitle} | " +
-                            $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
-        }
+        // foreach(var record in records)
+        // {
+        //     Console.WriteLine($"{record.Id} | {record.Date} | {record.MovieTitle} | " +
+        //                     $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
+        // }
 
         WaitForKey();
     }

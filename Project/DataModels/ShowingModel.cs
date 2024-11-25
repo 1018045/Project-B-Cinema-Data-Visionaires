@@ -6,8 +6,8 @@ public class ShowingModel
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [JsonPropertyName("title")]
-    public string Title { get; set; }
+    [JsonPropertyName("movieId")]
+    public int MovieId { get; set; }
 
     [JsonPropertyName("date")]
     public string Date { get; set; }
@@ -15,20 +15,12 @@ public class ShowingModel
     [JsonPropertyName("room")]
     public int Room { get; set; }
 
-    [JsonPropertyName("minimumAge")]
-    public int MinimumAge { get; set; }
 
-    public ShowingModel(int id, string title, string date, int room, int minimumAge)
+    public ShowingModel(int id, int movieId, string date, int room)
     {
         Id = id;
-        Title = title;
+        MovieId = movieId;
         Date = date;
         Room = room;
-        MinimumAge = minimumAge;
     }
-
 }
-
-
-
-

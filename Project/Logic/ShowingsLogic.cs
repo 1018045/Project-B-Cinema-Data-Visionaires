@@ -9,12 +9,6 @@ public class ShowingsLogic
         _showings = ShowingsAccess.LoadAll();
     }
 
-    public bool AddShowing(int id, string title, string date, int room, int minimumAge)
-    {
-        // TODO
-        return false;
-    }
-
     // Returns all showings a particular user has reserved
     public List<ShowingModel> FindReservationByUserID(int id)
     {
@@ -105,18 +99,11 @@ public class ShowingsLogic
         return showings;
     }
 
-    public void AddShowing(string title, string date, int room, int minimumAge)
+    public void AddShowing(int movieId, string date, int room)
     {
-        // Vind het volgende beschikbare ID
-        int newId = FindNextAvailableId();
-
-        // Maak een nieuw ShowingModel object aan
-        ShowingModel newShowing = new ShowingModel(newId, title, date, room, minimumAge);
-
-        // Laad bestaande vertoningen, voeg de nieuwe vertoning toe en schrijf alles terug
-        List<ShowingModel> showings = ShowingsAccess.LoadAll();
-        showings.Add(newShowing);
-        ShowingsAccess.WriteAll(showings);
+        ShowingModel newShowing = new ShowingModel(FindNextAvailableId(), movieId, date, room);
+        _showings.Add(newShowing);
+        ShowingsAccess.WriteAll(_showings);
     }
 
      public void RemoveShowing(int id)
@@ -128,11 +115,11 @@ public class ShowingsLogic
         {
             showings.Remove(showingToRemove);
             ShowingsAccess.WriteAll(showings);
-            Console.WriteLine($"Filmvertoning met ID '{id}' is verwijderd.");
+            Console.WriteLine($"Showing with ID '{id}' has been removed.");
         }
         else
         {
-            Console.WriteLine($"Geen filmvertoning gevonden met ID '{id}'.");
+            Console.WriteLine($"No showing found with ID '{id}'.");
         }
     }
 
@@ -141,13 +128,8 @@ public class ShowingsLogic
         List<ShowingModel> showings = ShowingsAccess.LoadAll();
         if (showings.Count == 0)
         {
-           return 1; // Begin met ID 1 als er geen vertoningen zijn
+           return 0; // Begin met ID 1 als er geen vertoningen zijn
         }
         return showings.Max(s => s.Id) + 1; // Vind het hoogste ID en verhoog met 1
-    }
-
-    public List<ShowingModel> GetAllShowings()
-    {
-        return ShowingsAccess.LoadAll();
     }
 }
