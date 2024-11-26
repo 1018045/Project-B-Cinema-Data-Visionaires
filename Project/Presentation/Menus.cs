@@ -1,12 +1,10 @@
-using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 
 static class Menus
 {
     static public void Start()
     {
-
         Console.WriteLine("Enter 1 to login");
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");
@@ -40,7 +38,6 @@ static class Menus
         }
     }
 
-
     public static void Login()
     {
         Console.WriteLine("Welcome to the login page");
@@ -57,6 +54,7 @@ static class Menus
             Console.WriteLine("No account found with that email and password");
             Start();
         }
+
         if (acc is UserModel user)
         {
             Console.WriteLine("Welcome back " + user.FullName);
@@ -66,13 +64,11 @@ static class Menus
         {
             Console.WriteLine("Welcome back " + admin.EmailAddress);
             AdminMenu();
-
         }
         else if (acc is AccountantModel accountant)
         {
             System.Console.WriteLine("Welcome back " + accountant.EmailAddress);
             AccountantMenu();
-
         }   
     }
 
@@ -80,29 +76,34 @@ static class Menus
     {
         Console.WriteLine("Admin Menu:");
         Console.WriteLine("1. Add a movie");
-        Console.WriteLine("2. Remove a user");
+        Console.WriteLine("2. Manage movie showings");
         Console.WriteLine("3. View all users");
-        Console.WriteLine("4. Remove a movie screening");
-        Console.WriteLine("5. View all movies");
-        Console.WriteLine("6. Return to main menu");
+        Console.WriteLine("4. Remove a user");
+        Console.WriteLine("5. Add an Employee");
+        Console.WriteLine("6. Logout");
 
         string input = Console.ReadLine();
         switch (input)
         {
             case "1":
                 AddMovie();
+                AdminMenu();
                 break;
             case "2":
-                RemoveUser();
+                Showings.ManageShowings();
+                AdminMenu();
                 break;
             case "3":
                 ViewUsers();
+                AdminMenu();
                 break;
             case "4":
-                RemoveMovie();
+                RemoveUser();
+                AdminMenu();
                 break;
             case "5":
-                ViewMovies();
+                AddEmployee();
+                AdminMenu();
                 break;
             case "6":
                 Start();
@@ -116,26 +117,25 @@ static class Menus
 
     private static void AddMovie()
     {
+        MoviesLogic moviesLogic = new();
         Console.WriteLine("Enter the movie title:");
         string title = Console.ReadLine();
+        if (moviesLogic.FindMovieByTitle(title) != null)
+        {
+            Console.WriteLine("Movie is already in the database");
+            return;
+        }
+        Console.WriteLine("Enter the total screen time in minutes:");
+        int duration = Math.Abs(int.Parse(Console.ReadLine()));
 
-        Console.WriteLine("Enter the date (dd-MM-yyyy HH:mm:ss):");
-        string date = Console.ReadLine();
+        Console.WriteLine("Enter the minimum age (11-18):");
+        int minimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
 
-        Console.WriteLine("Enter the hall:");
-        int room = int.Parse(Console.ReadLine());
+        moviesLogic.AddMovie(title, duration, minimumAge);
+        Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
 
-        Console.WriteLine("Enter the minimum age:");
-        int minimumAge = int.Parse(Console.ReadLine());
-
-        // Maak een instantie van ShowingsLogic
-        ShowingsLogic showingsLogic = new ShowingsLogic();
-        
-        // Voeg de nieuwe vertoning toe via de logica-laag
-        showingsLogic.AddShowing(title, date, room, minimumAge);
-
-        Console.WriteLine($"Movie screening ‘{title}’ has been added.");
-        Start(); // Terug naar het adminmenu
+        System.Console.WriteLine("Which extra's are mandatory for this movie?");
+        // TODO
     }
 
     private static void RemoveUser()
@@ -148,24 +148,12 @@ static class Menus
 
         if (isRemoved)
         {
-            Console.WriteLine($"User with email address ‘{email}’ has been removed.");
+            Console.WriteLine($"User with email address '{email}' has been removed.");
         }
         else
         {
-            Console.WriteLine($"No user found with email address ‘{email}'.");
+            Console.WriteLine($"No user found with email address '{email}'.");
         }
-        
-        Start(); // Terug naar het adminmenu
-    }
-
-    private static void RemoveMovie()
-    {
-        Console.WriteLine("Voer het ID van de filmvertoning in die je wilt verwijderen:");
-        int id = int.Parse(Console.ReadLine());
-
-        ShowingsLogic showingsLogic = new ShowingsLogic();
-        showingsLogic.RemoveShowing(id);
-        Start(); // Terug naar het adminmenu
     }
 
     private static void ViewUsers()
@@ -175,25 +163,6 @@ static class Menus
         {
             Console.WriteLine($"User: {user.EmailAddress}");
         }
-        Start(); 
-    }
-
-    private static void ViewMovies()
-    {
-        ShowingsLogic showingsLogic = new ShowingsLogic();
-
-        Console.WriteLine("\nAll movie screenings:");
-        
-        Console.WriteLine("----------------------------------------");
-        
-        
-        string allShowings = showingsLogic.ShowAll();
-        Console.WriteLine(allShowings);
-
-        Console.WriteLine("\nPress any key to go back…");
-        Console.ReadKey();
-        Start();
-        
     }
 
     static public void LoggedInMenu()
@@ -402,5 +371,24 @@ static class Menus
     {
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
+    }
+
+    private static void AddEmployee()
+    {
+        EmployeeLogic employeeLogic = new (); 
+
+        Console.WriteLine("Enter the new employee's details"); 
+        Console.WriteLine("Employee Name: ");
+        string EmployeeName = Console.ReadLine(); 
+
+        Console.WriteLine("Monthly Salary: "); 
+        int Salary = Convert.ToInt32(Console.ReadLine());
+
+        
+
+        EmployeeModel employeeToAdd = new (EmployeeName,employeeLogic.FindFirstAvailableID(),Salary); 
+        employeeLogic.AddEmployee(employeeToAdd);
+        Console.WriteLine("Employee has been successfully added!");
+
     }
 }
