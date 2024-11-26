@@ -60,6 +60,7 @@ public static class Reservation
     {
         Console.WriteLine("These are your current reservations:");
         List<ReservationModel> reservations = ReservationsLogic.ShowAllUserReservations(userId);
+        MoviesLogic moviesLogic = new();
 
         if (reservations.Count == 0)
         {
@@ -82,7 +83,7 @@ public static class Reservation
 
             ShowingModel showing = ShowingsLogic.FindShowingByIdReturnShowing(reservations[AccountsLogic.ParseInt(userChoice) - 1].ShowingId);
             // Console.WriteLine($"Reservation:\n{showing.Id}");
-            AdjustmentMenu(reservations[AccountsLogic.ParseInt(userChoice) - 1], showing.Title);
+            AdjustmentMenu(reservations[AccountsLogic.ParseInt(userChoice) - 1], moviesLogic.GetMovieById(showing.MovieId).Title);
         }
     }
 
