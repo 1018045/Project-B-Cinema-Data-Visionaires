@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 
 static class Menus
 {
@@ -84,7 +85,8 @@ static class Menus
         Console.WriteLine("3. View all users");
         Console.WriteLine("4. Remove a movie screening");
         Console.WriteLine("5. View all movies");
-        Console.WriteLine("6. Return to main menu");
+        Console.WriteLine("6. Add an Employee");
+        Console.WriteLine("7. Return to main menu");
 
         string input = Console.ReadLine();
         switch (input)
@@ -105,6 +107,9 @@ static class Menus
                 ViewMovies();
                 break;
             case "6":
+                AddEmployee();
+                break;
+            case "7":
                 Start();
                 break;
             default:
@@ -402,5 +407,24 @@ static class Menus
     {
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
+    }
+
+    private static void AddEmployee()
+    {
+        EmployeeLogic employeeLogic = new (); 
+
+        Console.WriteLine("Enter the new employee's details"); 
+        Console.WriteLine("Employee Name: ");
+        string EmployeeName = Console.ReadLine(); 
+
+        Console.WriteLine("Monthly Salary: "); 
+        int Salary = Convert.ToInt32(Console.ReadLine());
+
+        
+
+        EmployeeModel employeeToAdd = new (EmployeeName,employeeLogic.FindFirstAvailableID(),Salary); 
+        employeeLogic.AddEmployee(employeeToAdd);
+        Console.WriteLine("Employee has been successfully added!");
+
     }
 }

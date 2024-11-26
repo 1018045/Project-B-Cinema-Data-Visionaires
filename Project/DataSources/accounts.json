@@ -39,11 +39,12 @@
     "fullName": "Joe Biden",
     "age": 92
   },
-  {
-    "id": 5,
-    "emailAddress": "ethanmeulens@gmail.com",
-    "password": "L3tsgof@m",
-    "fullName": "Ethan Meulens",
-    "age": 24
+  {    
+  "id": 5,    
+  "role": "admin",    
+  "emailAddress": "admin@admin",    
+  "password": "admin",   
+   "fullName": "Smart Investor",    
+   "age": 22  
   }
 ]
