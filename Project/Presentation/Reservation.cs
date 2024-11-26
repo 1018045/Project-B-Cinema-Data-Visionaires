@@ -32,7 +32,7 @@ public static class Reservation
         ReservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");
-        Menus.Start();
+        Menus.LoggedInMenu();
     }
 
     public static void Show(int userId)
@@ -52,7 +52,7 @@ public static class Reservation
                 Console.WriteLine($"{counter++}. {ShowingsLogic.FindShowingById(reservation.ShowingId)}");
             }
         }
-        Menus.Start();
+        Menus.LoggedInMenu();
     }
 
     public static void Adjust(int userId)
@@ -63,7 +63,7 @@ public static class Reservation
         if (reservations.Count == 0)
         {
             Console.WriteLine("You have 0 reservations!");
-            Menus.Start();
+            Menus.LoggedInMenu();
         }
         else
         {
@@ -119,7 +119,7 @@ public static class Reservation
                 AdjustmentMenu(reservation, showing);
                 break;
         }
-        Menus.Start();
+        Menus.LoggedInMenu();
     }
 
 
@@ -152,6 +152,6 @@ public static class Reservation
             Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date}");
         }
 
-        Menus.Start();
+        Menus.LoggedInMenu();
     }
 }
