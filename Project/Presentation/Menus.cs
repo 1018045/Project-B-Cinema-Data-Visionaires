@@ -1,4 +1,6 @@
 using System.Security;
+using Project.Logic.Account;
+using Project.Presentation;
 using System.Security.Cryptography.X509Certificates;
 
 static class Menus
@@ -45,7 +47,7 @@ static class Menus
         string email = Console.ReadLine();
         Console.WriteLine("Please enter your password");
 
-        SecureString pass = AccountsLogic.MaskInputstring();  
+        SecureString pass = AccountsLogic.MaskInputstring();
         string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
 
         AccountModel acc = AccountsLogic.Logic.CheckLogin(email, Password);
@@ -175,41 +177,41 @@ static class Menus
         Console.WriteLine("Enter 3 to show upcoming movie showings on a specific date");
         Console.WriteLine("Enter 4 to show your reservations");
         Console.WriteLine("Enter 5 to adjust your reservations");
-        Console.WriteLine("Enter 6 to log out");
+        Console.WriteLine("Enter 6 to manage your account");
+        Console.WriteLine("Enter 7 to log out");
 
         string input = Console.ReadLine().Trim();
-        if (input == "1")
+        switch (input)
         {
-            Reservation.Make();
-        }
-        else if( input == "2")
-        {
-            Showings.ShowUpcoming();
-            Start();
-        }
-        else if( input == "3")
-        {
-            Showings.ShowUpcomingOnDate();
-            Start();
-        }
-        else if (input == "4")
-        {
-            Reservation.Show(AccountsLogic.CurrentAccount.Id);
-        }
-        else if (input == "5")
-        {
-            Reservation.Adjust(AccountsLogic.CurrentAccount.Id);
-        }
-        else if (input == "6")
-        {
-            AccountsLogic.LogOut();
-            Console.WriteLine("\nYou are now logged out\n");
-            Start();
-        }
-        else
-        {
-            Console.WriteLine("Invalid input");
-            Start();
+            case "1":
+                Reservation.Make();
+                break;
+            case "2":
+                Showings.ShowUpcoming();
+                Start();
+                break;
+            case "3":
+                Showings.ShowUpcomingOnDate();
+                Start();
+                break;
+            case "4":
+                Reservation.Show(AccountsLogic.CurrentAccount.Id);
+                break;
+            case "5":
+                Reservation.Adjust(AccountsLogic.CurrentAccount.Id);
+                break;
+            case "6":
+                AccountPresentation.Menu();
+                break;
+            case "7":
+                AccountsLogic.LogOut();
+                Console.WriteLine("\nYou are now logged out\n");
+                Start();
+                break;
+            default:
+                Console.WriteLine("Invalid input");
+                Start();
+                break;
         }
     }
 
@@ -238,7 +240,7 @@ static class Menus
 
 
         Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
-        SecureString pass = AccountsLogic.MaskInputstring();  
+        SecureString pass = AccountsLogic.MaskInputstring();
         string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
    
         while (AccountsLogic.VerifyPassword(Password) == false)
@@ -246,7 +248,7 @@ static class Menus
             Console.WriteLine("Password was not valid. Try again.");
         
         
-            pass = AccountsLogic.MaskInputstring();  
+            pass = AccountsLogic.MaskInputstring();
             Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
         }
         Console.WriteLine("Confirm your password");
@@ -256,7 +258,7 @@ static class Menus
 
         while (!passwordsMatch)
         {
-            SecureString confirmPass = AccountsLogic.MaskInputstring();  
+            SecureString confirmPass = AccountsLogic.MaskInputstring();
             confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
 
             
