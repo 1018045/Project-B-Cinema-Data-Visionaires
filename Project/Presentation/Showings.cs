@@ -160,6 +160,11 @@ public static class Showings
     {
         ShowShowings(movieId, moviesLogic);
         List<ShowingModel> tempList = _showingsLogic.FindShowingsByMovieId(movieId);
+        if (tempList.Count == 0)
+        {
+            System.Console.WriteLine("No showings to remove");
+            return;
+        }
         int chosenId;
         bool correct;
         do
