@@ -9,11 +9,7 @@ public class ShowingsLogic
         _showings = ShowingsAccess.LoadAll();
     }
 
-    public bool AddShowing(int id, string title, string date, int room, int minimumAge)
-    {
-        // TODO
-        return false;
-    }
+
 
     // Returns all showings a particular user has reserved
     public List<ShowingModel> FindReservationByUserID(int id)
