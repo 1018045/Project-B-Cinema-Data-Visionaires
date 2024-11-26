@@ -17,7 +17,7 @@ public class GridNavigator(int xLimit, int yLimit)
         get => Cursor.Y;
         set => Cursor.Y = value;
     }
-    public Func<GridNavigator, bool>? SelectAction { get; set; }
+    public Func<GridNavigator, Func<bool>>? SelectAction { get; set; }
     public Action<GridNavigator>? RefreshAction { get; set; }
     public Func<GridNavigator, bool>? ConfirmationAction { get; set; }
 
@@ -47,7 +47,9 @@ public class GridNavigator(int xLimit, int yLimit)
                     break;
                 case var key when key == confirmKey:
                     if (ConfirmationAction?.Invoke(this) ?? true)
-                        done = SelectAction.Invoke(this);
+                        done = SelectAction
+                            .Invoke(this)
+                            .Invoke();
                     break;
                 case var key when key == cancelKey:
                     done = true;

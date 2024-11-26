@@ -51,6 +51,11 @@ public static class SeatSelectionHelpers
         return positions.Select(p => $"{p.Y + 1};{p.X + 1}").ToList();
     }
 
+    public static string PositionsToRowSeatString(List<Position> positions)
+    {
+        return string.Join(", ", positions.Select(p => $"row: {p.Y + 1}, seat: {p.X + 1}"));
+    }
+
     public static bool IsAdjacentOnSameRow(Position newSeat, List<Position> selectedSeats)
     {
         return selectedSeats.Any(selectedSeat =>
@@ -70,14 +75,14 @@ public static class SeatSelectionHelpers
                 .ToHashSet();
 
             var currentStreak = 0;
+
             for (var x = 0; x < rowDepth; x++)
             {
                 if (!takenPositionsInRow.Contains(x))
                 {
                     currentStreak++;
-                    if (currentStreak >= seatCount)
+                    if (currentStreak == seatCount)
                     {
-                        // Found enough adjacent seats
                         return true;
                     }
                 }
@@ -88,5 +93,12 @@ public static class SeatSelectionHelpers
             }
         }
         return false;
+    }
+
+
+    public static List<int> GenerateSeatingLayoutContent(int showingId)
+    {
+        var room = GetRoomByShowing(showingId);
+        return Enumerable.Repeat(room.SeatDepth, room.Rows).ToList();
     }
 }
