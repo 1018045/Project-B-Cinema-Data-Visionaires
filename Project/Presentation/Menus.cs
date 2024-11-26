@@ -95,12 +95,15 @@ static class Menus
                 break;
             case "3":
                 ViewUsers();
+                AdminMenu();
                 break;
             case "4":
                 RemoveUser();
+                AdminMenu();
                 break;
             case "5":
                 AddEmployee();
+                AdminMenu();
                 break;
             case "6":
                 Start();
@@ -151,8 +154,6 @@ static class Menus
         {
             Console.WriteLine($"No user found with email address '{email}'.");
         }
-        
-        Start(); // Terug naar het adminmenu
     }
 
     private static void ViewUsers()
@@ -162,7 +163,6 @@ static class Menus
         {
             Console.WriteLine($"User: {user.EmailAddress}");
         }
-        Start(); 
     }
 
     static public void LoggedInMenu()
