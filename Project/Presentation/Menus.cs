@@ -78,8 +78,7 @@ static class Menus
         Console.WriteLine("2. Manage movie showings");
         Console.WriteLine("3. Remove a user");
         Console.WriteLine("4. View all users");
-        Console.WriteLine("5. Remove a movie screening");
-        Console.WriteLine("6. Logout");
+        Console.WriteLine("5. Logout");
 
         string input = Console.ReadLine();
         switch (input)
@@ -99,9 +98,6 @@ static class Menus
                 ViewUsers();
                 break;
             case "5":
-                RemoveMovie();
-                break;
-            case "6":
                 Start();
                 break;
             default:
@@ -154,16 +150,6 @@ static class Menus
         Start(); // Terug naar het adminmenu
     }
 
-    private static void RemoveMovie()
-    {
-        Console.WriteLine("Voer het ID van de filmvertoning in die je wilt verwijderen:");
-        int id = int.Parse(Console.ReadLine());
-
-        ShowingsLogic showingsLogic = new ShowingsLogic();
-        showingsLogic.RemoveShowing(id);
-        Start(); // Terug naar het adminmenu
-    }
-
     private static void ViewUsers()
     {
         var users = AccountsAccess.LoadAll(); 
@@ -172,24 +158,6 @@ static class Menus
             Console.WriteLine($"User: {user.EmailAddress}");
         }
         Start(); 
-    }
-
-    private static void ViewMovies()
-    {
-        ShowingsLogic showingsLogic = new ShowingsLogic();
-
-        Console.WriteLine("\nAll movie screenings:");
-        
-        Console.WriteLine("----------------------------------------");
-        
-        
-        string allShowings = showingsLogic.ShowAll();
-        Console.WriteLine(allShowings);
-
-        Console.WriteLine("\nPress any key to go back…");
-        Console.ReadKey();
-        Start();
-        
     }
 
     static public void LoggedInMenu()

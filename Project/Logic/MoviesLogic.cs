@@ -54,7 +54,7 @@ public class MoviesLogic
         string output = "";
         foreach (MovieModel movie in _movies)
         {
-            output += $"{movie.Id + 1}: {movie.Title}\n";
+            output += $"\n{movie.Id + 1}: {movie.Title}";
         }
         return output;
     }
@@ -73,4 +73,6 @@ public class MoviesLogic
         }
         return pointer;
     }
+
+    public int GetSize() => _movies.Count;
 }

@@ -32,7 +32,7 @@ public static class Reservation
         ReservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");
-        Menus.Start();
+        Menus.LoggedInMenu();
     }
 
     public static void Show(int userId)

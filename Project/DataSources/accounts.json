@@ -28,7 +28,7 @@
     "role": "user",
     "emailAddress": "hoi@doei.nl",
     "password": "K@mala Harr1s",
-    "fullName": "Kamala",
+    "fullName": "Kamala Harris",
     "age": 89
   },
   {
@@ -44,5 +44,11 @@
     "role": "admin",
     "emailAddress": "ethanmeulens@gmail.com",
     "password": "L3tsgof@m"
+  },
+  {
+    "id": 6,
+    "role": "accountant",
+    "emailAddress": "accountant@cinema.com",
+    "password": "Accountant1@"
   }
 ]

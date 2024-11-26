@@ -143,17 +143,22 @@ public class ShowingsLogic
     {
         _showings.Remove(showing);
         ShowingsAccess.WriteAll(_showings);
-        Console.WriteLine($"Showing at {showing.Date} has been removed.");
+        Console.WriteLine($"Showing at {showing.Date.ToString("dd-MM-yyyy HH:mm:ss")} has been removed.");
     }
 
     private int FindNextAvailableId()
     {
-        List<ShowingModel> showings = ShowingsAccess.LoadAll();
-        if (showings.Count == 0)
+        int pointer = 0;
+        List<ShowingModel> tempList = _showings.OrderBy(a => a.Id).ToList<ShowingModel>();
+        foreach (ShowingModel showing in tempList)
         {
-           return 0; // Begin met ID 1 als er geen vertoningen zijn
+            if (pointer != showing.Id)
+            {
+                return pointer;
+            }
+            pointer++;
         }
-        return showings.Max(s => s.Id) + 1; // Vind het hoogste ID en verhoog met 1
+        return pointer;
     }
 
     public bool IsRoomFree(DateTime newDate, int room, int showingDuration, MoviesLogic log)
@@ -161,15 +166,14 @@ public class ShowingsLogic
         foreach (ShowingModel showing in _showings)
         {
             if (showing.Room == room)
-            {
-                if (newDate.Date == showing.Date)
+            {   // de showings overlappen:
+                // alleen als het BEGIN van showing 2 EERDER is dan het begin van showing 1, en het EINDE van showing 2 LATER is dan het begin van showing 1
+                if ((newDate < showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) > showing.Date) ||
+                    (showing.Date < newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) > newDate))
                 {
-                    if (!(newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) < showing.Date) ||
-                        !(showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + log.GetMovieById(showing.MovieId).Duration) < newDate));
-                    {
-                        return false;
-                    }
+                    return false;
                 }
+                
             }
         }
         return true;
