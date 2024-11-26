@@ -16,7 +16,7 @@ public class LayoutGenerator
 
     public LayoutGenerator(int roomId, int showingId, GridNavigator navigator, ref List<Position> selectedSeats)
     {
-        _room = GetRoomByShowing(roomId);
+        _room = GetRoom(roomId);
         _navigator = navigator;
         TakenSeats = GetTakenSeats(showingId);
         SelectedSeats = selectedSeats;

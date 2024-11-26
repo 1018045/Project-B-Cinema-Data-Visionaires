@@ -8,13 +8,13 @@ public class SeatingPresentation
 {
     public static List<string> Present(int showingId)
     {
-        int seatCount = -1;
-        for (bool resolved = false; resolved == false;)
+        var seatCount = -1;
+        for (var resolved = false; resolved == false;)
         {
             Console.WriteLine("How many seats would you like to book?");
             var seatAmountInput = Console.ReadLine() ?? "";
             resolved = int.TryParse(seatAmountInput, out seatCount)
-                       && CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14]); //TODO add seating dimensions to json and read it
+                       && CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), GenerateSeatingLayoutContent(showingId));
         }
 
         if (seatCount == -1)
@@ -37,7 +37,7 @@ public class SeatingPresentation
         Console.WriteLine(presentation);
     }
 
-    public static void SuccessfulSelection(string seatDisplay)
+    public static bool SuccessfulSelection(string seatDisplay)
     {
         Console.Clear();
 
@@ -46,5 +46,22 @@ public class SeatingPresentation
         Thread.Sleep(5000);
 
         Console.Clear();
+        return true;
+    }
+
+    public static bool NotAdjacentResult()
+    {
+        Console.Clear();
+        Console.WriteLine("You can only select seats that are next to each other");
+        Thread.Sleep(2000);
+        return false;
+    }
+
+    public static bool AlreadyTakenResult()
+    {
+        Console.Clear();
+        Console.WriteLine("This seat is already taken (TIP: [x] means taken)");
+        Thread.Sleep(2000);
+        return false;
     }
 }

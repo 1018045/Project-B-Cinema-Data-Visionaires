@@ -11,11 +11,13 @@ public class SeatSelectionLogic
 
     private readonly int _seatCount;
     private readonly List<Position> _selectedSeats = [];
+    private readonly List<Position> _takenSeats;
 
     public SeatSelectionLogic(int showingId, int seatCount)
     {
         var room = GetRoomByShowing(showingId);
         _seatCount = seatCount;
+        _takenSeats = GetTakenSeats(showingId);
         GridGenerator = new GridNavigator(room.SeatDepth, room.Rows);
         LayoutGenerator = new LayoutGenerator(room.Id,  showingId, GridGenerator, ref _selectedSeats);
     }
@@ -29,22 +31,22 @@ public class SeatSelectionLogic
     }
 
     //return true if the WHOLE selection is done
-    private bool ActionMethod(GridNavigator navigator)
+    private Func<bool> ActionMethod(GridNavigator navigator)
     {
         var curPos = navigator.Cursor;
-        if (_selectedSeats.Contains(curPos))
-            return false;
+        if (_selectedSeats.Contains(curPos) || _takenSeats.Contains(curPos))
+            return AlreadyTakenResult;
 
         if (!IsAdjacentOnSameRow(curPos, _selectedSeats) && _selectedSeats.Count != 0)
-            return false;
+            return NotAdjacentResult;
 
         _selectedSeats.Add(curPos with {}); //deep copy
 
         if (_selectedSeats.Count < _seatCount)
-            return false;
+            return () => false;
 
         Console.Clear();
-        return true;
+        return () => SuccessfulSelection(PositionsToRowSeatString(_selectedSeats));
     }
 }
 
