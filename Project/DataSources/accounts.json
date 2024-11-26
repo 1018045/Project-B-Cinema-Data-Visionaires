@@ -38,5 +38,13 @@
     "password": "1@mSleepy",
     "fullName": "Joe Biden",
     "age": 92
+  },
+  {    
+  "id": 5,    
+  "role": "admin",    
+  "emailAddress": "admin@admin",    
+  "password": "admin",   
+   "fullName": "Smart Investor",    
+   "age": 22  
   }
 ]
