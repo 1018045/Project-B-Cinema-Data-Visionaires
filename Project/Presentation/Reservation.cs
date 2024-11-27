@@ -20,6 +20,92 @@ public static class Reservation
         var showingId = Convert.ToInt32(id);
 
         var selectedSeats = SeatingPresentation.Present(showingId);
+
+        Console.WriteLine("Would you like to order extra's?"); 
+        Console.WriteLine("Enter Y for Yes/N for No");
+        string decision = Console.ReadLine();
+        Console.WriteLine("Would you like to order extra's?"); 
+        Console.WriteLine("Enter Y for Yes/N for No");
+        if(decision.Equals("Y", StringComparison.OrdinalIgnoreCase))
+        {
+
+            Console.WriteLine("These are the food choices:");
+            Console.WriteLine("1. Gourmet Truffle Cheeseburger");
+            Console.WriteLine("2. Italian Style Pizza");
+            Console.WriteLine("3. Cheeseboard");
+
+          
+            Console.WriteLine("Please enter the number of your choice (1-3):");
+            string foodChoice = Console.ReadLine();
+
+           
+            switch (foodChoice)
+            {
+                case "1":
+                    Console.WriteLine("You have selected Gourmet Truffle Cheeseburger.");
+                    break;
+                case "2":
+                    Console.WriteLine("You have selected Italian Style Pizza.");
+                    break;
+                case "3":
+                    Console.WriteLine("You have selected Cheeseboard.");
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice, please choose a number between 1 and 3.");
+                    return;  
+            }
+
+
+
+
+
+           Console.WriteLine("Would you like anything to drink?");
+            Console.WriteLine("These are the drink choices:");
+            Console.WriteLine("1. Red Wine");
+            Console.WriteLine("2. White Wine");
+            Console.WriteLine("3. Vitamin Water");
+            Console.WriteLine("4. Sparkling Water");
+            Console.WriteLine("5. Orange Juice");
+
+         
+            Console.WriteLine("Please enter the number of your drink choice (1-5):");
+            string drinkChoice = Console.ReadLine();
+
+           
+            switch (drinkChoice)
+            {
+                case "1":
+                    Console.WriteLine("You have selected Red Wine.");
+                    break;
+                case "2":
+                    Console.WriteLine("You have selected White Wine.");
+                    break;
+                case "3":
+                    Console.WriteLine("You have selected Vitamin Water.");
+                    break;
+                case "4":
+                    Console.WriteLine("You have selected Sparkling Water.");
+                    break;
+                case "5":
+                    Console.WriteLine("You have selected Orange Juice.");
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice, please choose a number between 1 and 5.");
+                    return;  // Exit if invalid drink choice
+            }
+
+            Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
+        }
+        else if (decision.Equals("N", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("No extras ordered. Thank you for your response.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Please enter Y for Yes or N for No.");
+        }
+
+        
         
         string payment = "X";
         while (payment != "")
@@ -29,7 +115,7 @@ public static class Reservation
             Console.WriteLine(payment);
         }
 
-        //add the all the reserved seats
+        
         ReservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");

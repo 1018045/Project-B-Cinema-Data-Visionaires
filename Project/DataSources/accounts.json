@@ -3,49 +3,37 @@
     "id": 0,
     "role": "user",
     "emailAddress": "mr47@gmail.com",
-    "password": "Kl@rashond3nbist4",
-    "fullName": "Donald",
-    "age": 0
+    "password": "Kl@rashond3nbist4"
   },
   {
     "id": 1,
     "role": "user",
     "emailAddress": "t@b.c",
-    "password": "xyz",
-    "fullName": "Thomas Edison",
-    "age": 0
+    "password": "xyz"
   },
   {
     "id": 2,
     "role": "user",
     "emailAddress": "xxx@x.com",
-    "password": "xxxxxxxx",
-    "fullName": "mister X",
-    "age": 0
+    "password": "xxxxxxxx"
   },
   {
     "id": 3,
     "role": "user",
     "emailAddress": "hoi@doei.nl",
-    "password": "K@mala Harr1s",
-    "fullName": "Kamala Harris",
-    "age": 89
+    "password": "K@mala Harr1s"
   },
   {
     "id": 4,
     "role": "user",
     "emailAddress": "JoeBiden@gmail.nl",
-    "password": "1@mSleepy",
-    "fullName": "Joe Biden",
-    "age": 92
+    "password": "1@mSleepy"
   },
-  {    
-    "id": 5,    
-    "role": "admin",    
-    "emailAddress": "admin@admin",    
-    "password": "admin",   
-    "fullName": "Smart Investor",    
-    "age": 22
+  {
+    "id": 5,
+    "role": "admin",
+    "emailAddress": "admin@admin",
+    "password": "admin"
   },
   {
     "id": 6,
@@ -59,4 +47,5 @@
     "emailAddress": "accountant@cinema.com",
     "password": "Accountant1@"
   }
+ 
 ]

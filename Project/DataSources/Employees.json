@@ -3,5 +3,10 @@
     "EmployeeName": "Squidward",
     "EmployeeID": 0,
     "EmployeeSalary": 500
+  },
+  {
+    "EmployeeName": "Sasha Green",
+    "EmployeeID": 1,
+    "EmployeeSalary": 800
   }
 ]
