@@ -28,7 +28,7 @@ public static class Showings
         {
             System.Console.WriteLine($"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
             System.Console.WriteLine("1. View showings");
-            System.Console.WriteLine("2. Add showings");
+            System.Console.WriteLine("2. Add showing(s)");
             System.Console.WriteLine("3. Remove showings");
             System.Console.WriteLine("4. Go back");
             string userChoice = Console.ReadLine();
@@ -78,14 +78,14 @@ public static class Showings
         int room;
         do
         {
-            System.Console.WriteLine("Which room will this showing be in? (1, 2, or 3)");
+            System.Console.WriteLine("Which room will the showing be in? (1, 2, or 3)");
             correct = int.TryParse(Console.ReadLine(), out room) && room > 0 && room < 4;          
         } while (!correct);
 
-        System.Console.WriteLine("Is this a repeat showing?");
+        System.Console.WriteLine("Do you want to repeat the showing?");
         System.Console.WriteLine("1. Repeat daily");
         System.Console.WriteLine("2. Repeat weekly");
-        System.Console.WriteLine("3. Only add a single showing");
+        System.Console.WriteLine("3. Only once");
         string userChoice;
         bool DoMore = true;
         string pattern = "";
@@ -112,7 +112,7 @@ public static class Showings
         
         if (pattern == "daily")
         {
-            System.Console.WriteLine("How many days do you want to repeat this showing?");
+            System.Console.WriteLine("How many days do you want to repeat the showing?");
             int res;
             string input;
             do
@@ -126,7 +126,7 @@ public static class Showings
         } 
         else if (pattern == "weekly")
         {
-            System.Console.WriteLine("How many weeks do you want to repeat this showing?");
+            System.Console.WriteLine("How many weeks do you want to repeat the showing?");
             int res;
             string input;
             do
@@ -147,11 +147,12 @@ public static class Showings
             Console.ForegroundColor = ConsoleColor.Red;
             System.Console.WriteLine($"Room {room} is not available on {date.ToString("dd-MM-yyyy HH:mm:ss")}");
             Console.ResetColor();
+            Thread.Sleep(250);
             return;
         }
         _showingsLogic.AddShowing(movieId, date, room);
         Console.ForegroundColor = ConsoleColor.Green;
-        System.Console.WriteLine($"Showing on {date.ToString("dd-MM-yyyy HH:mm:ss")} has been succesfully added to the planning");
+        System.Console.WriteLine($"Showing has been succesfully added on {date.ToString("dd-MM-yyyy HH:mm:ss")}");
         Console.ResetColor();
         Thread.Sleep(500);
     }

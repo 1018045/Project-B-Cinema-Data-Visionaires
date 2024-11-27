@@ -12,7 +12,6 @@ public class ShowingsLogic
         _showings = ShowingsAccess.LoadAll();
     }
 
-    // Returns all showings a particular user has reserved
     public List<ShowingModel> FindReservationByUserID(int id)
     {
         List<ShowingModel> output = new();
@@ -168,8 +167,8 @@ public class ShowingsLogic
             if (showing.Room == room)
             {   // de showings overlappen:
                 // alleen als het BEGIN van showing 2 EERDER is dan het begin van showing 1, en het EINDE van showing 2 LATER is dan het begin van showing 1
-                if ((newDate < showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) > showing.Date) ||
-                    (showing.Date < newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) > newDate))
+                if ((newDate <= showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= showing.Date) ||
+                    (showing.Date <= newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= newDate))
                 {
                     return false;
                 }
