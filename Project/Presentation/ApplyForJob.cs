@@ -11,7 +11,7 @@ public static class ApplyForJob
             Console.WriteLine("=== Job Vacancies ===");
             Console.WriteLine("1. View All Vacancies");
             Console.WriteLine("2. Apply for Job");
-            Console.WriteLine("0. Return to Main Menu");
+            Console.WriteLine("3. Return to Main Menu");
 
             string choice = Console.ReadLine();
 
@@ -23,8 +23,8 @@ public static class ApplyForJob
                 case "2":
                     ApplyToVacancy();
                     break;
-                case "0":
-                    LoginMenu.Start();
+                case "3":
+                    Menus.Start();
                     return;
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");

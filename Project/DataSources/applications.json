@@ -12,5 +12,12 @@
     "email": "asdf",
     "motivation": "asdfasdf",
     "dateApplied": "2024-11-26T12:26:09.765924+01:00"
+  },
+  {
+    "id": 3,
+    "vacancyId": 1,
+    "email": "yks@gm",
+    "motivation": "dkgdmamdg",
+    "dateApplied": "2024-11-27T12:55:38.106323+01:00"
   }
 ]
