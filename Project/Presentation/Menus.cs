@@ -400,9 +400,7 @@ static class Menus
         string EmployeeName = Console.ReadLine(); 
 
         Console.WriteLine("Monthly Salary: "); 
-        int Salary = Convert.ToInt32(Console.ReadLine());
-
-        
+        int Salary = Convert.ToInt32(Console.ReadLine());   
 
         EmployeeModel employeeToAdd = new (EmployeeName,employeeLogic.FindFirstAvailableID(),Salary); 
         employeeLogic.AddEmployee(employeeToAdd);
@@ -439,7 +437,7 @@ static class Menus
         vacancyLogic.AddVacancy(jobTitle, jobDescription, salary, employmentType);
 
         Console.WriteLine("Job vacancy has been added.");
-        Start();
+        AdminMenu();
     }
 
     private static void RemoveJobVacancy()
@@ -477,7 +475,7 @@ static class Menus
 
         Console.WriteLine("\nPress any key to go back...");
         Console.ReadKey();
-        Start();
+        AdminMenu();
     }
 
     private static void ViewAllVacancies()
@@ -487,6 +485,6 @@ static class Menus
         Console.WriteLine(vacancyLogic.ShowAllVacancies());
         Console.WriteLine("\nPress any key to go back...");
         Console.ReadKey();
-        Start();
+        AdminMenu();
     }
 }
