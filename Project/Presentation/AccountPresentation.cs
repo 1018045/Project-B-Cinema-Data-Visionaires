@@ -138,20 +138,28 @@ public static class AccountPresentation
             if (input.Equals("y"))
             {
                 logic.DeleteAccount();
+
+                Console.Clear();
+                Console.WriteLine("Successfully deleted your account");
+                Console.WriteLine("You will now be logged out");
+                Thread.Sleep(2500);
+                Console.Clear();
+
                 done = true;
+                Menus.Start();
             }
             else if (input.Equals("n"))
             {
+                Console.Clear();
+                Console.WriteLine("Canceled the deletion of your account");
+                Console.WriteLine("You will return to the menu");
+                Thread.Sleep(2500);
+                Console.Clear();
+
                 done = true;
+                UpdateAccountDetails(logic);
             }
         }
 
-        Console.Clear();
-        Console.WriteLine("Successfully deleted your account");
-        Console.WriteLine("You will now be logged out");
-        Thread.Sleep(2500);
-        Console.Clear();
-
-        Menus.Start();
     }
 }
