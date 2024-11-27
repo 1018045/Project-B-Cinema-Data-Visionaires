@@ -11,7 +11,8 @@ static class Menus
         Console.WriteLine("Enter 2 to create an account");
         Console.WriteLine("Enter 3 to show upcoming movie showings");
         Console.WriteLine("Enter 4 to show upcoming movie showings on a specific date");
-        Console.WriteLine("Enter 5 to exit program");
+        Console.WriteLine("Enter 5 View Job Menu");
+        Console.WriteLine("Enter 6 to exit program");
 
         string input = Console.ReadLine();
         switch (input)
@@ -31,6 +32,9 @@ static class Menus
                 Start();
                 break;
             case "5":
+                ApplyForJob.ShowJobMenu();
+                break;
+            case "6":
                 Environment.Exit(0);
                 break;
             default:
@@ -82,7 +86,10 @@ static class Menus
         Console.WriteLine("3. View all users");
         Console.WriteLine("4. Remove a user");
         Console.WriteLine("5. Add an Employee");
-        Console.WriteLine("6. Logout");
+        Console.WriteLine("6. Add job vacancy");
+        Console.WriteLine("7. Remove job vacancy");
+        Console.WriteLine("8. View all vacancies");
+        Console.WriteLine("9. Logout");
 
         string input = Console.ReadLine();
         switch (input)
@@ -108,6 +115,15 @@ static class Menus
                 AdminMenu();
                 break;
             case "6":
+                AddJobVacancy();
+                break;
+            case "7":
+                RemoveJobVacancy();
+                break;
+            case "8":
+                ViewAllVacancies();
+                break;
+            case "9":
                 Start();
                 break;
             default:
@@ -392,5 +408,85 @@ static class Menus
         employeeLogic.AddEmployee(employeeToAdd);
         Console.WriteLine("Employee has been successfully added!");
 
+    }
+
+    private static void AddJobVacancy()
+    {
+        Console.WriteLine("Enter the job title:");
+        string jobTitle = Console.ReadLine();
+
+        Console.WriteLine("Enter the job description:");
+        string jobDescription = Console.ReadLine();
+
+        Console.WriteLine("Enter the salary (leave blank if not applicable):");
+        string salaryInput = Console.ReadLine();
+
+        decimal? salary;
+
+        if (string.IsNullOrEmpty(salaryInput))
+        {
+            salary = null;
+        }
+        else
+        {
+            salary = decimal.Parse(salaryInput);
+        }
+
+        Console.WriteLine("Enter the type of employment (Full-time/Part-time):");
+        string employmentType = Console.ReadLine();
+
+        var vacancyLogic = new JobVacancyLogic();
+        vacancyLogic.AddVacancy(jobTitle, jobDescription, salary, employmentType);
+
+        Console.WriteLine("Job vacancy has been added.");
+        Start();
+    }
+
+    private static void RemoveJobVacancy()
+    {
+        Console.Clear();
+        var vacancyLogic = new JobVacancyLogic();
+
+        Console.WriteLine("Current vacancies:");
+        Console.WriteLine(vacancyLogic.ShowAllVacancies());
+
+        Console.WriteLine("\nEnter the ID of the vacancy you want to remove (or 0 to cancel):");
+        if (int.TryParse(Console.ReadLine(), out int id))
+        {
+            if (id == 0)
+            {
+                Console.WriteLine("Removal canceled.");
+            }
+            else
+            {
+                bool isRemoved = vacancyLogic.RemoveVacancy(id);
+                if (isRemoved)
+                {
+                    Console.WriteLine($"Vacancy with ID {id} has been successfully removed.");
+                }
+                else
+                {
+                    Console.WriteLine($"No vacancy found with ID {id}.");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid ID entered.");
+        }
+
+        Console.WriteLine("\nPress any key to go back...");
+        Console.ReadKey();
+        Start();
+    }
+
+    private static void ViewAllVacancies()
+    {
+        var vacancyLogic = new JobVacancyLogic();
+        Console.WriteLine("\nAll vacancies:");
+        Console.WriteLine(vacancyLogic.ShowAllVacancies());
+        Console.WriteLine("\nPress any key to go back...");
+        Console.ReadKey();
+        Start();
     }
 }

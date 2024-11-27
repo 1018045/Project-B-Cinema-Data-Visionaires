@@ -12,6 +12,9 @@ public class ShowingsLogic
         _showings = ShowingsAccess.LoadAll();
     }
 
+
+
+    // Returns all showings a particular user has reserved
     public List<ShowingModel> FindReservationByUserID(int id)
     {
         List<ShowingModel> output = new();

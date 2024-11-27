@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "jobTitle": "Cinema Manager",
+    "jobDescription": "We are looking for an experienced cinema manager to oversee operations...",
+    "datePosted": "2024-03-20T00:00:00",
+    "salary": 50000.00,
+    "employmentType": "Fulltime"
+  },
+  {
+    "id": 2,
+    "jobTitle": "Ticket Sales Coordinator",
+    "jobDescription": "Experienced ticket sales coordinator wanted to enhance customer experience...",
+    "datePosted": "2024-03-21T00:00:00",
+    "salary": 60000.00,
+    "employmentType": "Fulltime"
+  },
+  {
+    "id": 3,
+    "jobTitle": "ashfdhasdf",
+    "jobDescription": "ahsdfhasdhf",
+    "datePosted": "2024-11-26T10:10:26.545446+01:00",
+    "salary": null,
+    "employmentType": "asdlfasd"
+  }
+]
