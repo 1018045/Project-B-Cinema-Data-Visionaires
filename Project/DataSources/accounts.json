@@ -44,8 +44,13 @@
   {
     "id": 7,
     "role": "accountant",
-    "emailAddress": "accountant@cinema.com",
-    "password": "Accountant1@"
+    "emailAddress": "accountant@accountant",
+    "password": "accountant"
+  },
+  {
+    "id": 8,
+    "role": "user",
+    "emailAddress": "user@user",
+    "password": "user"
   }
- 
 ]
