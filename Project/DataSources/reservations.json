@@ -2,64 +2,15 @@
   {
     "id": 0,
     "userId": 1,
-    "showingId": 4,
-    "seats": "3",
+    "showingId": 98,
+    "seats": "6;1,6;2,6;4",
     "paymentComplete": true
   },
   {
-    "id": 1,
+    "id": 11,
     "userId": 1,
-    "showingId": 1,
-    "seats": "1,2,3",
-    "paymentComplete": true
-  },
-  {
-    "id": 2,
-    "userId": 2,
-    "showingId": 2,
-    "seats": "1,2,3",
-    "paymentComplete": true
-  },
-  {
-    "id": 3,
-    "userId": 1,
-    "showingId": 2,
-    "seats": "1,2,3",
-    "paymentComplete": true
-  },
-  {
-    "id": 4,
-    "userId": 1,
-    "showingId": 300,
-    "seats": "(1;1),(1;2),(1;3)",
-    "paymentComplete": true
-  },
-  {
-    "id": 5,
-    "userId": 1,
-    "showingId": 300,
-    "seats": "(1;7),(1;8),(1;9)",
-    "paymentComplete": true
-  },
-  {
-    "id": 6,
-    "userId": 1,
-    "showingId": 300,
+    "showingId": 6,
     "seats": "(4;1),(4;2),(4;3)",
-    "paymentComplete": true
-  },
-  {
-    "id": 7,
-    "userId": 1,
-    "showingId": 300,
-    "seats": "(4;8)",
-    "paymentComplete": true
-  },
-  {
-    "id": 8,
-    "userId": 3,
-    "showingId": 298,
-    "seats": "(7;2)",
     "paymentComplete": true
   }
 ]

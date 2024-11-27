@@ -28,7 +28,7 @@
     "role": "user",
     "emailAddress": "hoi@doei.nl",
     "password": "K@mala Harr1s",
-    "fullName": "Kamala",
+    "fullName": "Kamala Harris",
     "age": 89
   },
   {
@@ -39,22 +39,24 @@
     "fullName": "Joe Biden",
     "age": 92
   },
-  {
-    "id": 5,
-    "role": "admin",
-    "emailAddress": "admin@cinema.nl",
-    "password": "admin123"
+  {    
+    "id": 5,    
+    "role": "admin",    
+    "emailAddress": "admin@admin",    
+    "password": "admin",   
+    "fullName": "Smart Investor",    
+    "age": 22
   },
   {
     "id": 6,
     "role": "admin",
-    "emailAddress": "admin2@cinema.nl",
-    "password": "admin456"
+    "emailAddress": "ethanmeulens@gmail.com",
+    "password": "L3tsgof@m"
   },
   {
     "id": 7,
     "role": "accountant",
-    "emailAddress": "accountant@cinema.nl",
-    "password": "Account@nt123"
+    "emailAddress": "accountant@cinema.com",
+    "password": "Accountant1@"
   }
 ]

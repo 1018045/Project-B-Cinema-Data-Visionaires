@@ -1,4 +1,6 @@
 ﻿using Project.Logic;
+using Project.Logic.SeatSelection;
+using static Project.Helpers.SeatSelectionHelpers;
 
 namespace Project.Presentation;
 
@@ -6,19 +8,20 @@ public class SeatingPresentation
 {
     public static List<string> Present(int showingId)
     {
-        int seatCount = -1;
-        for (bool resolved = false; resolved == false;)
+        var seatCount = -1;
+        for (var resolved = false; resolved == false;)
         {
             Console.WriteLine("How many seats would you like to book?");
             var seatAmountInput = Console.ReadLine() ?? "";
-
-            resolved = int.TryParse(seatAmountInput, out seatCount);
+            resolved = int.TryParse(seatAmountInput, out seatCount)
+                       && CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), GenerateSeatingLayoutContent(showingId));
         }
 
         if (seatCount == -1)
             return [];
 
-        return SeatSelectionLogic.StartSeatSelection(showingId, seatCount);
+        var logic = new SeatSelectionLogic(showingId, seatCount);
+        return logic.StartSeatSelection();
     }
 
     //used to constantly refresh the seating
@@ -34,7 +37,7 @@ public class SeatingPresentation
         Console.WriteLine(presentation);
     }
 
-    public static void SuccessfulSelection(string seatDisplay)
+    public static bool SuccessfulSelection(string seatDisplay)
     {
         Console.Clear();
 
@@ -43,5 +46,22 @@ public class SeatingPresentation
         Thread.Sleep(5000);
 
         Console.Clear();
+        return true;
+    }
+
+    public static bool NotAdjacentResult()
+    {
+        Console.Clear();
+        Console.WriteLine("You can only select seats that are next to each other");
+        Thread.Sleep(2000);
+        return false;
+    }
+
+    public static bool AlreadyTakenResult()
+    {
+        Console.Clear();
+        Console.WriteLine("This seat is already taken (TIP: [x] means taken)");
+        Thread.Sleep(2000);
+        return false;
     }
 }

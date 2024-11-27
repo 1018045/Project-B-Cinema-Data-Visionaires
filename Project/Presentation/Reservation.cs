@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic;
+using Project.Logic.Account;
 using Project.Presentation;
 
 public static class Reservation
@@ -32,7 +33,7 @@ public static class Reservation
         ReservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");
-        Menu.Start();
+        Menus.LoggedInMenu();
     }
 
     public static void Show(int userId)
@@ -52,18 +53,19 @@ public static class Reservation
                 Console.WriteLine($"{counter++}. {ShowingsLogic.FindShowingById(reservation.ShowingId)}");
             }
         }
-        Menu.Start();
+        Menus.LoggedInMenu();
     }
 
     public static void Adjust(int userId)
     {
         Console.WriteLine("These are your current reservations:");
         List<ReservationModel> reservations = ReservationsLogic.ShowAllUserReservations(userId);
+        MoviesLogic moviesLogic = new();
 
         if (reservations.Count == 0)
         {
             Console.WriteLine("You have 0 reservations!");
-            Menu.Start();
+            Menus.LoggedInMenu();
         }
         else
         {
@@ -81,7 +83,7 @@ public static class Reservation
 
             ShowingModel showing = ShowingsLogic.FindShowingByIdReturnShowing(reservations[AccountsLogic.ParseInt(userChoice) - 1].ShowingId);
             // Console.WriteLine($"Reservation:\n{showing.Id}");
-            AdjustmentMenu(reservations[AccountsLogic.ParseInt(userChoice) - 1], showing.Title);
+            AdjustmentMenu(reservations[AccountsLogic.ParseInt(userChoice) - 1], moviesLogic.GetMovieById(showing.MovieId).Title);
         }
     }
 
@@ -119,7 +121,7 @@ public static class Reservation
                 AdjustmentMenu(reservation, showing);
                 break;
         }
-        Menu.Start();
+        Menus.LoggedInMenu();
     }
 
 
@@ -152,6 +154,6 @@ public static class Reservation
             Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date}");
         }
 
-        Menu.Start();
+        Menus.LoggedInMenu();
     }
 }

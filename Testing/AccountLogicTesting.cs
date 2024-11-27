@@ -1,3 +1,5 @@
+using Project.Logic.Account;
+
 namespace Testing;
 
 [TestClass]
