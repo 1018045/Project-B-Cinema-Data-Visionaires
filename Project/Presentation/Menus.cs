@@ -152,7 +152,7 @@ static class Menus
         moviesLogic.AddMovie(title, duration, minimumAge);
         Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
 
-        System.Console.WriteLine("Which extra's are mandatory for this movie?");
+        // System.Console.WriteLine("Which extra's are mandatory for this movie?");
         // TODO
     }
 
