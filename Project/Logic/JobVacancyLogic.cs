@@ -70,4 +70,32 @@ public class JobVacancyLogic
         
         if (_vacancies.Count == 0)
         {
-      
+            return "No vacancies available at the moment.\n";
+        }
+
+        string output = "";
+        foreach (var vacancy in _vacancies)
+        {
+            output += $"ID: {vacancy.VacancyId}\n";
+            output += $"Position: {vacancy.JobTitle}\n";
+            output += $"Description: {vacancy.JobDescription}\n";
+            output += $"Type: {vacancy.EmploymentType}\n";
+            if (vacancy.Salary.HasValue)
+            {
+                output += "Salary: " + vacancy.Salary.Value.ToString("C") + "\n";
+            }
+            else
+            {
+                output += "Salary: Not specified\n";
+            }
+
+            output += "------------------------\n";
+        }
+        return output;
+    }
+
+    public bool VacancyExists(int id)
+    {
+        return _vacancies.Any(v => v.VacancyId == id);
+    }
+} 
