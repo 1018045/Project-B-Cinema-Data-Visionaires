@@ -41,7 +41,7 @@ public class SeatingPresentation
     {
         Console.Clear();
 
-        Console.WriteLine($"You've successfully selected the following seats: {seatDisplay}");
+        Console.WriteLine($"You've selected the following seats: {seatDisplay}");
 
         Thread.Sleep(5000);
 

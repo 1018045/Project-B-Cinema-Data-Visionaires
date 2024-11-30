@@ -19,25 +19,29 @@ public static class Reservation
         var id = Console.ReadLine();
         var showingId = Convert.ToInt32(id);
 
-        var selectedSeats = SeatingPresentation.Present(showingId);
+        string confirmSeats = "";
+        List<string> selectedSeats;
+
+        do        
+        {
+            selectedSeats = SeatingPresentation.Present(showingId);
+            System.Console.WriteLine("Enter Y to confirm your seats.");
+            System.Console.WriteLine("Enter any other key to change your seat selection, or the amount of seats you want to book.");
+            confirmSeats = Console.ReadLine();
+        } while(confirmSeats.ToLower().Trim() != "y");
 
         Console.WriteLine("Would you like to order extra's?"); 
         Console.WriteLine("Enter Y for Yes/N for No");
         string decision = Console.ReadLine();
-        Console.WriteLine("Would you like to order extra's?"); 
-        Console.WriteLine("Enter Y for Yes/N for No");
         if(decision.Equals("Y", StringComparison.OrdinalIgnoreCase))
         {
-
             Console.WriteLine("These are the food choices:");
             Console.WriteLine("1. Gourmet Truffle Cheeseburger");
             Console.WriteLine("2. Italian Style Pizza");
             Console.WriteLine("3. Cheeseboard");
-
           
             Console.WriteLine("Please enter the number of your choice (1-3):");
             string foodChoice = Console.ReadLine();
-
            
             switch (foodChoice)
             {
@@ -55,10 +59,6 @@ public static class Reservation
                     return;  
             }
 
-
-
-
-
             Console.WriteLine("Would you like anything to drink?");
             Console.WriteLine("These are the drink choices:");
             Console.WriteLine("1. Red Wine");
@@ -66,12 +66,10 @@ public static class Reservation
             Console.WriteLine("3. Vitamin Water");
             Console.WriteLine("4. Sparkling Water");
             Console.WriteLine("5. Orange Juice");
-
-         
+   
             Console.WriteLine("Please enter the number of your drink choice (1-5):");
             string drinkChoice = Console.ReadLine();
-
-           
+          
             switch (drinkChoice)
             {
                 case "1":
@@ -104,8 +102,6 @@ public static class Reservation
         {
             Console.WriteLine("Invalid input. Please enter Y for Yes or N for No.");
         }
-
-        
         
         string payment = "X";
         while (payment != "")
@@ -114,8 +110,7 @@ public static class Reservation
             payment = ReservationsLogic.ValidateBankDetails(Console.ReadLine()!);
             Console.WriteLine(payment);
         }
-
-        
+    
         ReservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");
