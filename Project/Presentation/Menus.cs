@@ -46,20 +46,31 @@ static class Menus
 
     public static void Login()
     {
-        Console.WriteLine("Welcome to the login page");
-        Console.WriteLine("Please enter your email address");
-        string email = Console.ReadLine();
-        Console.WriteLine("Please enter your password");
-
-        SecureString pass = AccountsLogic.MaskInputstring();
-        string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
-
-        AccountModel acc = AccountsLogic.Logic.CheckLogin(email, Password);
-        if (acc == null)
+        AccountModel acc;
+        int loginAttempts = 3;
+        do
         {
-            Console.WriteLine("No account found with that email and password");
-            Start();
+            System.Console.WriteLine($"You have {loginAttempts} login attempts left!");
+            Console.WriteLine("Please enter your email address");
+            string email = Console.ReadLine();
+
+            Console.WriteLine("Please enter your password");
+            SecureString pass = AccountsLogic.MaskInputstring();
+            string Password = new System.Net.NetworkCredential(string.Empty, pass).Password;
+
+            acc = AccountsLogic.Logic.CheckLogin(email, Password);
+            loginAttempts--;
+            if (acc == null)
+            {
+                Console.WriteLine("No account found with that email and password");
+                if (loginAttempts <= 0)
+                {
+                    WaitAfterWrongLogin(30);
+                    Start();
+                }
+            }       
         }
+        while (acc == null);
 
         if (acc is UserModel user)
         {
@@ -75,7 +86,21 @@ static class Menus
         {
             System.Console.WriteLine("Welcome back " + accountant.EmailAddress);
             AccountantMenu();
-        }   
+        }  
+        else 
+        {
+            Start();
+        }
+    }
+
+    public static void WaitAfterWrongLogin(int timer)
+    {
+        for (;timer > 0; timer--)
+        {
+            Console.Clear();
+            System.Console.WriteLine($"Please wait {timer} seconds before you can try again.");
+            Thread.Sleep(1000);
+        }
     }
 
     public static void AdminMenu()
@@ -204,11 +229,11 @@ static class Menus
                 break;
             case "2":
                 Showings.ShowUpcoming();
-                Start();
+                LoggedInMenu();
                 break;
             case "3":
                 Showings.ShowUpcomingOnDate();
-                Start();
+                LoggedInMenu();
                 break;
             case "4":
                 Reservation.Show(AccountsLogic.CurrentAccount.Id);
@@ -226,7 +251,7 @@ static class Menus
                 break;
             default:
                 Console.WriteLine("Invalid input");
-                Start();
+                LoggedInMenu();
                 break;
         }
     }

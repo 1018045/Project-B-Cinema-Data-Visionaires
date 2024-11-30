@@ -59,7 +59,7 @@ public static class Reservation
 
 
 
-           Console.WriteLine("Would you like anything to drink?");
+            Console.WriteLine("Would you like anything to drink?");
             Console.WriteLine("These are the drink choices:");
             Console.WriteLine("1. Red Wine");
             Console.WriteLine("2. White Wine");
@@ -222,10 +222,11 @@ public static class Reservation
         else
         {
             Console.WriteLine("Which date do you want to change your reservation to?");
+            Console.WriteLine("We charge a fee of 25 euros for changing a reservation");
             int counter = 1;
             foreach (ShowingModel showing in upcomingShowings)
             {
-                Console.WriteLine($"{counter++}: {showing.Date}");
+                Console.WriteLine($"{counter++}: {showing.Date.ToString("dd-MM-yyyy HH:mm:ss")}");
             }
             string userChoice;
             do
@@ -233,11 +234,19 @@ public static class Reservation
                 userChoice = Console.ReadLine();
             } while(!AccountsLogic.IsInt(userChoice) || AccountsLogic.ParseInt(userChoice) > counter - 1 || AccountsLogic.ParseInt(userChoice) < 1);
             
+            string payment = "X";        
+            while (payment != "")
+            {
+                Console.WriteLine("\nBank details:");
+                payment = ReservationsLogic.ValidateBankDetails(Console.ReadLine()!);
+                Console.WriteLine(payment);
+            }
+
 
             ReservationsLogic.RemoveReservation(oldReservation);
             ShowingModel newShowing = upcomingShowings[AccountsLogic.ParseInt(userChoice) - 1];
             ReservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true);
-            Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date}");
+            Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString("dd-MM-yyyy HH:mm:ss")}");
         }
 
         Menus.LoggedInMenu();

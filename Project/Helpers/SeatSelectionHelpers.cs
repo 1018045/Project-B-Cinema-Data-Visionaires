@@ -4,6 +4,7 @@ namespace Project.Helpers;
 
 public static class SeatSelectionHelpers
 {
+    private static readonly List<char> Alphabet = new List<char>("ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray());
     public static RoomModel GetRoom(int roomId)
     {
         var data = RoomAccess.LoadAll();
@@ -53,7 +54,7 @@ public static class SeatSelectionHelpers
 
     public static string PositionsToRowSeatString(List<Position> positions)
     {
-        return string.Join(", ", positions.Select(p => $"row: {p.Y + 1}, seat: {p.X + 1}"));
+        return string.Join(", ", positions.Select(p => $"row: {Alphabet[p.Y]}, seat: {p.X + 1}"));
     }
 
     public static bool IsAdjacentOnSameRow(Position newSeat, List<Position> selectedSeats)

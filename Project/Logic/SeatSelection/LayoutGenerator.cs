@@ -6,6 +6,7 @@ namespace Project.Logic.SeatSelection;
 
 public class LayoutGenerator
 {
+    private static readonly List<char> Alphabet = new List<char>("ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray());
     public List<Position> TakenSeats { get; } = [];
     public List<Position> SelectedSeats { get; }
 
@@ -31,14 +32,19 @@ public class LayoutGenerator
     private void BuildSeatingString(out StringBuilder sb)
     {
         sb = new StringBuilder();
-
+        
         var rows = _room.Rows;
         var seatDepth = _room.SeatDepth;
+        var textWidth = 3 + (seatDepth * 3) + (seatDepth - 9);
+
+        sb.Append($"{new String('-', textWidth)}\n");
+        sb.Append($"|{new String(' ', (textWidth/2)-4)}SCREEN{new String(' ', (textWidth/2)-4)}|\n");
+        sb.Append($"{new String('-', textWidth)}\n");
 
         for (var y = 1; y <= rows; y++)
         {
-            sb.Append(y + ": ");
-            if (y < 10) sb.Append(' ');
+            sb.Append(Alphabet[y-1] + ": ");
+            // if (y < 10) sb.Append(' ');
 
             for (var x = 1; x <= seatDepth; x++)
             {
