@@ -44,14 +44,10 @@ static class MenuHelper
             action.Invoke();
             return default;
         }
-        else if (selection is Func<T> func)
-        {
-            return func();
-        }
-        else 
-        {
-            return selection;
-        }
+
+        if (selection is Func<T> func) return func();
+        
+        return selection;
     }
 
     public static void WaitForKey(string message = "Press any key to continue...")
