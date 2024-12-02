@@ -40,41 +40,5 @@
     "title": "Fight Club",
     "duration": 96,
     "minimumAge": 14
-  },
-  {
-    "id": 7,
-    "title": "The Lord of the Rings: The Fellowship of the Ring",
-    "duration": 97,
-    "minimumAge": 15
-  },
-  {
-    "id": 8,
-    "title": "The Lord of the Rings: The Two Towers",
-    "duration": 98,
-    "minimumAge": 16
-  },
-  {
-    "id": 9,
-    "title": "The Lord of the Rings: The Return of the King",
-    "duration": 99,
-    "minimumAge": 17
-  },
-  {
-    "id": 10,
-    "title": "Star Wars: Episode IV - A New Hope",
-    "duration": 100,
-    "minimumAge": 13
-  },
-  {
-    "id": 11,
-    "title": "Star Wars: Episode V - The Empire Strikes Back",
-    "duration": 101,
-    "minimumAge": 14
-  },
-  {
-    "id": 12,
-    "title": "Star Wars: Episode VI - Return of the Jedi",
-    "duration": 102,
-    "minimumAge": 15
   }
 ]
