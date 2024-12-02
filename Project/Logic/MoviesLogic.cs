@@ -90,4 +90,10 @@ public class MoviesLogic
         }
         return pointer;
     }
+
+    public bool HasUpcomingShowings(ShowingsLogic showingsLogic, MovieModel movie)
+    {
+        IEnumerable<ShowingModel> showings = showingsLogic.Showings.Where(s => s.MovieId == movie.Id).ToList().Where(s => s.Date > DateTime.Now);
+        return showings.Count() > 0;
+    }
 }

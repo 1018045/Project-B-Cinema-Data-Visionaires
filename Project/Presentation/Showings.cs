@@ -15,7 +15,7 @@ public static class Showings
     {
         Console.Clear();
 
-        List<MovieModel> movieList = moviesLogic.GetMovies();
+        List<MovieModel> movieList = moviesLogic.Movies;
         List<string> movies = movieList.Select(movie => movie.Title).ToList();
         movies.Add("Cancel");
 

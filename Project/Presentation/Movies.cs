@@ -3,42 +3,39 @@ using System.Runtime.InteropServices;
 public static class Movies
 {
     private static readonly MoviesLogic _moviesLogic = new ();
+    private static readonly ShowingsLogic _showingsLogic = new ();
 
-    public static void ManageArchivedMovies()
-    {
-
-    }
-
-    public static void AddMovie()
+    public static void Start()
     {
         MenuHelper.NewMenu(
-            new List<string> {"Add new movie", "Add archived movie", "Cancel"},
-            new List<Action> {AddNewMovie, BringArchivedMovieBack, Menus.AdminMenu});
+            new List<string> {"Manage movies", "Manage archived movies", "Return"},
+            new List<Action> {ManageMovies, ManageArchivedMovies, Menus.AdminMenu});
     }
 
-    private static void AddNewMovie()
+    private static void ManageMovies()
     {
-        Console.Clear();
-        MoviesLogic moviesLogic = new();
-        Console.WriteLine("Enter the movie title:");
-        string title = Console.ReadLine();
-
-        Console.WriteLine("Enter the total screen time in minutes:");
-        int duration = Math.Abs(int.Parse(Console.ReadLine()));
-
-        Console.WriteLine("Enter the minimum age (11-18):");
-        int minimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
-
-        moviesLogic.AddMovie(title, duration, minimumAge);
-        Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
-
-        // System.Console.WriteLine("Which extra's are mandatory for this movie?");
-        // TODO
-        Thread.Sleep(1000);
-        MenuHelper.WaitForKey(Menus.AdminMenu);
+        int chosenId = MovieSelector(_moviesLogic.Movies, new List<(string, int)> { ("[Add movie]", -2) });
+        if (chosenId == -1)
+        { 
+            Start();
+            return;
+        }
+        else if (chosenId == -2)
+        {
+            AddMovie();
+            return;
+        }
+        MovieManager(chosenId);
     }
 
-    private static void BringArchivedMovieBack()
+    private static void MovieManager(int id)
+    {
+        MenuHelper.NewMenu(
+            new List<string> {"Edit movie details (TODO)", "Archive movie", "Return"},
+            new List<Action> {() => EditMovieDetails(id), () => ArchiveMovie(id), ManageMovies});
+    }
+
+    private static void ManageArchivedMovies()
     {
         if (_moviesLogic.ArchivedMovies.Count == 0)
         {
@@ -52,11 +49,44 @@ public static class Movies
 
         if (chosenId == -1)
         { 
-            Menus.AdminMenu();
+            Start();
             return;
         }
-        
-        MovieModel movie = _moviesLogic.GetArchivedMovieById(chosenId);
+
+        ArchivedMovieManager(chosenId);
+    }
+
+    private static void ArchivedMovieManager(int id)
+    {
+        MenuHelper.NewMenu(
+            new List<string> {"Edit movie details (TODO)", "Take movie out of archive", "Return"},
+            new List<Action> {() => EditMovieDetails(id), () => BringArchivedMovieBack(id), ManageArchivedMovies});
+    }
+
+    private static void AddMovie()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter the movie title:");
+        string title = Console.ReadLine();
+
+        Console.WriteLine("Enter the total screen time in minutes:");
+        int duration = Math.Abs(int.Parse(Console.ReadLine()));
+
+        Console.WriteLine("Enter the minimum age (11-18):");
+        int minimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
+
+        _moviesLogic.AddMovie(title, duration, minimumAge);
+        Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
+
+        // System.Console.WriteLine("Which extra's are mandatory for this movie?");
+        // TODO
+        Thread.Sleep(1000);
+        MenuHelper.WaitForKey(ManageMovies);
+    }
+
+    private static void BringArchivedMovieBack(int id)
+    { 
+        MovieModel movie = _moviesLogic.GetArchivedMovieById(id);
 
         _moviesLogic.Movies.Add(movie);
         _moviesLogic.ArchivedMovies.Remove(movie);
@@ -64,19 +94,22 @@ public static class Movies
         ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
 
         System.Console.WriteLine($"Moved {movie.Title} from archive into active movies");
+
+        MenuHelper.WaitForKey(ManageArchivedMovies);
     }
 
-    public static void ArchiveMovie()
+    private static void ArchiveMovie(int id)
     {
-        int chosenId = MovieSelector(_moviesLogic.Movies);
+        MovieModel movie = _moviesLogic.GetMovieById(id);
 
-        if (chosenId == -1)
-        { 
-            Menus.AdminMenu();
+        if (_moviesLogic.HasUpcomingShowings(_showingsLogic, movie))
+        {
+            System.Console.WriteLine($"Error: {movie.Title} still has upcoming showings");
+            System.Console.WriteLine("Please remove these showings and try again");
+            Thread.Sleep(1000);
+            MenuHelper.WaitForKey(ManageMovies);
             return;
         }
-
-        MovieModel movie = _moviesLogic.GetArchivedMovieById(chosenId);
 
         _moviesLogic.ArchivedMovies.Add(movie);
         _moviesLogic.Movies.Remove(movie);
@@ -84,17 +117,34 @@ public static class Movies
         ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
 
         System.Console.WriteLine($"Moved {movie.Title} into the archive");
+        Thread.Sleep(1000);
+        MenuHelper.WaitForKey(ManageMovies);
     }
 
-    // Shows a menu with all movies in the list. Returns the int ID of the selected movie; or -1 if the user cancelled.
-    private static int MovieSelector(List<MovieModel> movies)
+    private static void EditMovieDetails(int id)
+    {
+        MovieModel movie = _moviesLogic.GetArchivedMovieById(id);
+    }
+
+    // Shows a menu with all movies in the list. Returns the int ID of the selected movie, or -1 if the user cancelled.
+    private static int MovieSelector(List<MovieModel> movies, List<(string, int)> extras = null)
     {
         List<string> options = movies.Select(m => m.Title).ToList();
-        options.Add("Cancel");
 
         List<int> indices = movies.Select(m => m.Id).ToList();
+
+        if (extras != null)
+        {
+            foreach ((string, int) item in extras)
+            {
+                options.Add(item.Item1);
+                indices.Add(item.Item2);
+            }
+        }
+
+        options.Add("Return");
         indices.Add(-1);
 
-        return MenuHelper.NewMenu("Archived movies", options, indices);
+        return MenuHelper.NewMenu("Movies", options, indices);
     }
 }

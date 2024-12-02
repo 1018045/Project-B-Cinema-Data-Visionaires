@@ -69,8 +69,6 @@ static class Menus
 
     public static void Login()
     {
-
-
         AccountModel acc;
         int loginAttempts = 3;
         do
@@ -133,8 +131,8 @@ static class Menus
     {
         List<string> options = new List<string>
         {
-            "Add a movie",
-            "Manage movie showings",
+            "Manage movies",
+            "Manage showings",
             "View all users",
             "Remove a user",
             "Add an Employee",
@@ -145,7 +143,7 @@ static class Menus
         };
         List<Action> actions = new List<Action>
         {
-            AddMovie,
+            Movies.Start,
             Showings.ManageShowings,
             ViewUsers,
             RemoveUser,
@@ -156,32 +154,6 @@ static class Menus
             GuestMenu
         };
         MenuHelper.NewMenu("Admin menu", options, actions);
-    }
-
-    private static void AddMovie()
-    {
-        Console.Clear();
-        MoviesLogic moviesLogic = new();
-        Console.WriteLine("Enter the movie title:");
-        string title = Console.ReadLine();
-        if (moviesLogic.FindMovieByTitle(title) != null)
-        {
-            Console.WriteLine("Movie is already in the database");
-            return;
-        }
-        Console.WriteLine("Enter the total screen time in minutes:");
-        int duration = Math.Abs(int.Parse(Console.ReadLine()));
-
-        Console.WriteLine("Enter the minimum age (11-18):");
-        int minimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
-
-        moviesLogic.AddMovie(title, duration, minimumAge);
-        Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
-
-        // System.Console.WriteLine("Which extra's are mandatory for this movie?");
-        // TODO
-        Thread.Sleep(1000);
-        MenuHelper.WaitForKey(AdminMenu);
     }
 
     private static void RemoveUser()

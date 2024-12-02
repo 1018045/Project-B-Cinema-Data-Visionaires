@@ -149,15 +149,15 @@ static class MenuHelper
     }
 
 
-    public static void WaitForKey()
+    public static void WaitForKey(string message = "\nPress any key to continue...")
     {
-        Console.WriteLine("\nPress any key to continue...");
+        Console.WriteLine(message);
         Console.ReadKey();
     }
 
-    public static void WaitForKey(Action action)
+    public static void WaitForKey(Action action, string message = "\nPress any key to continue...")
     {
-        Console.WriteLine("\nPress any key to continue...");
+        Console.WriteLine(message);
         Console.ReadKey();
         action();
     }
