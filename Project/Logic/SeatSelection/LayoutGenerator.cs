@@ -6,8 +6,8 @@ namespace Project.Logic.SeatSelection;
 
 public class LayoutGenerator
 {
-    private static readonly List<char> Alphabet = new List<char>("ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray());
-    public List<Position> TakenSeats { get; } = [];
+    private static readonly List<char> Alphabet = [.."ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray()];
+    public List<Position> TakenSeats { get; }
     public List<Position> SelectedSeats { get; }
 
     private const string SelectedSymbol = "()";
@@ -37,9 +37,12 @@ public class LayoutGenerator
         var seatDepth = _room.SeatDepth;
         var textWidth = 3 + (seatDepth * 3) + (seatDepth - 9);
 
-        sb.Append($"{new String('-', textWidth)}\n");
-        sb.Append($"|{new String(' ', (textWidth/2)-4)}SCREEN{new String(' ', (textWidth/2)-4)}|\n");
-        sb.Append($"{new String('-', textWidth)}\n");
+        var separator = new string('-', textWidth);
+        var padding = new string(' ', (textWidth / 2) - 4);
+
+        sb.AppendLine(separator);
+        sb.Append('|').Append(padding).Append("SCREEN").Append(padding).AppendLine("|");
+        sb.AppendLine(separator);
 
         for (var y = 1; y <= rows; y++)
         {
