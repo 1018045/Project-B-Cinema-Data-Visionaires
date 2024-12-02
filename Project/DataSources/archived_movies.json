@@ -34,11 +34,5 @@
     "title": "Star Wars: Episode VI - Return of the Jedi",
     "duration": 102,
     "minimumAge": 15
-  },
-  {
-    "id": 13,
-    "title": "test",
-    "duration": 100,
-    "minimumAge": 12
   }
 ]
