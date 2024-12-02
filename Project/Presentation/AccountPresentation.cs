@@ -1,69 +1,48 @@
+using System.Dynamic;
 using Project.Logic.Account;
 
 namespace Project.Presentation;
 
 public static class AccountPresentation
 {
+    static AccountManageLogic _accountManageLogic = new();
     public static void Menu()
     {
-        var option = 0;
-        for (var selected = false; !selected;)
+        List<string> options = new List<string>
         {
-            Console.Clear();
-            Console.WriteLine("What would you like to do?");
-            Console.WriteLine("Enter 1 to update account details");
-            Console.WriteLine("Enter 2 to remove account (DANGER)");
-            Console.WriteLine("Enter 3 to add extra's to your reservation (not yet implemented)");
-            Console.WriteLine("Enter 4 to go back to main menu");
+            "Update account details",
+            "Remove account (DANGER)",
+            "Add extra's to your reservation (not yet implemented)",
+            "Main menu"
+        };
 
-            selected = int.TryParse(Console.ReadLine(), out option);
-        }
-
-        var logic = new AccountManageLogic();
-
-        switch (option)
+        List<Action> actions = new List<Action>
         {
-            case 1:
-                UpdateAccountDetails(logic);
-                break;
-            case 2:
-                DeleteAccount(logic);
-                break;
-            case 3:
-                break;
-            case 4:
-                Console.Clear();
-                Menus.LoggedInMenu();
-                break;
-        }
+            () => UpdateAccountDetails(_accountManageLogic),
+            () => DeleteAccount(_accountManageLogic),
+            Menus.LoggedInMenu
+        };
+
+        MenuHelper.NewMenu("Manage account", options, actions);
     }
 
     private static void UpdateAccountDetails(AccountManageLogic logic)
     {
-        var option = 0;
-        for (var selected = false; !selected;)
+        List<string> options = new List<string>
         {
-            Console.Clear();
-            Console.WriteLine("What would you like to change?");
-            Console.WriteLine("Enter 1 to change email");
-            Console.WriteLine("Enter 2 to change password");
-            Console.WriteLine("Enter 3 to go back to the menu");
+            "Change email",
+            "Change password",
+            "Return"
+        };
 
-            selected = int.TryParse(Console.ReadLine(), out option);
-        }
-
-        switch (option)
+        List<Action> actions = new List<Action>
         {
-            case 1:
-                ChangeEmail(logic);
-                break;
-            case 2:
-                ChangePassword(logic);
-                break;
-            case 3:
-                Menu();
-                break;
-        }
+            () => ChangeEmail(_accountManageLogic),
+            () => ChangePassword(_accountManageLogic),
+            Menu
+        };
+
+        MenuHelper.NewMenu("Update account", options, actions);
     }
 
     private static void ChangeEmail(AccountManageLogic logic)
@@ -93,8 +72,8 @@ public static class AccountPresentation
 
         Console.Clear();
         Console.WriteLine($"Successfully changed your email to {newEmail}");
-        Thread.Sleep(2500);
         UpdateAccountDetails(logic);
+        MenuHelper.WaitForKey(() => UpdateAccountDetails(logic));
     }
 
     private static void ChangePassword(AccountManageLogic logic)
@@ -125,7 +104,7 @@ public static class AccountPresentation
         Console.Clear();
         Console.WriteLine($"Successfully changed your password");
         Thread.Sleep(2500);
-        UpdateAccountDetails(logic);
+        MenuHelper.WaitForKey(() => UpdateAccountDetails(logic));
     }
 
     private static void DeleteAccount(AccountManageLogic logic)
@@ -142,24 +121,19 @@ public static class AccountPresentation
                 Console.Clear();
                 Console.WriteLine("Successfully deleted your account");
                 Console.WriteLine("You will now be logged out");
-                Thread.Sleep(2500);
-                Console.Clear();
 
                 done = true;
-                Menus.Start();
+                MenuHelper.WaitForKey(Menus.GuestMenu);
             }
             else if (input.Equals("n"))
             {
                 Console.Clear();
                 Console.WriteLine("Canceled the deletion of your account");
                 Console.WriteLine("You will return to the menu");
-                Thread.Sleep(2500);
-                Console.Clear();
 
                 done = true;
-                UpdateAccountDetails(logic);
+                MenuHelper.WaitForKey(Menu);
             }
         }
-
     }
 }

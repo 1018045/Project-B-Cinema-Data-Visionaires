@@ -1,10 +1,33 @@
 using System.Security;
 using Project.Logic.Account;
 using Project.Presentation;
-using System.Security.Cryptography.X509Certificates;
+using Project.Helpers;
 
 static class Menus
 {
+    static public void GuestMenu()
+    {
+        List<string> options = new List<string>
+        {
+            "Login",
+            "Create account",
+            "Upcoming movies",
+            "Select a date",
+            "Jobs",
+            "Exit"
+        };
+        List<Action> actions = new List<Action>
+        {
+            Login,
+            ChooseAccount,
+            () => Showings.ShowUpcoming(),
+            Showings.ShowUpcomingOnDate,
+            ApplyForJob.ShowJobMenu,
+            () => Environment.Exit(0)
+        };
+        MenuHelper.NewMenu(options, actions);
+    }
+    
     static public void Start()
     {
         Console.WriteLine("Enter 1 to login");
@@ -46,10 +69,13 @@ static class Menus
 
     public static void Login()
     {
+
+
         AccountModel acc;
         int loginAttempts = 3;
         do
         {
+            Console.Clear();
             System.Console.WriteLine($"You have {loginAttempts} login attempts left!");
             Console.WriteLine("Please enter your email address");
             string email = Console.ReadLine();
@@ -66,9 +92,9 @@ static class Menus
                 if (loginAttempts <= 0)
                 {
                     WaitAfterWrongLogin(30);
-                    Start();
+                    GuestMenu();
                 }
-            }       
+            }    
         }
         while (acc == null);
 
@@ -89,7 +115,7 @@ static class Menus
         }  
         else 
         {
-            Start();
+            GuestMenu();
         }
     }
 
@@ -105,61 +131,36 @@ static class Menus
 
     public static void AdminMenu()
     {
-        Console.WriteLine("Admin Menu:");
-        Console.WriteLine("1. Add a movie");
-        Console.WriteLine("2. Manage movie showings");
-        Console.WriteLine("3. View all users");
-        Console.WriteLine("4. Remove a user");
-        Console.WriteLine("5. Add an Employee");
-        Console.WriteLine("6. Add job vacancy");
-        Console.WriteLine("7. Remove job vacancy");
-        Console.WriteLine("8. View all vacancies");
-        Console.WriteLine("9. Logout");
-
-        string input = Console.ReadLine();
-        switch (input)
+        List<string> options = new List<string>
         {
-            case "1":
-                AddMovie();
-                AdminMenu();
-                break;
-            case "2":
-                Showings.ManageShowings();
-                AdminMenu();
-                break;
-            case "3":
-                ViewUsers();
-                AdminMenu();
-                break;
-            case "4":
-                RemoveUser();
-                AdminMenu();
-                break;
-            case "5":
-                AddEmployee();
-                AdminMenu();
-                break;
-            case "6":
-                AddJobVacancy();
-                break;
-            case "7":
-                RemoveJobVacancy();
-                break;
-            case "8":
-                ViewAllVacancies();
-                break;
-            case "9":
-                Start();
-                break;
-            default:
-                Console.WriteLine("Invalid choice, please try again.");
-                Start();
-                break;
-        }
+            "Add a movie",
+            "Manage movie showings",
+            "View all users",
+            "Remove a user",
+            "Add an Employee",
+            "Add job vacancy",
+            "Remove job vacancy",
+            "View all vacancies",
+            "Logout"
+        };
+        List<Action> actions = new List<Action>
+        {
+            AddMovie,
+            Showings.ManageShowings,
+            ViewUsers,
+            RemoveUser,
+            AddEmployee,
+            AddJobVacancy,
+            RemoveJobVacancy,
+            ViewAllVacancies,
+            GuestMenu
+        };
+        MenuHelper.NewMenu("Admin menu", options, actions);
     }
 
     private static void AddMovie()
     {
+        Console.Clear();
         MoviesLogic moviesLogic = new();
         Console.WriteLine("Enter the movie title:");
         string title = Console.ReadLine();
@@ -179,10 +180,13 @@ static class Menus
 
         // System.Console.WriteLine("Which extra's are mandatory for this movie?");
         // TODO
+        Thread.Sleep(1000);
+        MenuHelper.WaitForKey(AdminMenu);
     }
 
     private static void RemoveUser()
     {
+        Console.Clear();
         Console.WriteLine("Enter the email address of the user you want to remove:");
         string email = Console.ReadLine();
 
@@ -197,63 +201,45 @@ static class Menus
         {
             Console.WriteLine($"No user found with email address '{email}'.");
         }
+        Thread.Sleep(2000);
+        MenuHelper.WaitForKey(AdminMenu);
     }
 
     private static void ViewUsers()
     {
+        Console.Clear();
         var users = AccountsAccess.LoadAll(); 
         foreach (var user in users)
         {
             Console.WriteLine($"User: {user.EmailAddress}");
         }
+        Thread.Sleep(1000);
+        MenuHelper.WaitForKey(AdminMenu);
     }
 
     static public void LoggedInMenu()
     {
-        Console.WriteLine("\n" + new string('-', Console.WindowWidth));
-        Console.WriteLine($"You are logged in as {AccountsLogic.CurrentAccount.EmailAddress}");
-        Console.WriteLine(new string('-', Console.WindowWidth));
-        Console.WriteLine("Enter 1 to make a reservation");
-        Console.WriteLine("Enter 2 to show upcoming movie showings");
-        Console.WriteLine("Enter 3 to show upcoming movie showings on a specific date");
-        Console.WriteLine("Enter 4 to show your reservations");
-        Console.WriteLine("Enter 5 to adjust your reservations");
-        Console.WriteLine("Enter 6 to manage your account");
-        Console.WriteLine("Enter 7 to log out");
-
-        string input = Console.ReadLine().Trim();
-        switch (input)
+        List<string> options = new List<string>
         {
-            case "1":
-                Reservation.Make();
-                break;
-            case "2":
-                Showings.ShowUpcoming();
-                LoggedInMenu();
-                break;
-            case "3":
-                Showings.ShowUpcomingOnDate();
-                LoggedInMenu();
-                break;
-            case "4":
-                Reservation.Show(AccountsLogic.CurrentAccount.Id);
-                break;
-            case "5":
-                Reservation.Adjust(AccountsLogic.CurrentAccount.Id);
-                break;
-            case "6":
-                AccountPresentation.Menu();
-                break;
-            case "7":
-                AccountsLogic.LogOut();
-                Console.WriteLine("\nYou are now logged out\n");
-                Start();
-                break;
-            default:
-                Console.WriteLine("Invalid input");
-                LoggedInMenu();
-                break;
-        }
+            "Make a reservation",
+            "Show upcoming movie showings",
+            "Show upcoming movie showings on a specific date",
+            "Show your reservations",
+            "Adjust your reservations",
+            "Manage your account",
+            "Log out"
+        };
+        List<Action> actions = new List<Action>
+        {
+            Reservation.Make,
+            () => Showings.ShowUpcoming(),
+            Showings.ShowUpcomingOnDate,
+            () => Reservation.Show(AccountsLogic.CurrentAccount.Id),
+            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
+            AccountPresentation.Menu,
+            AccountsLogic.LogOut
+        };
+        MenuHelper.NewMenu($"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", options, actions);
     }
 
     public static void ChooseAccount()
@@ -347,48 +333,43 @@ static class Menus
 
     public static void AccountantMenu()
     {
-        while (true)
+        List<string> options = new List<string>
         {
-            // Maak het scherm leeg voor betere leesbaarheid
-            Console.Clear();
+            "View all financial records",
+            "View records for a date",
+            "View total money earned",
+            "View total tickets sold",
+            "Log out"
+        };
 
-            // Toon menu opties
-            Console.WriteLine("\n=== Accountant Menu ===");
-            Console.WriteLine("1. View all financial records");
-            Console.WriteLine("2. View records for a date");
-            Console.WriteLine("3. View total money earned");
-            Console.WriteLine("4. View total tickets sold");
-            Console.WriteLine("5. Return to main menu");
-            Console.WriteLine("=======================");
+        List<Action> actions = new List<Action>
+        {
+            ViewAllRecords,
+            ViewRecordsByDate,  //NOT IMPLEMENTED
+            ViewTotalMoney,     //NOT IMPLEMENTED
+            ViewTotalTickets,   //NOT IMPLEMENTED
+            GuestMenu
+        };
 
-            // Vraag gebruiker om een keuze
-            string choice = Console.ReadLine();
+        MenuHelper.NewMenu("Accountant Menu", options, actions); 
+    }
 
-            // Verwerk de keuze van de gebruiker
-            switch (choice)
-            {
-                case "1":
-                    ViewAllRecords();
-                    break;
-                case "2":
-                    //ViewRecordsByDate();
-                    break;
-                case "3":
-                    //ViewTotalMoney();
-                    break;
-                case "4":
-                    //ViewTotalTickets();
-                    break;
-                case "5":
-                    Start();
-                    break; // Ga terug naar hoofdmenu
-                default:
-                    Console.WriteLine("Invalid choice. Press any key to try again.");
-                    Console.ReadKey();
-                    Start();
-                    break;
-            }
-        }
+    private static void ViewRecordsByDate()
+    {
+        System.Console.WriteLine("NOT IMPLEMENTED YET");
+        MenuHelper.WaitForKey(AccountantMenu);
+    }
+
+    private static void ViewTotalMoney()
+    {
+        System.Console.WriteLine("NOT IMPLEMENTED YET");
+        MenuHelper.WaitForKey(AccountantMenu);
+    }
+
+    private static void ViewTotalTickets()
+    {
+        System.Console.WriteLine("NOT IMPLEMENTED YET");
+        MenuHelper.WaitForKey(AccountantMenu);
     }
 
     private static void ViewAllRecords()
@@ -407,17 +388,12 @@ static class Menus
         //                     $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
         // }
 
-        WaitForKey();
-    }
-
-    private static void WaitForKey()
-    {
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        MenuHelper.WaitForKey();
     }
 
     private static void AddEmployee()
     {
+        Console.Clear();
         EmployeeLogic employeeLogic = new (); 
 
         Console.WriteLine("Enter the new employee's details"); 
@@ -431,10 +407,13 @@ static class Menus
         employeeLogic.AddEmployee(employeeToAdd);
         Console.WriteLine("Employee has been successfully added!");
 
+        MenuHelper.WaitForKey(AdminMenu);
+
     }
 
     private static void AddJobVacancy()
     {
+        Console.Clear();
         Console.WriteLine("Enter the job title:");
         string jobTitle = Console.ReadLine();
 
@@ -462,7 +441,7 @@ static class Menus
         vacancyLogic.AddVacancy(jobTitle, jobDescription, salary, employmentType);
 
         Console.WriteLine("Job vacancy has been added.");
-        AdminMenu();
+        MenuHelper.WaitForKey(AdminMenu);
     }
 
     private static void RemoveJobVacancy()
@@ -497,14 +476,12 @@ static class Menus
         {
             Console.WriteLine("Invalid ID entered.");
         }
-
-        Console.WriteLine("\nPress any key to go back...");
-        Console.ReadKey();
-        AdminMenu();
+        MenuHelper.WaitForKey(AdminMenu);
     }
 
     private static void ViewAllVacancies()
     {
+        Console.Clear();
         var vacancyLogic = new JobVacancyLogic();
         Console.WriteLine("\nAll vacancies:");
         Console.WriteLine(vacancyLogic.ShowAllVacancies());

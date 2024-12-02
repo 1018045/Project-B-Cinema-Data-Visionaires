@@ -2,23 +2,21 @@ using System.Globalization;
 
 public class ShowingsLogic
 {
-    private const int CLEANUP_TIME_BETWEEN_SHOWINGS = 30;
+    private const int CLEANUP_TIME_BETWEENShowings = 30;
     
-    private List<ShowingModel> _showings;
+    public List<ShowingModel> Showings {get; private set;}
 
 
     public ShowingsLogic()
     {
-        _showings = ShowingsAccess.LoadAll();
+        Showings = ShowingsAccess.LoadAll();
     }
-
-
 
     // Returns all showings a particular user has reserved
     public List<ShowingModel> FindReservationByUserID(int id)
     {
         List<ShowingModel> output = new();
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.Id == id)
                 output.Add(showing);
@@ -28,7 +26,7 @@ public class ShowingsLogic
 
     public string FindShowingById(int id)
     {
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.Id == id)
             {
@@ -41,7 +39,7 @@ public class ShowingsLogic
     public List<ShowingModel> FindShowingsByMovieId(int id)
     {
         List<ShowingModel> showings = new();
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.MovieId == id)
             {
@@ -53,7 +51,7 @@ public class ShowingsLogic
 
     public ShowingModel FindShowingByIdReturnShowing(int id)
     {
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.Id == id)
             {
@@ -75,7 +73,7 @@ public class ShowingsLogic
     public string ShowAll() 
     {
         string output = "";
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             output += ToString(showing);
         }
@@ -85,7 +83,7 @@ public class ShowingsLogic
     public string ShowUpcoming(bool showId = false) 
     {
         string output = "";
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.Date > DateTime.Now)
             {
@@ -99,7 +97,7 @@ public class ShowingsLogic
     public string ShowUpcoming(DateTime date) 
     {
         string output = "";
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.Date.Date == date.Date)
                 output += ToString(showing);
@@ -111,7 +109,7 @@ public class ShowingsLogic
     {
         MoviesLogic log = new();
         List<ShowingModel> showings = new();
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.Date > DateTime.Now && log.GetMovieById(showing.MovieId).Title == movieName)
                 showings.Add(showing);
@@ -122,17 +120,17 @@ public class ShowingsLogic
     public void AddShowing(int movieId, DateTime date, int room)
     {
         ShowingModel newShowing = new ShowingModel(FindNextAvailableId(), movieId, date, room);
-        _showings.Add(newShowing);
-        ShowingsAccess.WriteAll(_showings);
+        Showings.Add(newShowing);
+        ShowingsAccess.WriteAll(Showings);
     }
 
     public void RemoveShowing(int id)
     {
-        ShowingModel showingToRemove = _showings.FirstOrDefault(s => s.Id == id);      
+        ShowingModel showingToRemove = Showings.FirstOrDefault(s => s.Id == id);      
         if (showingToRemove != null)
         {
-            _showings.Remove(showingToRemove);
-            ShowingsAccess.WriteAll(_showings);
+            Showings.Remove(showingToRemove);
+            ShowingsAccess.WriteAll(Showings);
             Console.WriteLine($"Showing with ID {id} has been removed.");
         }
         else
@@ -143,15 +141,15 @@ public class ShowingsLogic
 
     public void RemoveShowing(ShowingModel showing)
     {
-        _showings.Remove(showing);
-        ShowingsAccess.WriteAll(_showings);
+        Showings.Remove(showing);
+        ShowingsAccess.WriteAll(Showings);
         Console.WriteLine($"Showing at {showing.Date.ToString("dd-MM-yyyy HH:mm:ss")} has been removed.");
     }
 
     private int FindNextAvailableId()
     {
         int pointer = 0;
-        List<ShowingModel> tempList = _showings.OrderBy(a => a.Id).ToList<ShowingModel>();
+        List<ShowingModel> tempList = Showings.OrderBy(a => a.Id).ToList<ShowingModel>();
         foreach (ShowingModel showing in tempList)
         {
             if (pointer != showing.Id)
@@ -165,13 +163,13 @@ public class ShowingsLogic
 
     public bool IsRoomFree(DateTime newDate, int room, int showingDuration, MoviesLogic log)
     {
-        foreach (ShowingModel showing in _showings)
+        foreach (ShowingModel showing in Showings)
         {
             if (showing.Room == room)
             {   // de showings overlappen:
                 // alleen als het BEGIN van showing 2 EERDER is dan het begin van showing 1, en het EINDE van showing 2 LATER is dan het begin van showing 1
-                if ((newDate <= showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= showing.Date) ||
-                    (showing.Date <= newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= newDate))
+                if ((newDate <= showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEENShowings + showingDuration) >= showing.Date) ||
+                    (showing.Date <= newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEENShowings + showingDuration) >= newDate))
                 {
                     return false;
                 }

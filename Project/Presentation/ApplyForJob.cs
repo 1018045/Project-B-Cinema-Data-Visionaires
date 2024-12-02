@@ -5,41 +5,29 @@ public static class ApplyForJob
 
     public static void ShowJobMenu()
     {
-        while (true)
+
+        List<string> options = new List<string>
         {
-            Console.Clear();
-            Console.WriteLine("=== Job Vacancies ===");
-            Console.WriteLine("1. View All Vacancies");
-            Console.WriteLine("2. Apply for Job");
-            Console.WriteLine("3. Return to Main Menu");
+            "View All Vacancies",
+            "Apply for Job",
+            "Return to Main Menu"
+        };
 
-            string choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    ShowAllVacancies();
-                    break;
-                case "2":
-                    ApplyToVacancy();
-                    break;
-                case "3":
-                    Menus.Start();
-                    return;
-                default:
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    Thread.Sleep(2000);
-                    break;
-            }
-        }
+        List<Action> actions = new List<Action>
+        {
+            ShowAllVacancies,
+            ApplyToVacancy, // TODO: implement menu system
+            Menus.GuestMenu
+        };
+        MenuHelper.NewMenu("Job Vacancies", options, actions);
+        
     }
 
     private static void ShowAllVacancies()
     {
         Console.Clear();
         Console.WriteLine(_vacancyLogic.ShowAllVacancies());
-        Console.WriteLine("\nPress any key to return...");
-        Console.ReadKey();
+        MenuHelper.WaitForKey(ShowJobMenu);
     }
 
     private static void ApplyToVacancy()
@@ -50,6 +38,7 @@ public static class ApplyForJob
         Console.WriteLine("\nEnter the ID of the vacancy you want to apply for (0 to cancel):");
         string input = Console.ReadLine();
         int vacancyId;
+
 
         if (!int.TryParse(input, out vacancyId) || vacancyId == 0)
         {
@@ -90,7 +79,8 @@ public static class ApplyForJob
 
         Console.WriteLine("\nYour application has been submitted successfully!");
         Console.WriteLine("We will contact you via the provided email address.");
-        Thread.Sleep(3000);
+        
+        MenuHelper.WaitForKey(ShowJobMenu);
     }
 
     private static void DisplayVacancy(JobVacancy vacancy)

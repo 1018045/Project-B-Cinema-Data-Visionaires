@@ -1,16 +1,3 @@
 [
-  {
-    "id": 0,
-    "userId": 1,
-    "showingId": 98,
-    "seats": "6;1,6;2,6;4",
-    "paymentComplete": true
-  },
-  {
-    "id": 11,
-    "userId": 1,
-    "showingId": 6,
-    "seats": "(4;1),(4;2),(4;3)",
-    "paymentComplete": true
-  }
+  
 ]

@@ -4,13 +4,17 @@ using Project.Presentation;
 
 public static class Reservation
 {
-    private static readonly ReservationsLogic ReservationsLogic = new();
+    private static readonly ReservationsLogic _reservationsLogic = new();
 
     // Remove during code factoring bc of bad code practice
-    private static readonly ShowingsLogic ShowingsLogic = new ();
+    private static readonly ShowingsLogic _showingsLogic = new ();
+
+    private static readonly MoviesLogic _moviesLogic = new ();
 
     public static void Make()
     {
+        Console.Clear();
+
         Console.WriteLine("\nUpcoming showings:\n");
         Showings.ShowUpcoming(makingReservation: true);
 
@@ -107,20 +111,20 @@ public static class Reservation
         while (payment != "")
         {
             Console.WriteLine("\nBank details:");
-            payment = ReservationsLogic.ValidateBankDetails(Console.ReadLine()!);
+            payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine()!);
             Console.WriteLine(payment);
         }
     
-        ReservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
+        _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");
-        Menus.LoggedInMenu();
+        MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
 
     public static void Show(int userId)
     {
         Console.WriteLine("These are your current reservations:");
-        List<ReservationModel> reservations = ReservationsLogic.ShowAllUserReservations(userId);
+        List<ReservationModel> reservations = _reservationsLogic.ShowAllUserReservations(userId);
         int counter = 1;
         if (reservations.Count == 0)
         {
@@ -131,29 +135,49 @@ public static class Reservation
         {
             foreach (ReservationModel reservation in reservations)
             {
-                Console.WriteLine($"{counter++}. {ShowingsLogic.FindShowingById(reservation.ShowingId)}");
+                Console.WriteLine($"{counter++}. {_showingsLogic.FindShowingById(reservation.ShowingId)}");
             }
         }
-        Menus.LoggedInMenu();
+        MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
 
     public static void Adjust(int userId)
     {
-        Console.WriteLine("These are your current reservations:");
-        List<ReservationModel> reservations = ReservationsLogic.ShowAllUserReservations(userId);
+        Console.Clear();
+
+        List<ReservationModel> reservations = _reservationsLogic.Reservations;
+        List<string> reservationStrings = new();
+        foreach (ReservationModel res in reservations)
+        {
+            ShowingModel showing = _showingsLogic.FindShowingByIdReturnShowing(res.ShowingId);
+            reservationStrings.Add($"{_moviesLogic.GetMovieById(showing.MovieId).Title}: {showing.Date}");
+        }
+        
+
+        List<string> showings = new List<string> 
+        {
+
+        };
+
+        List<Action> actions = new List<Action>
+        {
+
+        };
+
+        MenuHelper.NewMenu("Your reservations", showings, actions);
         MoviesLogic moviesLogic = new();
 
         if (reservations.Count == 0)
         {
             Console.WriteLine("You have 0 reservations!");
-            Menus.LoggedInMenu();
+            MenuHelper.WaitForKey(Menus.LoggedInMenu);
         }
         else
         {
             int counter = 1;
             foreach (ReservationModel reservation in reservations)
             {
-                Console.WriteLine($"{counter++}. {ShowingsLogic.FindShowingById(reservation.ShowingId)}");
+                Console.WriteLine($"{counter++}. {_showingsLogic.FindShowingById(reservation.ShowingId)}");
             }
             Console.WriteLine("Which reservation would you like to change?");
             string userChoice;
@@ -162,7 +186,7 @@ public static class Reservation
                 userChoice = Console.ReadLine();
             } while(!AccountsLogic.IsInt(userChoice) || AccountsLogic.ParseInt(userChoice) > counter - 1 || AccountsLogic.ParseInt(userChoice) < 1);
 
-            ShowingModel showing = ShowingsLogic.FindShowingByIdReturnShowing(reservations[AccountsLogic.ParseInt(userChoice) - 1].ShowingId);
+            ShowingModel showing = _showingsLogic.FindShowingByIdReturnShowing(reservations[AccountsLogic.ParseInt(userChoice) - 1].ShowingId);
             // Console.WriteLine($"Reservation:\n{showing.Id}");
             AdjustmentMenu(reservations[AccountsLogic.ParseInt(userChoice) - 1], moviesLogic.GetMovieById(showing.MovieId).Title);
         }
@@ -173,9 +197,8 @@ public static class Reservation
         Console.WriteLine("What would you like to adjust?");
         Console.WriteLine("1. Change or add seats (NOT YET IMPLEMENTED!!!)"); // Implement after youri's part
         Console.WriteLine("2. Change date");
-        // System.Console.WriteLine("3. Add extra's");
-        Console.WriteLine("4. Remove reservation");
-        Console.WriteLine("5. Cancel");
+        Console.WriteLine("3. Remove reservation");
+        Console.WriteLine("4. Cancel");
         
         string userChoice = Console.ReadLine();
 
@@ -191,7 +214,7 @@ public static class Reservation
                 Console.WriteLine("(NOT YET IMPLEMENTED!!!)");
                 break;
             case "4":
-                ReservationsLogic.RemoveReservation(reservation);
+                _reservationsLogic.RemoveReservation(reservation);
                 Console.WriteLine("Your reservation has been removed.");
                 break;
             case "5":
@@ -209,7 +232,7 @@ public static class Reservation
     // CHANGE SEAT IMPLEMENTATION AFTER YOURI IS DONE
     private static void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
     {
-        List<ShowingModel> upcomingShowings = ShowingsLogic.GetUpcomingShowingsOfMovie(movieTitle);
+        List<ShowingModel> upcomingShowings = _showingsLogic.GetUpcomingShowingsOfMovie(movieTitle);
         if (upcomingShowings.Count == 0)
         {
             Console.WriteLine("There are no available shows planned, please cancel your reservation if you are unavailable at that time.");
@@ -233,14 +256,14 @@ public static class Reservation
             while (payment != "")
             {
                 Console.WriteLine("\nBank details:");
-                payment = ReservationsLogic.ValidateBankDetails(Console.ReadLine()!);
+                payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine()!);
                 Console.WriteLine(payment);
             }
 
 
-            ReservationsLogic.RemoveReservation(oldReservation);
+            _reservationsLogic.RemoveReservation(oldReservation);
             ShowingModel newShowing = upcomingShowings[AccountsLogic.ParseInt(userChoice) - 1];
-            ReservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true);
+            _reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true);
             Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString("dd-MM-yyyy HH:mm:ss")}");
         }
 

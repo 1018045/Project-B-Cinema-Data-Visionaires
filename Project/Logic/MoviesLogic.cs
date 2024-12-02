@@ -75,4 +75,9 @@ public class MoviesLogic
     }
 
     public int GetSize() => _movies.Count;
+
+    public List<MovieModel> GetMovies()
+    {
+        return _movies;
+    }
 }
