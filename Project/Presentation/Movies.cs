@@ -145,19 +145,19 @@ public static class Movies
         {
             () => {
                 Console.Clear();
-                Console.WriteLine("Enter the movie title:");
+                Console.WriteLine("Enter the new movie title:");
                 movie.Title = Console.ReadLine();
                 MoviesAccess.WriteAll(_moviesLogic.Movies);
                 EditMovieDetails(id);
             },
             () => {
-                Console.WriteLine("Enter the total screen time in minutes:");
+                Console.WriteLine("Enter the new screen time in minutes:");
                 movie.Duration = Math.Abs(int.Parse(Console.ReadLine()));
                 MoviesAccess.WriteAll(_moviesLogic.Movies);
                 EditMovieDetails(id);
             },
             () => {
-                Console.WriteLine("Enter the minimum age (11-18):");
+                Console.WriteLine("Enter the new minimum age (11-18):");
                 movie.MinimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
                 MoviesAccess.WriteAll(_moviesLogic.Movies);
                 EditMovieDetails(id);
@@ -165,7 +165,7 @@ public static class Movies
             () => MovieManager(id)
         };
 
-        MenuHelper.NewMenu(options, actions);
+        MenuHelper.NewMenu(options, actions, "Edit movie");
     }
 
     // Shows a menu with all movies in the list. Returns the int ID of the selected movie, or -1 if the user cancelled.

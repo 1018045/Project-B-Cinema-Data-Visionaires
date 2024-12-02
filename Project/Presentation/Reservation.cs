@@ -30,7 +30,7 @@ public static class Reservation
         {
             selectedSeats = SeatingPresentation.Present(showingId);
             System.Console.WriteLine("Enter Y to confirm your seats.");
-            System.Console.WriteLine("Enter any other key to change your seat selection, or the amount of seats you want to book.");
+            System.Console.WriteLine("Enter any other key to select restart the seat selection.");
             confirmSeats = Console.ReadLine();
         } while(confirmSeats.ToLower().Trim() != "y");
 
@@ -228,7 +228,6 @@ public static class Reservation
         Menus.LoggedInMenu();
     }
 
-
     // CHANGE SEAT IMPLEMENTATION AFTER YOURI IS DONE
     private static void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
     {
@@ -240,7 +239,7 @@ public static class Reservation
         else
         {
             Console.WriteLine("Which date do you want to change your reservation to?");
-            Console.WriteLine("We charge a fee of 25 euros for changing a reservation");
+            Console.WriteLine("We charge a fee of 5 euros for changing a reservation");
             int counter = 1;
             foreach (ShowingModel showing in upcomingShowings)
             {
