@@ -23,7 +23,7 @@ public static class AccountPresentation
             Menus.LoggedInMenu
         };
 
-        MenuHelper.NewMenu("Manage account", options, actions);
+        MenuHelper.NewMenu(options, actions, "Manage account");
     }
 
     private static void UpdateAccountDetails(AccountManageLogic logic)
@@ -42,7 +42,7 @@ public static class AccountPresentation
             Menu
         };
 
-        MenuHelper.NewMenu("Update account", options, actions);
+        MenuHelper.NewMenu(options, actions, "Update account");
     }
 
     private static void ChangeEmail(AccountManageLogic logic)

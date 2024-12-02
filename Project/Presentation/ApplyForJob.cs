@@ -19,7 +19,7 @@ public static class ApplyForJob
             ApplyToVacancy, // TODO: implement menu system
             Menus.GuestMenu
         };
-        MenuHelper.NewMenu("Job Vacancies", options, actions);
+        MenuHelper.NewMenu(options, actions, "Job Vacancies");
         
     }
 

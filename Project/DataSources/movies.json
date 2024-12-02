@@ -1,11 +1,5 @@
 [
   {
-    "id": 2,
-    "title": "The Dark Knight",
-    "duration": 92,
-    "minimumAge": 15
-  },
-  {
     "id": 3,
     "title": "Pulp Fiction",
     "duration": 93,
@@ -45,6 +39,12 @@
     "id": 14,
     "title": "lion king",
     "duration": 113,
+    "minimumAge": 15
+  },
+  {
+    "id": 2,
+    "title": "The Dark Knight",
+    "duration": 92,
     "minimumAge": 15
   }
 ]

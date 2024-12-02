@@ -22,7 +22,7 @@ public static class Showings
         List<int> moviesIndices = movieList.Select(movie => movie.Id).ToList();
         moviesIndices.Add(-1);
 
-        return MenuHelper.NewMenu("Which movie do you want to manage?", movies, moviesIndices);
+        return MenuHelper.NewMenu(movies, moviesIndices, "Which movie do you want to manage?");
     }
 
     public static int SelectShowing()
@@ -36,7 +36,7 @@ public static class Showings
         List<int> showingsIndices = showings.Select(showing => showing.Id).ToList();
         showingsIndices.Add(-1);
 
-        return MenuHelper.NewMenu("Which showing do you want to manage?", showingsStrings, showingsIndices);
+        return MenuHelper.NewMenu(showingsStrings, showingsIndices, "Which showing do you want to manage?");
     }
 
     public static void ManageShowings()
@@ -59,7 +59,7 @@ public static class Showings
                 () => RemoveShowing(chosenId, moviesLogic),
                 Menus.AdminMenu
             };
-            MenuHelper.NewMenu($"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?", options, actions);
+            MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
@@ -85,7 +85,7 @@ public static class Showings
                 () => RemoveShowing(chosenId, moviesLogic),
                 Menus.AdminMenu
             };
-            MenuHelper.NewMenu($"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?", options, actions);
+            MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
@@ -139,7 +139,7 @@ public static class Showings
             };
         List<int> outputs = new List<int> {1, 2, 3};
 
-        int userChoice = MenuHelper.NewMenu("Do you want to repeat the showing?", options, outputs);
+        int userChoice = MenuHelper.NewMenu(options, outputs, "Do you want to repeat the showing?");
         bool DoMore = true;
         string pattern = "";
 

@@ -9,7 +9,8 @@ public static class Movies
     {
         MenuHelper.NewMenu(
             new List<string> {"Manage movies", "Manage archived movies", "Return"},
-            new List<Action> {ManageMovies, ManageArchivedMovies, Menus.AdminMenu});
+            new List<Action> {ManageMovies, ManageArchivedMovies, Menus.AdminMenu}
+        ).Invoke();
     }
 
     private static void ManageMovies()
@@ -32,7 +33,8 @@ public static class Movies
     {
         MenuHelper.NewMenu(
             new List<string> {"Edit movie details (TODO)", "Archive movie", "Return"},
-            new List<Action> {() => EditMovieDetails(id), () => ArchiveMovie(id), ManageMovies});
+            new List<Action> {() => EditMovieDetails(id), () => ArchiveMovie(id), ManageMovies},
+            _moviesLogic.GetMovieById(id).Title);
     }
 
     private static void ManageArchivedMovies()
@@ -86,15 +88,16 @@ public static class Movies
 
     private static void BringArchivedMovieBack(int id)
     { 
-        MovieModel movie = _moviesLogic.GetArchivedMovieById(id);
+        MovieModel movie = _moviesLogic.GetMovieById(id);
 
         _moviesLogic.Movies.Add(movie);
         _moviesLogic.ArchivedMovies.Remove(movie);
         MoviesAccess.WriteAll(_moviesLogic.Movies);
         ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
 
+        Console.Clear();
         System.Console.WriteLine($"Moved {movie.Title} from archive into active movies");
-
+        Thread.Sleep(1000);
         MenuHelper.WaitForKey(ManageArchivedMovies);
     }
 
@@ -116,6 +119,7 @@ public static class Movies
         MoviesAccess.WriteAll(_moviesLogic.Movies);
         ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
 
+        Console.Clear();
         System.Console.WriteLine($"Moved {movie.Title} into the archive");
         Thread.Sleep(1000);
         MenuHelper.WaitForKey(ManageMovies);
@@ -123,7 +127,45 @@ public static class Movies
 
     private static void EditMovieDetails(int id)
     {
-        MovieModel movie = _moviesLogic.GetArchivedMovieById(id);
+        MovieModel movie = _moviesLogic.GetMovieById(id);
+        if (movie == null)
+        {
+            MovieManager(id);
+            return;
+        }
+        List<string> options = new List<string>
+        {
+            $"Edit title: {movie.Title}",
+            $"Edit duration: {movie.Duration} minutes",
+            $"Edit minimum age: {movie.MinimumAge} years",
+            "Back"
+        };
+
+        List<Action> actions = new List<Action>
+        {
+            () => {
+                Console.Clear();
+                Console.WriteLine("Enter the movie title:");
+                movie.Title = Console.ReadLine();
+                MoviesAccess.WriteAll(_moviesLogic.Movies);
+                EditMovieDetails(id);
+            },
+            () => {
+                Console.WriteLine("Enter the total screen time in minutes:");
+                movie.Duration = Math.Abs(int.Parse(Console.ReadLine()));
+                MoviesAccess.WriteAll(_moviesLogic.Movies);
+                EditMovieDetails(id);
+            },
+            () => {
+                Console.WriteLine("Enter the minimum age (11-18):");
+                movie.MinimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
+                MoviesAccess.WriteAll(_moviesLogic.Movies);
+                EditMovieDetails(id);
+            },
+            () => MovieManager(id)
+        };
+
+        MenuHelper.NewMenu(options, actions);
     }
 
     // Shows a menu with all movies in the list. Returns the int ID of the selected movie, or -1 if the user cancelled.
@@ -145,6 +187,6 @@ public static class Movies
         options.Add("Return");
         indices.Add(-1);
 
-        return MenuHelper.NewMenu("Movies", options, indices);
+        return MenuHelper.NewMenu(options, indices, message: "Movies");
     }
 }

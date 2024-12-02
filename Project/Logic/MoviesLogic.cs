@@ -36,11 +36,7 @@ public class MoviesLogic
                 return movie;
             }
         }
-        return null;
-    }
 
-    public MovieModel GetArchivedMovieById(int id)
-    {
         foreach (MovieModel movie in ArchivedMovies)
         {
             if (movie.Id == id)
@@ -48,7 +44,8 @@ public class MoviesLogic
                 return movie;
             }
         }
-        return null;        
+
+        return null;
     }
 
     public int GetIdByTitle(string title)

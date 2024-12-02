@@ -153,7 +153,7 @@ static class Menus
             ViewAllVacancies,
             GuestMenu
         };
-        MenuHelper.NewMenu("Admin menu", options, actions);
+        MenuHelper.NewMenu(options, actions, "Admin menu");
     }
 
     private static void RemoveUser()
@@ -211,7 +211,7 @@ static class Menus
             AccountPresentation.Menu,
             AccountsLogic.LogOut
         };
-        MenuHelper.NewMenu($"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", options, actions);
+        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
     }
 
     public static void ChooseAccount()
@@ -323,7 +323,7 @@ static class Menus
             GuestMenu
         };
 
-        MenuHelper.NewMenu("Accountant Menu", options, actions); 
+        MenuHelper.NewMenu(options, actions, "Accountant Menu"); 
     }
 
     private static void ViewRecordsByDate()

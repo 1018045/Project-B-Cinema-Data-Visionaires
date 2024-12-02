@@ -164,7 +164,7 @@ public static class Reservation
 
         };
 
-        MenuHelper.NewMenu("Your reservations", showings, actions);
+        MenuHelper.NewMenu(showings, actions, "Your reservations");
         MoviesLogic moviesLogic = new();
 
         if (reservations.Count == 0)
