@@ -21,5 +21,8 @@ public class BillModel
         
    }
 
-   public record Item(string name, int amount, double price) {}
+   public record Item(string name, int amount, double price) 
+   {
+        public double TotalPrice => amount * price;
+   }
 }
