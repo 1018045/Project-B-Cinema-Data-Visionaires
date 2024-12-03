@@ -25,7 +25,7 @@ static class Menus
             ApplyForJob.ShowJobMenu,
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions);
+        MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane");
     }
     
     static public void Start()

@@ -1,19 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 public class JobVacancyLogic
 {
-    private List<JobVacancy> _vacancies;
+    public List<JobVacancy> Vacancies { get; private set; }
+    public List<JobApplication> Applications { get; private set; }
 
     public JobVacancyLogic()
     {
-        _vacancies = JobVacancyAccess.LoadAll();
+        Vacancies = JobVacancyAccess.LoadAll();
+        Applications = JobApplicationAccess.LoadAll();
+    }
+
+    public void AddApplication(int vacancyId, string email, string motivation, DateTime dateApplied)
+    {
+        Applications.Add(new JobApplication(FindNextAvailableApplicationId(), vacancyId, email, motivation, dateApplied));
+        JobApplicationAccess.WriteAll(Applications);
     }
 
     public void AddVacancy(string jobTitle, string jobDescription, decimal? salary, string employmentType)
     {
-        int newId = FindNextAvailableId();
+        int newId = FindNextAvailableVacancyId();
         
         JobVacancy newVacancy = new JobVacancy(
             newId, 
@@ -24,57 +28,61 @@ public class JobVacancyLogic
             employmentType
         );
 
-        _vacancies.Add(newVacancy);
-        JobVacancyAccess.WriteAll(_vacancies);
+        Vacancies.Add(newVacancy);
+        JobVacancyAccess.WriteAll(Vacancies);
     }
 
     public bool RemoveVacancy(int id)
     {
-        _vacancies = JobVacancyAccess.LoadAll();
-        
-        foreach (var vacancy in _vacancies)
+        foreach (var vacancy in Vacancies)
         {
             if (vacancy.VacancyId == id)
             {
-                _vacancies.Remove(vacancy);
-                JobVacancyAccess.WriteAll(_vacancies);
+                Vacancies.Remove(vacancy);
+                JobVacancyAccess.WriteAll(Vacancies);
                 return true;
             }
         }
         return false;
     }
 
-    private int FindNextAvailableId()
+    private int FindNextAvailableApplicationId()
     {
-        if (_vacancies.Count == 0)
+        int pointer = 0;
+        foreach (JobApplication application in Applications.OrderBy(a => a.ApplicationId))
         {
-            return 1;
+            if (application.ApplicationId != pointer++)
+            {
+                return pointer;
+            }
         }
-        else
+        return pointer;     
+    }
+
+    private int FindNextAvailableVacancyId()
+    {
+        int pointer = 0;
+        foreach (JobVacancy vacancy in Vacancies.OrderBy(v => v.VacancyId))
         {
-            int highestId = 0;
-                foreach (var vacancy in _vacancies)
-                {
-                    if (vacancy.VacancyId > highestId)
-                    {
-                        highestId = vacancy.VacancyId;
-                    }
-                }
-            return highestId + 1;
+            if (vacancy.VacancyId != pointer++)
+            {
+                return pointer;
+            }
         }
+        return pointer;     
     }
 
     public string ShowAllVacancies()
     {
-        _vacancies = JobVacancyAccess.LoadAll();
+        Vacancies = JobVacancyAccess.LoadAll();
         
-        if (_vacancies.Count == 0)
+        if (Vacancies.Count == 0)
         {
             return "No vacancies available at the moment.\n";
         }
 
         string output = "";
-        foreach (var vacancy in _vacancies)
+        foreach (var vacancy in Vacancies)
         {
             output += $"ID: {vacancy.VacancyId}\n";
             output += $"Position: {vacancy.JobTitle}\n";
@@ -94,8 +102,8 @@ public class JobVacancyLogic
         return output;
     }
 
-    public bool VacancyExists(int id)
+    public JobVacancy GetJobVacancyById(int id)
     {
-        return _vacancies.Any(v => v.VacancyId == id);
+        return Vacancies.Where(v => v.VacancyId == id).First();
     }
-} 
+}

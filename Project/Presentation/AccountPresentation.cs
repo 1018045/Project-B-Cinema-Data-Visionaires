@@ -12,7 +12,6 @@ public static class AccountPresentation
         {
             "Update account details",
             "Remove account (DANGER)",
-            "Add extra's to your reservation (not yet implemented)",
             "Main menu"
         };
 
@@ -109,31 +108,27 @@ public static class AccountPresentation
 
     private static void DeleteAccount(AccountManageLogic logic)
     {
-        for (var done = false; !done;)
+
+        bool confirmed = MenuHelper.NewMenu(new List<string>(){ "Yes", "No"},
+                                            new List<bool>() { true, false },
+                                            "Are your sure you want to delete your account?");
+                                
+        if (confirmed)
         {
-            Console.WriteLine("Are you sure you want to delete your account Y/N (DANGER): ");
+            logic.DeleteAccount();
 
-            var input = Console.ReadLine()!.ToLower();
-            if (input.Equals("y"))
-            {
-                logic.DeleteAccount();
-
-                Console.Clear();
-                Console.WriteLine("Successfully deleted your account");
-                Console.WriteLine("You will now be logged out");
-
-                done = true;
-                MenuHelper.WaitForKey(Menus.GuestMenu);
-            }
-            else if (input.Equals("n"))
-            {
-                Console.Clear();
-                Console.WriteLine("Canceled the deletion of your account");
-                Console.WriteLine("You will return to the menu");
-
-                done = true;
-                MenuHelper.WaitForKey(Menu);
-            }
+            Console.Clear();
+            Console.WriteLine("Successfully deleted your account");
+            Console.WriteLine("You will now be logged out");
+            MenuHelper.WaitForKey(Menus.GuestMenu);
         }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine("Canceled the deletion of your account");
+            Console.WriteLine("You will return to the menu");
+            MenuHelper.WaitForKey(Menu);
+        }
+    
     }
 }
