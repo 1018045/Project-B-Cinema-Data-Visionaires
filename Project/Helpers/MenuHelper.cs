@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 static class MenuHelper
 {
-    public static T NewMenu<T>(List<string> options, List<T> actions, string message = null)
+    public static T NewMenu<T>(List<string> options, List<T> actions, string message = null, string subtext = null)
     {
         if (options.Count != actions.Count)
         {
@@ -20,6 +20,7 @@ static class MenuHelper
         {
             Console.Clear();
             if (message != null) System.Console.WriteLine($"\u001b[1m===={message}====\u001b[0m");
+            if (subtext != null) System.Console.WriteLine(subtext);
 
             for (int i = 0; i < options.Count; i++)
             {

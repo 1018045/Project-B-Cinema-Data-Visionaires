@@ -185,7 +185,7 @@ public static class Reservation
     private static void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
     {
         List<ShowingModel> upcomingShowings = _showingsLogic.GetUpcomingShowingsOfMovie(movieTitle);
-        if (upcomingShowings.Count == 0)
+        if (upcomingShowings.Count == 1)
         {
             Console.WriteLine("There are no available shows planned, please cancel your reservation if you are unavailable at that time.");
         }

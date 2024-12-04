@@ -189,4 +189,39 @@ public static class Movies
 
         return MenuHelper.NewMenu(options, indices, message: "Movies");
     }
+
+    public static void MoviesBrowser()
+    {
+        int currentIndex = 0;
+        ConsoleKey key;
+        List<MovieModel> movies = _moviesLogic.Movies; 
+
+        do
+        {
+            Console.Clear();
+            if (currentIndex != 0 && currentIndex != movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 17)}Right -->");
+            else if (currentIndex == 0) Console.Write($"{new String(' ', Console.WindowWidth - 9)}Right -->");
+            else if (currentIndex == movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 8)}");
+
+            System.Console.WriteLine(ShowMovieInfo(movies[currentIndex]));
+
+            var keyInfo = Console.ReadKey(intercept: true);
+            key = keyInfo.Key;
+
+            if (key == ConsoleKey.LeftArrow) currentIndex--;
+            if (key == ConsoleKey.RightArrow) currentIndex++;
+            // wrapping
+            currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1); 
+        } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
+        if (key == ConsoleKey.Backspace) Menus.LoggedInMenu();
+        else Reservation.Make();
+    }
+
+    private static string ShowMovieInfo(MovieModel movie)
+    {
+        string info = $"\n\u001b[1m===={movie.Title}====\u001b[0m";
+        info += $"\nDuration: {movie.Duration} minutes";
+        info += $"\n{movie.MinimumAge}+";
+        return info;
+    }
 }
