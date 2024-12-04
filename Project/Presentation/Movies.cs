@@ -4,6 +4,7 @@ public static class Movies
 {
     private static readonly MoviesLogic _moviesLogic = new ();
     private static readonly ShowingsLogic _showingsLogic = new ();
+    private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
 
     public static void Start()
     {
@@ -219,9 +220,15 @@ public static class Movies
 
     private static string ShowMovieInfo(MovieModel movie)
     {
-        string info = $"\n\u001b[1m===={movie.Title}====\u001b[0m";
-        info += $"\nDuration: {movie.Duration} minutes";
-        info += $"\n{movie.MinimumAge}+";
-        return info;
+        List<ShowingModel> upcoming = _showingsLogic.Showings.Where(s => s.MovieId == movie.Id).OrderBy(s => s.Date).ToList();
+        string line1 = $"\u001b[1m===={movie.Title}====\u001b[0m";
+        string line2 = $"Duration: {movie.Duration} minutes";
+        string line3 = $"{movie.MinimumAge}+";
+        string line4 = "";
+        foreach (ShowingModel show in upcoming)
+        {
+            line4 += $"Room {show.Room}; {show.Date.ToString(DATEFORMAT)}\n";
+        }
+        return $"{line1}\n\n{line2}\n{line3}\n{line4}";
     }
 }
