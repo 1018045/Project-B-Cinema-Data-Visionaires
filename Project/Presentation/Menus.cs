@@ -28,6 +28,33 @@ static class Menus
         MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane");
     }
     
+    static public void LoggedInMenu()
+    {
+        List<string> options = new List<string>
+        {
+            "Make a reservation",
+            "Show upcoming movie showings",
+            "Show upcoming movie showings on a specific date",
+            "Your reservations",
+            "Manage your account",
+            "Log out"
+        };
+        List<Action> actions = new List<Action>
+        {
+            Reservation.Make,
+            () => Showings.ShowUpcoming(),
+            Showings.ShowUpcomingOnDate,
+            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
+            AccountPresentation.Menu,
+            () => 
+            {
+                AccountsLogic.LogOut();
+                GuestMenu();
+            }
+        };
+        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
+    }
+
     static public void Start()
     {
         Console.WriteLine("Enter 1 to login");
@@ -189,54 +216,16 @@ static class Menus
         MenuHelper.WaitForKey(AdminMenu);
     }
 
-    static public void LoggedInMenu()
-    {
-        List<string> options = new List<string>
-        {
-            "Make a reservation",
-            "Show upcoming movie showings",
-            "Show upcoming movie showings on a specific date",
-            "Show your reservations",
-            "Adjust your reservations",
-            "Manage your account",
-            "Log out"
-        };
-        List<Action> actions = new List<Action>
-        {
-            Reservation.Make,
-            () => Showings.ShowUpcoming(),
-            Showings.ShowUpcomingOnDate,
-            () => Reservation.Show(AccountsLogic.CurrentAccount.Id),
-            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
-            AccountPresentation.Menu,
-            AccountsLogic.LogOut
-        };
-        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
-    }
-
     public static void ChooseAccount()
     {
-        Console.WriteLine("What type of account would you like to create?");
-        Console.WriteLine("Choose the from the options below");
-        Console.WriteLine("1)User");
-
-        var userinput = Console.ReadLine();
-        while(AccountsLogic.ParseInt(userinput) != 1)
-        {
-            Console.WriteLine("Input was incorrect. Try again");
-            userinput = Console.ReadLine();
-        }
-
-        Console.WriteLine("Enter the information below");
         Console.WriteLine("Email: ");
-        var userEmail = Console.ReadLine();
-        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true)
+        string userEmail;
+        do
         {
             Console.WriteLine("Email: ");
             userEmail = Console.ReadLine();
         }
-
-
+        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true);
 
         Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
         SecureString pass = AccountsLogic.MaskInputstring();
