@@ -19,7 +19,7 @@ static class Menus
         List<Action> actions = new List<Action>
         {
             Login,
-            ChooseAccount,
+            CreateAccount,
             () => Showings.ShowUpcoming(),
             Showings.ShowUpcomingOnDate,
             ApplyForJob.ShowJobMenu,
@@ -44,7 +44,7 @@ static class Menus
                 Login();
                 break;
             case "2":
-                ChooseAccount();
+                CreateAccount();
                 break;
             case "3":
                 Showings.ShowUpcoming();
@@ -242,20 +242,10 @@ static class Menus
         MenuHelper.NewMenu($"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", options, actions);
     }
 
-    public static void ChooseAccount()
+    public static void CreateAccount()
     {
-        Console.WriteLine("What type of account would you like to create?");
-        Console.WriteLine("Choose the from the options below");
-        Console.WriteLine("1)User");
-
-        var userinput = Console.ReadLine();
-        while(AccountsLogic.ParseInt(userinput) != 1)
-        {
-            Console.WriteLine("Input was incorrect. Try again");
-            userinput = Console.ReadLine();
-        }
-
-        Console.WriteLine("Enter the information below");
+        Console.Clear();
+        Console.WriteLine("Enter your information below");
         Console.WriteLine("Email: ");
         var userEmail = Console.ReadLine();
         while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true)
