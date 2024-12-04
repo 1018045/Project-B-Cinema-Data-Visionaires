@@ -15,13 +15,25 @@ public class MovieModel
     [JsonPropertyName("minimumAge")]
     public int MinimumAge { get; set; }
 
+    [JsonPropertyName("summary")]
+    public string Summary { get; set; }
 
-    public MovieModel(int id, string title, int duration, int minimumAge)
+    [JsonPropertyName("actors")]
+    public List<string> Actors { get; set; }
+
+    [JsonPropertyName("director")]
+    public string Director { get; set; }
+
+
+    public MovieModel(int id, string title, int duration, int minimumAge, string summary, List<string> actors, string director)
     {
         Id = id;
         Title = title;
         Duration = duration;
         MinimumAge = minimumAge;
+        Summary = summary;
+        Actors = actors;
+        Director = director;
     }
 
 }

@@ -78,7 +78,17 @@ public static class Movies
         Console.WriteLine("Enter the minimum age (11-18):");
         int minimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
 
-        _moviesLogic.AddMovie(title, duration, minimumAge);
+        System.Console.WriteLine("Enter a summary of the movie:");
+        string summary = Console.ReadLine();
+
+        System.Console.WriteLine("Enter the main cast seperated by comma's");
+        List<string> actors = Console.ReadLine().Split(",").ToList();
+        actors.ForEach(a => a.Trim());
+
+        System.Console.WriteLine("Enter the movie's director:");
+        string director = Console.ReadLine();
+
+        _moviesLogic.AddMovie(title, duration, minimumAge, summary, actors, director);
         Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
 
         // System.Console.WriteLine("Which extra's are mandatory for this movie?");
@@ -173,7 +183,6 @@ public static class Movies
     private static int MovieSelector(List<MovieModel> movies, List<(string, int)> extras = null)
     {
         List<string> options = movies.Select(m => m.Title).ToList();
-
         List<int> indices = movies.Select(m => m.Id).ToList();
 
         if (extras != null)
@@ -203,8 +212,26 @@ public static class Movies
             if (currentIndex != 0 && currentIndex != movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 17)}Right -->");
             else if (currentIndex == 0) Console.Write($"{new String(' ', Console.WindowWidth - 9)}Right -->");
             else if (currentIndex == movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 8)}");
+            System.Console.WriteLine(new string('-', Console.WindowWidth));
 
-            System.Console.WriteLine(ShowMovieInfo(movies[currentIndex]));
+            List<MovieModel> moviesOnScreen;
+            if (currentIndex == 0) moviesOnScreen = movies.Slice(currentIndex, 3);
+            else if (currentIndex == movies.Count - 1) moviesOnScreen = movies.Slice(currentIndex - 2, 3);
+            else moviesOnScreen = movies.Slice(currentIndex - 1, 3);
+
+            int blockWidth = Console.WindowWidth % 3 == 0 ? Console.WindowWidth : Console.WindowWidth - Console.WindowWidth % 3;
+            blockWidth = blockWidth/3;
+            List<List<string>> blocks = new();
+            
+            for (int i = 0; i < 3; i++)
+            {
+                if (movies[currentIndex].Id == moviesOnScreen[i].Id)
+                    blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth, true));
+                else
+                    blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth));
+            }
+
+            System.Console.WriteLine(CombineBlocks(blocks[0], blocks[1], blocks[2], blockWidth));
 
             var keyInfo = Console.ReadKey(intercept: true);
             key = keyInfo.Key;
@@ -212,23 +239,78 @@ public static class Movies
             if (key == ConsoleKey.LeftArrow) currentIndex--;
             if (key == ConsoleKey.RightArrow) currentIndex++;
             // wrapping
-            currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1); 
+            currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1);
         } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
+
         if (key == ConsoleKey.Backspace) Menus.LoggedInMenu();
         else Reservation.Make();
     }
 
-    private static string ShowMovieInfo(MovieModel movie)
+    private static List<string> CreateBlock(MovieModel movie, int blockWidth, bool selected = false)
     {
-        List<ShowingModel> upcoming = _showingsLogic.Showings.Where(s => s.MovieId == movie.Id).OrderBy(s => s.Date).ToList();
-        string line1 = $"\u001b[1m===={movie.Title}====\u001b[0m";
-        string line2 = $"Duration: {movie.Duration} minutes";
-        string line3 = $"{movie.MinimumAge}+";
-        string line4 = "";
-        foreach (ShowingModel show in upcoming)
+        string colourOpen = "\u001b[90m";
+        string colourClose = "\u001b[0m";
+
+        List<string> wrappedTitle = WrapString(movie.Title, blockWidth, 2);
+        List<string> wrappedSummary = WrapString(movie.Summary, blockWidth, 4);
+
+        List<string> outputList = new();
+        for (int i = 0; i < wrappedTitle.Count; i++)
         {
-            line4 += $"Room {show.Room}; {show.Date.ToString(DATEFORMAT)}\n";
+            outputList.Add(wrappedTitle[i]);
         }
-        return $"{line1}\n\n{line2}\n{line3}\n{line4}";
+        outputList.Add($"Duration: {movie.Duration} minutes");
+        for (int i = 0; i < wrappedSummary.Count; i++)
+        {
+            outputList.Add(wrappedSummary[i]);
+        }
+        outputList.Add($"{movie.Actors}");
+        outputList.Add($"Directed by {movie.Director}");
+        outputList.Add($"{movie.MinimumAge}+");
+
+        if (!selected)
+        {
+            for (int i = 0; i < outputList.Count(); i++)
+            {
+                outputList[i] = $"{colourOpen}{outputList[i]}{colourClose}";
+            }
+        }
+        return outputList;
+    }
+
+    private static List<string> WrapString(string text, int blockWidth, int lines)
+    {
+        List<string> wrappedString = new();
+
+        while (text.Length > blockWidth)
+        {
+            wrappedString.Add(text.Substring(0, blockWidth));
+            text = text.Substring(blockWidth);
+        }
+        wrappedString.Add(text);
+
+        if (text.Length > blockWidth * lines)
+        {
+            // replace last 3 characters with dots
+        }
+
+        while (wrappedString.Count() < 3)
+        {
+            wrappedString.Add("");
+        }
+
+        return wrappedString;
+    }
+
+    private static string CombineBlocks(List<string> block1, List<string> block2, List<string> block3, int blockWidth)
+    {
+        string output = "";
+
+        for (int i = 0; i < block1.Count; i++)
+        {
+            output += $"{block1[i].PadRight(blockWidth)}|{block2[i].PadRight(blockWidth)}|{block3[i].PadRight(blockWidth)}\n";
+        }
+
+        return output;
     }
 }

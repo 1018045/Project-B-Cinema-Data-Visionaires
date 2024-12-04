@@ -9,6 +9,7 @@ static class Menus
     {
         List<string> options = new List<string>
         {
+            "Browse movies",
             "Login",
             "Create account",
             "Upcoming movies",
@@ -18,6 +19,7 @@ static class Menus
         };
         List<Action> actions = new List<Action>
         {
+            Movies.MoviesBrowser,
             Login,
             ChooseAccount,
             () => Showings.ShowUpcoming(),
@@ -32,7 +34,7 @@ static class Menus
     {
         List<string> options = new List<string>
         {
-            "MOVIESBROWSER",
+            "Browse movies",
             "Make a reservation",
             "Show upcoming movie showings",
             "Show upcoming movie showings on a specific date",

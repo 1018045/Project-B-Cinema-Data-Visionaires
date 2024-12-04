@@ -9,9 +9,9 @@ public class MoviesLogic
         ArchivedMovies = ArchivedMoviesAccess.LoadAll();
     }
 
-    public void AddMovie(string title, int duration, int minimumAge)
+    public void AddMovie(string title, int duration, int minimumAge, string summary, List<string> actors, string director)
     {
-        Movies.Add(new MovieModel(FindFirstAvailableID(), title, duration, minimumAge));
+        Movies.Add(new MovieModel(FindFirstAvailableID(), title, duration, minimumAge, summary, actors, director));
         MoviesAccess.WriteAll(Movies);
     }
 
