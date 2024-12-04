@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "showingId": 0,
+    "seats": "2;1,2;2",
+    "paymentComplete": true
+  }
+]

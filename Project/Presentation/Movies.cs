@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using Project.Logic.Account;
 
 public static class Movies
 {
@@ -242,52 +244,61 @@ public static class Movies
             currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1);
         } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
 
-        if (key == ConsoleKey.Backspace) Menus.LoggedInMenu();
-        else Reservation.Make();
+        if (key == ConsoleKey.Backspace) 
+        {
+            if (AccountsLogic.CurrentAccount == null)
+                Menus.GuestMenu();
+            else
+                Menus.LoggedInMenu();
+        }
+        else Reservation.Make(movies[currentIndex]);
     }
 
     private static List<string> CreateBlock(MovieModel movie, int blockWidth, bool selected = false)
     {
-        string colourOpen = "\u001b[90m";
-        string colourClose = "\u001b[0m";
+        string openANSI = selected ? "\u001b[1m" : "\u001b[90m";
+        string resetANSI = "\u001b[0m";
 
         List<string> wrappedTitle = WrapString(movie.Title, blockWidth, 2);
         List<string> wrappedSummary = WrapString(movie.Summary, blockWidth, 4);
+        List<string> wrappedActors = WrapString(String.Join(", ", movie.Actors), blockWidth, 3);
 
         List<string> outputList = new();
-        for (int i = 0; i < wrappedTitle.Count; i++)
-        {
-            outputList.Add(wrappedTitle[i]);
-        }
-        outputList.Add($"Duration: {movie.Duration} minutes");
-        for (int i = 0; i < wrappedSummary.Count; i++)
-        {
-            outputList.Add(wrappedSummary[i]);
-        }
-        outputList.Add($"{movie.Actors}");
+        foreach (string line in wrappedTitle) outputList.Add(line);
+        foreach (string line in wrappedSummary) outputList.Add(line);
+        outputList.Add("");
+        foreach (string line in wrappedActors) outputList.Add(line);
         outputList.Add($"Directed by {movie.Director}");
+        outputList.Add("");
+        outputList.Add($"Duration: {movie.Duration} minutes");
         outputList.Add($"{movie.MinimumAge}+");
 
-        if (!selected)
+        for (int i = 0; i < outputList.Count(); i++)
         {
-            for (int i = 0; i < outputList.Count(); i++)
-            {
-                outputList[i] = $"{colourOpen}{outputList[i]}{colourClose}";
-            }
+            outputList[i] = $"{openANSI}{outputList[i]}{resetANSI}";
         }
+    
+        
         return outputList;
     }
 
     private static List<string> WrapString(string text, int blockWidth, int lines)
     {
         List<string> wrappedString = new();
+        List<string> singleWords = text.Split(' ').ToList();
 
-        while (text.Length > blockWidth)
+        string line = "";
+        foreach (string word in singleWords)
         {
-            wrappedString.Add(text.Substring(0, blockWidth));
-            text = text.Substring(blockWidth);
+            if (blockWidth > line.Length + word.Length) 
+                line += word + " ";
+            else 
+            {
+                wrappedString.Add(line);
+                line = word + " ";
+            }
         }
-        wrappedString.Add(text);
+        wrappedString.Add(line);
 
         if (text.Length > blockWidth * lines)
         {
@@ -308,9 +319,13 @@ public static class Movies
 
         for (int i = 0; i < block1.Count; i++)
         {
-            output += $"{block1[i].PadRight(blockWidth)}|{block2[i].PadRight(blockWidth)}|{block3[i].PadRight(blockWidth)}\n";
+            string line1 = block1[i] + new String(' ', blockWidth - GetLengthWithoutANSI(block1[i]));
+            string line2 = block2[i] + new String(' ', blockWidth - GetLengthWithoutANSI(block2[i]));
+            string line3 = block3[i] + new String(' ', blockWidth - GetLengthWithoutANSI(block3[i]));
+            output += $"{line1}|{line2}|{line3}\n";
         }
 
         return output;
     }
+    private static int GetLengthWithoutANSI(string text) => Regex.Replace(text, @"\u001b\[[0-9;]*m", "").Length;
 }

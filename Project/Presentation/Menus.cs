@@ -35,7 +35,6 @@ static class Menus
         List<string> options = new List<string>
         {
             "Browse movies",
-            "Make a reservation",
             "Show upcoming movie showings",
             "Show upcoming movie showings on a specific date",
             "Your reservations",
@@ -45,7 +44,6 @@ static class Menus
         List<Action> actions = new List<Action>
         {
             Movies.MoviesBrowser,
-            Reservation.Make,
             () => Showings.ShowUpcoming(),
             Showings.ShowUpcomingOnDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),

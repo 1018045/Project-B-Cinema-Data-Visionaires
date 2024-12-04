@@ -31,7 +31,7 @@ public class ReservationsLogic
         if (bankDetails.Length != 18)
             return "Error: incorrect IBAN length. Please try again!";
         
-        if (bankDetails != "NL")
+        if (bankDetails.Substring(0,2) != "NL")
         {
             return "The first 2 characters of the IBAN should be 'NL' (Country signature). Please try again!";
         }

@@ -41,7 +41,7 @@ public class ShowingsLogic
         List<ShowingModel> showings = new();
         foreach (ShowingModel showing in Showings)
         {
-            if (showing.MovieId == id)
+            if (showing.MovieId == id && showing.Date > DateTime.Now)
             {
                 showings.Add(showing);
             }

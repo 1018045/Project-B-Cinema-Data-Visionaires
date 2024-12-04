@@ -12,7 +12,7 @@ public static class AccountPresentation
         {
             "Update account details",
             "Remove account (DANGER)",
-            "Main menu"
+            "Return"
         };
 
         List<Action> actions = new List<Action>

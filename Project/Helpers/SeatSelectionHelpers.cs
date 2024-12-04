@@ -96,7 +96,6 @@ public static class SeatSelectionHelpers
         return false;
     }
 
-
     public static List<int> GenerateSeatingLayoutContent(int showingId)
     {
         var room = GetRoomByShowing(showingId);

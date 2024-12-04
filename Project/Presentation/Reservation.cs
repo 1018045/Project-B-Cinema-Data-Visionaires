@@ -12,33 +12,39 @@ public static class Reservation
 
     private static readonly MoviesLogic _moviesLogic = new ();
 
-    public static void Make()
+    public static void Make(MovieModel movie)
     {
         Console.Clear();
-
-        Console.WriteLine("\nUpcoming showings:\n");
-        Showings.ShowUpcoming(makingReservation: true);
-
-        Console.WriteLine("Select a showing (Enter the number in front of the showing to continue)");
-
-        var id = Console.ReadLine();
-        var showingId = Convert.ToInt32(id);
-
-        string confirmSeats = "";
-        List<string> selectedSeats;
-
-        do        
+        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).ToList<object>();
+        if (showings.Count() == 0)
         {
-            selectedSeats = SeatingPresentation.Present(showingId);
-            System.Console.WriteLine("Enter Y to confirm your seats.");
-            System.Console.WriteLine("Enter any other key to select restart the seat selection.");
-            confirmSeats = Console.ReadLine();
-        } while(confirmSeats.ToLower().Trim() != "y");
+            System.Console.WriteLine("There are no upcoming showings for this movie");
+            Thread.Sleep(1000);
+            MenuHelper.WaitForKey(() => Movies.MoviesBrowser());
+            return;
+        }
+        List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(DATEFORMAT)).ToList();
+        options.Add("Return");
+        showings.Add(Movies.MoviesBrowser);
 
-        Console.WriteLine("Would you like to order extra's?"); 
-        Console.WriteLine("Enter Y for Yes/N for No");
-        string decision = Console.ReadLine();
-        if(decision.Equals("Y", StringComparison.OrdinalIgnoreCase))
+        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress:");
+        ShowingModel selectedShowing = (ShowingModel)show;
+
+        if (AccountsLogic.CurrentAccount == null)
+        {
+            // guest reservation
+        }
+
+        bool confirmSeats = false;
+        List<string> selectedSeats;
+        do        
+        {  
+            Console.Clear();
+            selectedSeats = SeatingPresentation.Present(selectedShowing.Id);
+            confirmSeats = MenuHelper.NewMenu(new List<string> {"Confirm", "Retry"}, new List<bool> {true, false}, subtext: String.Join(' ', selectedSeats));
+        } while(!confirmSeats);
+
+        if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to order extra's?")) 
         {
             Console.WriteLine("These are the food choices:");
             Console.WriteLine("1. Gourmet Truffle Cheeseburger");
@@ -99,27 +105,40 @@ public static class Reservation
 
             Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
         }
-        else if (decision.Equals("N", StringComparison.OrdinalIgnoreCase))
-        {
-            Console.WriteLine("No extras ordered. Thank you for your response.");
-        }
         else
         {
-            Console.WriteLine("Invalid input. Please enter Y for Yes or N for No.");
+            Console.WriteLine("No extras ordered. Thank you for your response.");
         }
         
         string payment = "X";
         while (payment != "")
         {
-            Console.WriteLine("\nBank details:");
+            Console.Clear();
+            Console.WriteLine("Please enter your bank details:");
             payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine()!);
             Console.WriteLine(payment);
         }
     
-        _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
+        FakeProcessingPayment(5000);
+        _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, selectedShowing.Id, string.Join(",", selectedSeats), true);
 
-        Console.WriteLine("\nYou have successfully booked your tickets!\n");
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("You have successfully booked your tickets!\n");
+        Console.ResetColor();
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
+    }
+
+    private static void FakeProcessingPayment(int lengthInMilliSeconds)
+    {
+
+        for (int i = 0; i < lengthInMilliSeconds/200; i++)
+        {
+            Console.Clear();
+            string dots = new string('.', (i % 3) + 1);
+            System.Console.WriteLine("Payment processing" + dots);
+            Thread.Sleep(200);
+        }
     }
 
     public static void Adjust(int userId)
