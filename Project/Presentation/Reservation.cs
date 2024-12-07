@@ -104,16 +104,16 @@ public static class Reservation
                     return;  // Exit if invalid drink choice
             }
 
-            Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
-            List<Item> food = new();
-            Item item = new(name,1,2.50);
-            food.Add(item);
+            // Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
+            // List<Item> food = new();
+            // Item item = new(name,1,2.50);
+            // food.Add(item);
 
-            AccountantLogic accountantLogic = new ();
+            // AccountantLogic accountantLogic = new ();
 
-            int billID = accountantLogic.FindFirstAvailableID();
+            // int billID = accountantLogic.FindFirstAvailableID();
 
-            BillModel bill = new(billID,false, food, item.price,DateTime.Now);
+            // BillModel bill = new(billID,false, food, item.price,DateTime.Now);
 
             
             
