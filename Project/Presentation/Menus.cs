@@ -327,7 +327,6 @@ static class Menus
         {
             "View all financial records",
             "View records for a date",
-            "View total money earned",
             "View total tickets sold",
             "Log out"
         };
@@ -335,8 +334,7 @@ static class Menus
         List<Action> actions = new List<Action>
         {
             ViewAllRecords,
-            ViewRecordsByDate,  //NOT IMPLEMENTED
-            ViewTotalMoney,     //NOT IMPLEMENTED
+            ViewRecordsByMonth,  //NOT IMPLEMENTED
             ViewTotalTickets,   //NOT IMPLEMENTED
             GuestMenu
         };
@@ -344,58 +342,163 @@ static class Menus
         MenuHelper.NewMenu("Accountant Menu", options, actions); 
     }
 
-    private static void ViewRecordsByDate()
+    private static void ViewRecordsByMonth()
     {
-        System.Console.WriteLine("NOT IMPLEMENTED YET");
+        Console.Clear();
+        Console.WriteLine("=== Reserveringen Per Maand ===\n");
+
+        var reservationsLogic = new ReservationsLogic();
+        var reservations = reservationsLogic.Reservations;
+        var showingsLogic = new ShowingsLogic();
+
+       
+        Console.WriteLine("Januari:");
+        BerekenMaandTotalen(reservations, showingsLogic, 1);
+
+        Console.WriteLine("\nFebruari:");
+        BerekenMaandTotalen(reservations, showingsLogic, 2);
+
+        Console.WriteLine("\nMaart:");
+        BerekenMaandTotalen(reservations, showingsLogic, 3);
+
+        Console.WriteLine("\nApril:");
+        BerekenMaandTotalen(reservations, showingsLogic, 4);
+
+        Console.WriteLine("\nMei:");
+        BerekenMaandTotalen(reservations, showingsLogic, 5);
+
+        Console.WriteLine("\nJuni:");
+        BerekenMaandTotalen(reservations, showingsLogic, 6);
+
+        Console.WriteLine("\nJuli:");
+        BerekenMaandTotalen(reservations, showingsLogic, 7);
+
+        Console.WriteLine("\nAugustus:");
+        BerekenMaandTotalen(reservations, showingsLogic, 8);
+
+        Console.WriteLine("\nSeptember:");
+        BerekenMaandTotalen(reservations, showingsLogic, 9);
+
+        Console.WriteLine("\nOktober:");
+        BerekenMaandTotalen(reservations, showingsLogic, 10);
+
+        Console.WriteLine("\nNovember:");
+        BerekenMaandTotalen(reservations, showingsLogic, 11);
+
+        Console.WriteLine("\nDecember:");
+        BerekenMaandTotalen(reservations, showingsLogic, 12);
+
         MenuHelper.WaitForKey(AccountantMenu);
     }
 
-    private static void ViewTotalMoney()
+   
+    private static void BerekenMaandTotalen(List<ReservationModel> reservations, ShowingsLogic showingsLogic, int maand)
     {
-        System.Console.WriteLine("NOT IMPLEMENTED YET");
-        MenuHelper.WaitForKey(AccountantMenu);
+        double totaalInkomsten = 0;
+        int totaalTickets = 0;
+
+       
+        foreach (var reservation in reservations)
+        {
+            var showing = showingsLogic.FindShowingByIdReturnShowing(reservation.ShowingId);
+            
+            if (showing.Date.Month == maand)
+            {
+                totaalInkomsten += reservation.Price;
+
+                string stoelen = reservation.Seats;
+                int aantalTickets = 1; 
+                for (int i = 0; i < stoelen.Length; i++)
+                {
+                    if (stoelen[i] == ',')
+                    {
+                        aantalTickets = aantalTickets + 1;
+                    }
+                }
+                totaalTickets = totaalTickets + aantalTickets;
+            }
+        }
+
+        
+        Console.WriteLine($"  Inkomsten: €{totaalInkomsten:F2}");
+        Console.WriteLine($"  Aantal tickets: {totaalTickets}");
     }
+
+    
 
     private static void ViewTotalTickets()
     {
-        System.Console.WriteLine("NOT IMPLEMENTED YET");
+        Console.Clear();
+        Console.WriteLine("=== Totaal Verkochte Tickets ===\n");
+
+        var reservationsLogic = new ReservationsLogic();
+        var reservations = reservationsLogic.Reservations;
+        int totalTickets = 0;
+
+        foreach (var reservation in reservations)
+        {
+            
+            int ticketsInReservation = 1; 
+            string seats = reservation.Seats;
+            
+    
+            for (int i = 0; i < seats.Length; i++)
+            {
+                if (seats[i] == ',')
+                {
+                    ticketsInReservation++;
+                }
+            }
+            
+            totalTickets += ticketsInReservation;
+        }
+
+        Console.WriteLine($"Totaal aantal verkochte tickets: {totalTickets}");
+        
         MenuHelper.WaitForKey(AccountantMenu);
     }
 
     private static void ViewAllRecords()
     {
-        // Haal alle records op via AccountantAccess
-        var records = AccountantAccess.LoadAll();
+        Console.Clear();
         
-        Console.WriteLine("\nAll Financial Records:");
-        Console.WriteLine("ID | Date | Movie | Tickets | Money | Room");
-        Console.WriteLine("----------------------------------------");
         
-        // Toon elk record
-        // foreach(var record in records)
-        // {
-        //     Console.WriteLine($"{record.Id} | {record.Date} | {record.MovieTitle} | " +
-        //                     $"{record.TicketsSold} | ${record.Revenue} | {record.Room}");
-        // }
-
-        MenuHelper.WaitForKey();
+        var employeeLogic = new EmployeeLogic();
+        var totalSalary = employeeLogic.GetTotalMonthlySalary();
+        
+      
+        var reservationsLogic = new ReservationsLogic();
+        var totalMovieRevenue = reservationsLogic.GetTotalRevenue();
+        
+      
+        Console.WriteLine("=== Financieel Overzicht ===\n");
+        Console.WriteLine($"Totale maandelijkse salariskosten: €{totalSalary:F2}");
+        Console.WriteLine($"Totale filminkomsten: €{totalMovieRevenue:F2}");
+        Console.WriteLine($"Netto resultaat: €{totalMovieRevenue - totalSalary:F2}\n");
+        
+        MenuHelper.WaitForKey(AccountantMenu);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static void AddEmployee()
     {
         Console.Clear();
-        EmployeeLogic employeeLogic = new (); 
-
-        Console.WriteLine("Enter the new employee's details"); 
-        Console.WriteLine("Employee Name: ");
-        string EmployeeName = Console.ReadLine(); 
-
-        Console.WriteLine("Monthly Salary: "); 
-        int Salary = Convert.ToInt32(Console.ReadLine());   
-
-        EmployeeModel employeeToAdd = new (EmployeeName,employeeLogic.FindFirstAvailableID(),Salary); 
-        employeeLogic.AddEmployee(employeeToAdd);
-        Console.WriteLine("Employee has been successfully added!");
+       System.Console.WriteLine("NOT IMPLEMENTED YET");
 
         MenuHelper.WaitForKey(AdminMenu);
 
@@ -415,7 +518,7 @@ static class Menus
 
         decimal? salary;
 
-        if (string.IsNullOrEmpty(salaryInput))
+        if (salaryInput == null || salaryInput == "")
         {
             salary = null;
         }
@@ -433,6 +536,29 @@ static class Menus
         Console.WriteLine("Job vacancy has been added.");
         MenuHelper.WaitForKey(AdminMenu);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static void RemoveJobVacancy()
     {

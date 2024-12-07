@@ -115,7 +115,28 @@ public static class Reservation
             Console.WriteLine(payment);
         }
     
-        _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
+        double basePrice = 10.00; 
+        double specialPrice = 0.00; 
+
+       
+        ShowingModel showing = _showingsLogic.FindShowingByIdReturnShowing(showingId);
+        if (showing.Special == "Premier")
+        {
+            specialPrice += 5.00;
+        }
+        else if (showing.Special == "Dolby")
+        {
+            specialPrice += 3.50;
+        }
+
+        
+        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count;
+
+        int gebruikerId = AccountsLogic.CurrentAccount.Id; 
+        string stoelen = string.Join(",", selectedSeats);  
+        bool betaald = true; 
+        
+        _reservationsLogic.AddReservation(gebruikerId, showingId, stoelen, betaald, totalPrice);
 
         Console.WriteLine("\nYou have successfully booked your tickets!\n");
         MenuHelper.WaitForKey(Menus.LoggedInMenu);

@@ -93,9 +93,15 @@ public class JobVacancyLogic
         }
         return output;
     }
-
     public bool VacancyExists(int id)
     {
-        return _vacancies.Any(v => v.VacancyId == id);
+        foreach (var vacancy in _vacancies)
+        {
+            if (vacancy.VacancyId == id)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 } 

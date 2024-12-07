@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Globalization;
 using Project.Helpers;
+using System.Text.Json.Serialization;
 
 public static class Showings
 {
@@ -131,6 +132,18 @@ public static class Showings
             correct = int.TryParse(Console.ReadLine(), out room) && room > 0 && room < 4;          
         } while (!correct);
 
+        Console.WriteLine("Select a special for this showing:");
+        Console.WriteLine("1. Premier");
+        Console.WriteLine("2. Dolby");
+        Console.WriteLine("3. none");
+        string special = Console.ReadLine() switch
+        {
+            "1" => "Premier",
+            "2" => "Dolby",
+            _ => "none"
+        };
+
+
         List<string> options = new List<string>
             {
                 "Single showing",
@@ -152,7 +165,7 @@ public static class Showings
                 pattern = "weekly";
                 break;
             case 3:
-                BookShowings(date, room, moviesLogic, movieId);
+                BookShowings(date, room, moviesLogic, movieId, special);
                 return;
             default:
                 ManageShowings(movieId, moviesLogic);
@@ -170,7 +183,7 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i), room, moviesLogic, movieId);
+                BookShowings(date.AddDays(i), room, moviesLogic, movieId, special);
             }
         } 
         else if (pattern == "weekly")
@@ -184,14 +197,14 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId);
+                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, special);
             }
         }
 
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
 
-    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId)
+    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, string special)
     {
         if (!_showingsLogic.IsRoomFree(date, room, moviesLogic.GetMovieById(movieId).Duration, moviesLogic))
         {
@@ -201,9 +214,11 @@ public static class Showings
             Thread.Sleep(250);
             return;
         }
-        _showingsLogic.AddShowing(movieId, date, room);
+
+
+        _showingsLogic.AddShowing(movieId, date, room, special);
         Console.ForegroundColor = ConsoleColor.Green;
-        System.Console.WriteLine($"Showing has been succesfully added on {date.ToString("dd-MM-yyyy HH:mm:ss")}");
+        System.Console.WriteLine($"Showing has been successfully added on {date.ToString("dd-MM-yyyy HH:mm:ss")} with special: {special}");
         Console.ResetColor();
         Thread.Sleep(500);
     }
