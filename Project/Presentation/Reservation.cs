@@ -73,30 +73,51 @@ public static class Reservation
    
             Console.WriteLine("Please enter the number of your drink choice (1-5):");
             string drinkChoice = Console.ReadLine();
-          
+            string name;
             switch (drinkChoice)
             {
                 case "1":
                     Console.WriteLine("You have selected Red Wine.");
+                    name = "Red Wine";
                     break;
                 case "2":
                     Console.WriteLine("You have selected White Wine.");
+                    name = "White Wine";
                     break;
                 case "3":
                     Console.WriteLine("You have selected Vitamin Water.");
+                    name = "Vitamin Water";
                     break;
+
                 case "4":
                     Console.WriteLine("You have selected Sparkling Water.");
+                    name = "Sparkling Water";
                     break;
+
                 case "5":
                     Console.WriteLine("You have selected Orange Juice.");
+                    name = "Orange Juice";
+
                     break;
                 default:
                     Console.WriteLine("Invalid choice, please choose a number between 1 and 5.");
                     return;  // Exit if invalid drink choice
             }
 
-            Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
+            // Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
+            // List<Item> food = new();
+            // Item item = new(name,1,2.50);
+            // food.Add(item);
+
+            // AccountantLogic accountantLogic = new ();
+
+            // int billID = accountantLogic.FindFirstAvailableID();
+
+            // BillModel bill = new(billID,false, food, item.price,DateTime.Now);
+
+            
+            
+            
         }
         else if (decision.Equals("N", StringComparison.OrdinalIgnoreCase))
         {
