@@ -6,7 +6,7 @@ public class BillModel
 
    public bool PaymentCompleted{get;set;}
 
-   public List<Item> FoodOrdered { get; set; } = new List<Item>();
+   public List<Item> FoodOrdered { get; set; } 
 
    public double TotalAmount{get; set;}
 
@@ -21,8 +21,5 @@ public class BillModel
         
    }
 
-   public record Item(string name, int amount, double price) 
-   {
-        public double TotalPrice => amount * price;
-   }
+
 }
