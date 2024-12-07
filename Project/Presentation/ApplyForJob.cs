@@ -70,7 +70,14 @@ public static class ApplyForJob
         }
         else
         {
-            newId = _applications.Max(a => a.ApplicationId) + 1;
+            
+            int hoogsteId = 0;
+            foreach(var sollicitatie in _applications) {
+                if (sollicitatie.ApplicationId > hoogsteId) {
+                    hoogsteId = sollicitatie.ApplicationId;
+                }
+            }
+            newId = hoogsteId + 1;
         }
         var application = new JobApplication(newId, vacancyId, email, motivation, DateTime.Now);
         

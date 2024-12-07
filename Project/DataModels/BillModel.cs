@@ -18,6 +18,7 @@ public class BillModel
         PaymentCompleted = paymentCompleted; 
         FoodOrdered = foodOrdered; 
         Paymentdate = paymentdate;
+        TotalAmount = amount;
         
    }
 

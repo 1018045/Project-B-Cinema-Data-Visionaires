@@ -52,5 +52,17 @@
     "role": "user",
     "emailAddress": "user@user",
     "password": "user"
+  },
+  {
+    "id": 9,
+    "role": "user",
+    "emailAddress": "frisoboot@gmail.com",
+    "password": "@Vlaardingen123"
+  },
+  {
+    "id": 10,
+    "role": "user",
+    "emailAddress": "marleen@hotmail.com",
+    "password": "AAAA2222@"
   }
 ]
