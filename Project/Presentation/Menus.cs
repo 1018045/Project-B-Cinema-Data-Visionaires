@@ -328,14 +328,16 @@ static class Menus
             "View all financial records",
             "View records for a date",
             "View total tickets sold",
+            "View employee salaries",
             "Log out"
         };
 
         List<Action> actions = new List<Action>
         {
             ViewAllRecords,
-            ViewRecordsByMonth,  //NOT IMPLEMENTED
-            ViewTotalTickets,   //NOT IMPLEMENTED
+            ViewRecordsByMonth,  
+            ViewTotalTickets,
+            ViewEmployeeSalaries,   
             GuestMenu
         };
 
@@ -604,5 +606,34 @@ static class Menus
         Console.WriteLine("\nPress any key to go back...");
         Console.ReadKey();
         AdminMenu();
+    }
+
+    private static void ViewEmployeeSalaries()
+    {
+        Console.Clear();
+        Console.WriteLine("=== Werknemers Salarissen ===\n");
+
+        var employeeLogic = new EmployeeLogic();
+        var employees = employeeLogic.ListOfEmployees;
+
+        if (employees.Count == 0)
+        {
+            Console.WriteLine("Er zijn momenteel geen werknemers in het systeem.");
+        }
+        else
+        {
+            Console.WriteLine("Naam\t\t\tID\t\tSalaris");
+            Console.WriteLine("----------------------------------------");
+            
+            foreach (var employee in employees)
+            {
+                Console.WriteLine($"{employee.EmployeeName,-20}\t{employee.EmployeeID}\t\t€{employee.EmployeeSalary:F2}");
+            }
+
+            Console.WriteLine("\n----------------------------------------");
+            Console.WriteLine($"Totale maandelijkse salariskosten: €{employeeLogic.GetTotalMonthlySalary():F2}");
+        }
+
+        MenuHelper.WaitForKey(AccountantMenu);
     }
 }
