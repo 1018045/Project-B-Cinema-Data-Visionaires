@@ -46,7 +46,7 @@ public class ShowingsLogic
                 showings.Add(showing);
             }
         }
-        return showings;
+        return showings.OrderBy(s => s.Date).ToList();
     }
 
     public ShowingModel FindShowingByIdReturnShowing(int id)

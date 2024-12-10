@@ -206,7 +206,11 @@ public static class Movies
     {
         int currentIndex = 0;
         ConsoleKey key;
-        List<MovieModel> movies = _moviesLogic.Movies; 
+        List<MovieModel> movies = _moviesLogic.Movies;
+        // can still have count of 0
+        List<int> showingIndices = new List<int>();
+        for (int i = 0; i < movies.Count(); i++) 
+            showingIndices.Add(0);
 
         do
         {
@@ -228,7 +232,7 @@ public static class Movies
             for (int i = 0; i < 3; i++)
             {
                 if (movies[currentIndex].Id == moviesOnScreen[i].Id)
-                    blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth, true));
+                    blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth, showingIndices[currentIndex]));
                 else
                     blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth));
             }
@@ -240,8 +244,11 @@ public static class Movies
 
             if (key == ConsoleKey.LeftArrow) currentIndex--;
             if (key == ConsoleKey.RightArrow) currentIndex++;
-            // wrapping
+            if (key == ConsoleKey.UpArrow) showingIndices[currentIndex]--;
+            if (key == ConsoleKey.DownArrow) showingIndices[currentIndex]++;
+
             currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1);
+            showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id).Count() - 1, 0));
         } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
 
         if (key == ConsoleKey.Backspace) 
@@ -251,34 +258,39 @@ public static class Movies
             else
                 Menus.LoggedInMenu();
         }
-        else Reservation.Make(movies[currentIndex]);
+        else Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
     }
 
-    private static List<string> CreateBlock(MovieModel movie, int blockWidth, bool selected = false)
+    private static List<string> CreateBlock(MovieModel movie, int blockWidth, int blockIndex = -1)
     {
-        string openANSI = selected ? "\u001b[1m" : "\u001b[90m";
+        string openANSI = blockIndex >= 0 ? "\u001b[1m" : "\u001b[90m";
         string resetANSI = "\u001b[0m";
+
+        int verticalSpaceForShowings = Math.Max(Console.WindowHeight - 18, 0);
 
         List<string> wrappedTitle = WrapString(movie.Title, blockWidth, 2);
         List<string> wrappedSummary = WrapString(movie.Summary, blockWidth, 4);
         List<string> wrappedActors = WrapString(String.Join(", ", movie.Actors), blockWidth, 3);
 
         List<string> outputList = new();
+
         foreach (string line in wrappedTitle) outputList.Add(line);
         foreach (string line in wrappedSummary) outputList.Add(line);
         outputList.Add("");
         foreach (string line in wrappedActors) outputList.Add(line);
         outputList.Add($"Directed by {movie.Director}");
         outputList.Add("");
-        outputList.Add($"Duration: {movie.Duration} minutes");
-        outputList.Add($"{movie.MinimumAge}+");
+        outputList.Add($"Duration: {movie.Duration} minutes; {movie.MinimumAge}+");
+        outputList.Add($"");
+
+        List<string> showings = VerticalScroller(_showingsLogic.FindShowingsByMovieId(movie.Id), verticalSpaceForShowings, blockIndex);
+        foreach (string showing in showings) outputList.Add(showing);
 
         for (int i = 0; i < outputList.Count(); i++)
         {
             outputList[i] = $"{openANSI}{outputList[i]}{resetANSI}";
         }
-    
-        
+
         return outputList;
     }
 
@@ -305,7 +317,7 @@ public static class Movies
             // replace last 3 characters with dots
         }
 
-        while (wrappedString.Count() < 3)
+        while (wrappedString.Count() < lines)
         {
             wrappedString.Add("");
         }
@@ -324,8 +336,40 @@ public static class Movies
             string line3 = block3[i] + new String(' ', blockWidth - GetLengthWithoutANSI(block3[i]));
             output += $"{line1}|{line2}|{line3}\n";
         }
-
         return output;
     }
+
+    private static List<string> VerticalScroller(List<ShowingModel> showings, int verticalSpace, int selectedIndex)
+    {
+        List<string> outputList = new();
+        int startingPoint = Math.Max(selectedIndex - (verticalSpace - 1), 0);
+
+        // size = 8, verticalspace = 5
+        // selectedindex 0 => startingpoint 0
+        // selectedindex 4 => startingpoint 0
+        // selectedindex 5 => staringpoint 1
+        // selectedindex 6 => startingpoint 2
+        // selectedindex 7 => staringpoint 3
+
+        if (showings == null || showings.Count() == 0)
+        {
+            outputList.Add("No showings planned!");
+            for (int i = 1; i <= verticalSpace - 1; i++)
+            {
+                outputList.Add(" ");
+            }
+            return outputList;
+        }
+
+        for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
+        {
+            if (i < showings.Count())
+                outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(DATEFORMAT)}" : showings[i].Date.ToString(DATEFORMAT))}");
+            else
+                outputList.Add("");
+        }
+        return outputList;
+    }
+
     private static int GetLengthWithoutANSI(string text) => Regex.Replace(text, @"\u001b\[[0-9;]*m", "").Length;
 }

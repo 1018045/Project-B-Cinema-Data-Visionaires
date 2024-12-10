@@ -10,20 +10,20 @@ static class Menus
         List<string> options = new List<string>
         {
             "Browse movies",
+            "Today's showings",
+            "Select a date",
             "Login",
             "Create account",
-            "Upcoming movies",
-            "Select a date",
             "Jobs",
             "Exit"
         };
         List<Action> actions = new List<Action>
         {
             Movies.MoviesBrowser,
-            Login,
-            ChooseAccount,
-            () => Showings.ShowUpcoming(),
             Showings.ShowUpcomingOnDate,
+            Showings.ShowUpcomingOnDate,
+            () => Login(),
+            ChooseAccount,
             ApplyForJob.ShowJobMenu,
             () => Environment.Exit(0)
         };
@@ -96,7 +96,7 @@ static class Menus
         }
     }
 
-    public static void Login()
+    public static void Login(Action action = null)
     {
         AccountModel acc;
         int loginAttempts = 3;
@@ -124,6 +124,12 @@ static class Menus
             }    
         }
         while (acc == null);
+
+        if (action != null)
+        {
+            action.Invoke();
+            return;
+        }
 
         if (acc is UserModel user)
         {
@@ -236,8 +242,6 @@ static class Menus
         while (AccountsLogic.VerifyPassword(Password) == false)
         {
             Console.WriteLine("Password was not valid. Try again.");
-        
-        
             pass = AccountsLogic.MaskInputstring();
             Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
         }
@@ -251,7 +255,6 @@ static class Menus
             SecureString confirmPass = AccountsLogic.MaskInputstring();
             confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
 
-            
             if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
             {
                 passwordsMatch = true;
@@ -286,12 +289,71 @@ static class Menus
 
         Console.WriteLine("\n");
         Menus.Start();
-        // accountsLogic.UpdateList(new AccountModel(userEmail, userPassword, fullName));
-            
+    }
+
+    public static void ChooseAccount(Action action)
+    {
+        Console.WriteLine("Email: ");
+        string userEmail;
+        do
+        {
+            Console.WriteLine("Email: ");
+            userEmail = Console.ReadLine();
+        }
+        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true);
+
+        Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
+        SecureString pass = AccountsLogic.MaskInputstring();
+        string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+   
+        while (AccountsLogic.VerifyPassword(Password) == false)
+        {
+            Console.WriteLine("Password was not valid. Try again.");
+            pass = AccountsLogic.MaskInputstring();
+            Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+        }
+        Console.WriteLine("Confirm your password");
         
-        //    System.Console.WriteLine("2)Admin");
-        //    System.Console.WriteLine("3)Finance");
-        //    System.Console.WriteLine("4)Employee");
+        string confirmPassword = string.Empty;
+        bool passwordsMatch = false;
+
+        while (!passwordsMatch)
+        {
+            SecureString confirmPass = AccountsLogic.MaskInputstring();
+            confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
+
+            if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+            {
+                passwordsMatch = true;
+            }
+            else
+            {
+                Console.WriteLine("Passwords do not match or are not valid. Try again.");
+            }
+        }
+
+        Console.WriteLine("Password confirmed successfully.");
+
+        Console.WriteLine("Your fullname: ");
+        var fullName = Console.ReadLine();
+        Console.WriteLine("Your age");
+        var userAge = Console.ReadLine();
+        while(AccountsLogic.IsInt(userAge) == false)
+        {
+            Console.WriteLine("Input is not valid. Please enter a number");
+            userAge = Console.ReadLine();
+        }
+
+        AccountsLogic accountsLogic = new();
+        accountsLogic.UpdateList(userEmail, Password, fullName, Convert.ToInt32(userAge));
+
+        Console.WriteLine($"\nSuccessfully created your account, welcome {fullName}!");
+
+        accountsLogic.CheckLogin(userEmail, Password);
+
+        //wait so that it is more clear
+        Thread.Sleep(1500);
+        action.Invoke();
     }
 
     public static void AccountantMenu()

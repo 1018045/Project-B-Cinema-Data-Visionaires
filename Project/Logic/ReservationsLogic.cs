@@ -12,10 +12,12 @@ public class ReservationsLogic
         Reservations = ReservationsAccess.LoadAll();
     }
 
-    public void AddReservation(int userId, int showingId, string seats, bool paymentComplete)
+    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete)
     {
-        Reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete));
+        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete);
+        Reservations.Add(reservation);
         ReservationsAccess.WriteAll(Reservations);
+        return reservation;
     }
     public void AddReservation(ReservationModel reservation)
     {

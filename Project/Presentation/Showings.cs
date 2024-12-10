@@ -146,13 +146,13 @@ public static class Showings
         switch (userChoice)
         {
             case 1:
-                pattern = "daily";
+                BookShowings(date, room, moviesLogic, movieId);
                 break;
             case 2:
-                pattern = "weekly";
+                pattern = "daily";
                 break;
             case 3:
-                BookShowings(date, room, moviesLogic, movieId);
+                pattern = "weekly";
                 return;
             default:
                 ManageShowings(movieId, moviesLogic);

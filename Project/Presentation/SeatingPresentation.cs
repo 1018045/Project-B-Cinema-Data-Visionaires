@@ -1,5 +1,4 @@
-﻿using Project.Logic;
-using Project.Logic.SeatSelection;
+﻿using Project.Logic.SeatSelection;
 using static Project.Helpers.SeatSelectionHelpers;
 
 namespace Project.Presentation;

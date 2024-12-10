@@ -12,27 +12,16 @@ public static class Reservation
 
     private static readonly MoviesLogic _moviesLogic = new ();
 
-    public static void Make(MovieModel movie)
+    private static readonly AccountsLogic _accountsLogic = new();
+
+    public static void Make(ShowingModel showing)
     {
         Console.Clear();
-        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).ToList<object>();
-        if (showings.Count() == 0)
-        {
-            System.Console.WriteLine("There are no upcoming showings for this movie");
-            Thread.Sleep(1000);
-            MenuHelper.WaitForKey(() => Movies.MoviesBrowser());
-            return;
-        }
-        List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(DATEFORMAT)).ToList();
-        options.Add("Return");
-        showings.Add(Movies.MoviesBrowser);
-
-        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress:");
-        ShowingModel selectedShowing = (ShowingModel)show;
 
         if (AccountsLogic.CurrentAccount == null)
         {
-            // guest reservation
+            MenuHelper.NewMenu(new List<string> { "Login", "Create account", "Return"}, new List<Action> { () => Menus.Login(action: () => Make(showing)), () => Menus.ChooseAccount(() => Make(showing)), Movies.MoviesBrowser}, "Account", "You need an account to make a reservation!");
+            return;
         }
 
         bool confirmSeats = false;
@@ -40,7 +29,7 @@ public static class Reservation
         do        
         {  
             Console.Clear();
-            selectedSeats = SeatingPresentation.Present(selectedShowing.Id);
+            selectedSeats = SeatingPresentation.Present(showing.Id);
             confirmSeats = MenuHelper.NewMenu(new List<string> {"Confirm", "Retry"}, new List<bool> {true, false}, subtext: String.Join(' ', selectedSeats));
         } while(!confirmSeats);
 
@@ -120,24 +109,45 @@ public static class Reservation
         }
     
         FakeProcessingPayment(5000);
-        _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, selectedShowing.Id, string.Join(",", selectedSeats), true);
+        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true);
 
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("You have successfully booked your tickets!\n");
         Console.ResetColor();
+        Console.WriteLine($"Your unique reservation ID is {reservation.Id}.");
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
+    }
+
+    public static void ChooseShowing(MovieModel movie)
+    {
+        Console.Clear();
+        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).ToList<object>();
+        if (showings.Count() == 0)
+        {
+            System.Console.WriteLine("There are no upcoming showings for this movie");
+            Thread.Sleep(1000);
+            MenuHelper.WaitForKey(() => Movies.MoviesBrowser());
+            return;
+        }
+        List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(DATEFORMAT)).ToList();
+        options.Add("Return");
+        showings.Add(Menus.LoggedInMenu);
+
+        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress:");
+        ShowingModel selectedShowing = (ShowingModel)show;
+        Make(selectedShowing);
     }
 
     private static void FakeProcessingPayment(int lengthInMilliSeconds)
     {
 
-        for (int i = 0; i < lengthInMilliSeconds/200; i++)
+        for (int i = 0; i < lengthInMilliSeconds/400; i++)
         {
             Console.Clear();
             string dots = new string('.', (i % 3) + 1);
             System.Console.WriteLine("Payment processing" + dots);
-            Thread.Sleep(200);
+            Thread.Sleep(400);
         }
     }
 
