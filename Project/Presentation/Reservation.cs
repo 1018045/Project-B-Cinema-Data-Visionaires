@@ -1,11 +1,13 @@
 using System.Globalization;
 using Microsoft.VisualBasic;
+using Project.Helpers;
 using Project.Logic.Account;
 using Project.Presentation;
 
 public static class Reservation
 {
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
+    private const string EXTENDEDDATEFORMAT = "dddd d MMMM yyyy";
     private static readonly ReservationsLogic _reservationsLogic = new();
 
     private static readonly ShowingsLogic _showingsLogic = new ();
@@ -17,19 +19,26 @@ public static class Reservation
     public static void Make(ShowingModel showing)
     {
         Console.Clear();
-
+        
         while (AccountsLogic.CurrentAccount == null)
         {
-            Menus.Login(acceptOnlyCustomerLogin: true);
+            System.Console.WriteLine("Please login to continue making your reservation.");
+            System.Console.WriteLine("You are being redirected to the login screen.");
+            Thread.Sleep(2500);
+            Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
         }
 
         bool confirmSeats = false;
         List<string> selectedSeats;
         do        
         {  
-            Console.Clear();
             selectedSeats = SeatingPresentation.Present(showing.Id);
-            confirmSeats = MenuHelper.NewMenu(new List<string> {"Confirm", "Retry"}, new List<bool> {true, false}, subtext: String.Join(' ', selectedSeats));
+            confirmSeats = MenuHelper.NewMenu(
+                new List<string> {"Confirm", "Retry"},
+                new List<bool> {true, false}, 
+                subtext: "You have selected the following seats: " +
+                $"{SeatSelectionHelpers.PositionsToRowSeatString(SeatSelectionHelpers.StringToPositions(selectedSeats))}"
+            );
         } while(!confirmSeats);
 
         if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to order extra's?")) 
@@ -252,41 +261,52 @@ public static class Reservation
 
     public static void SelectDate()
     {
-        int howManyDatesFitOnScreen = Console.WindowHeight - 3;
-        string extendedDateFormat = "dddd d MMMM yyyy";
+        // print less than 2 weeks of showings if it doesn't fit
+        int howManyDatesFitOnScreen = Console.WindowHeight - 4;
+        int actualAmountOfDatesShown = Math.Min(howManyDatesFitOnScreen, 14);
 
-        List<DateTime> dates = GetDateTimeList(howManyDatesFitOnScreen);
+        List<DateTime> dates = GetDateTimeList(actualAmountOfDatesShown);
         List<Action> actions = new();
 
-        List<string> dateOptions = dates.Select(d => d.ToString(extendedDateFormat)).ToList();
+        List<string> dateOptions = dates.Select(d => d.ToString(EXTENDEDDATEFORMAT)).ToList();
         dateOptions.Add("[Select a different date]");
+        dateOptions.Add("Return");
 
-        dates.ForEach(d => actions.Add(() => SelectShowingOnDate(d)));
-        actions.Add(() => SelectShowingOnDate(AskAndParseDate()));
+        dates.ForEach(d => actions.Add(() => SelectMovieOnDate(d)));
+        actions.Add(() => SelectMovieOnDate(AskAndParseDate()));
+        actions.Add(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
 
         MenuHelper.NewMenu(dateOptions, actions, "Select a date:");
     }
 
-    private static void SelectShowingOnDate(DateTime date)
+    private static void SelectMovieOnDate(DateTime date)
     {
-        string extendedDateFormat = "dddd d MMMM yyyy";
+        List<Action> actions = new();
+        _moviesLogic.Movies.Where(m => _moviesLogic.HasUpcomingShowingsOnDate(_showingsLogic, m, date)).ToList()
+                            .ForEach(m => actions.Add(() => SelectShowingOnDate(m, date)));
 
-        List<MovieModel> movies = _moviesLogic.Movies.Where(m => _moviesLogic.HasUpcomingShowingsOnDate(_showingsLogic, m, date)).ToList();
-        List<string> movieOptions = movies.Select(m => m.Title).ToList();
-        if (movies.Count == 0)
+        if (actions.Count == 0)
         {
             Console.Clear();
-            System.Console.WriteLine($"No movies found on {date.ToString(extendedDateFormat)}");
+            System.Console.WriteLine($"No movies found on {date.ToString(EXTENDEDDATEFORMAT)}");
             MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
             return;
         }
-        MovieModel movie = MenuHelper.NewMenu(movieOptions, movies, $"Movies on {date.ToString(extendedDateFormat)}");
+        
+        List<string> movieOptions = _moviesLogic.Movies.Where(m => _moviesLogic.HasUpcomingShowingsOnDate(_showingsLogic, m, date))
+                                                        .Select(m => m.Title).ToList();
 
+        actions.Add(SelectDate);
+        movieOptions.Add("Return");
+        MenuHelper.NewMenu(movieOptions, actions, $"Movies on {date.ToString(EXTENDEDDATEFORMAT)}");
+    }
 
+    private static void SelectShowingOnDate(MovieModel movie, DateTime date)
+    {
         List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).Where(s => s.Date.Date == date.Date).ToList();
         List<string> showingOptions = showings.Select(s => $"Room {s.Room}: {s.Date.ToString("HH:mm")}").ToList();
 
-        Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(extendedDateFormat)}"));
+        Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(EXTENDEDDATEFORMAT)}"));
     }
 
     private static List<DateTime> GetDateTimeList(int amount)
