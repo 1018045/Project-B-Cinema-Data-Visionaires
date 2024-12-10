@@ -204,6 +204,15 @@ public static class Movies
 
     public static void MoviesBrowser()
     {
+        // Window needs to have a height of at least 17 to show all movie info
+        if (Console.WindowHeight < 17)
+        {
+            Console.Clear();
+            System.Console.WriteLine("Your console is not tall enough!\nPlease expand your console window to browse movies.");
+            Thread.Sleep(1000);
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
+            return;
+        }
         int currentIndex = 0;
         ConsoleKey key;
         List<MovieModel> movies = _moviesLogic.Movies;
@@ -344,13 +353,6 @@ public static class Movies
         List<string> outputList = new();
         int startingPoint = Math.Max(selectedIndex - (verticalSpace - 1), 0);
 
-        // size = 8, verticalspace = 5
-        // selectedindex 0 => startingpoint 0
-        // selectedindex 4 => startingpoint 0
-        // selectedindex 5 => staringpoint 1
-        // selectedindex 6 => startingpoint 2
-        // selectedindex 7 => staringpoint 3
-
         if (showings == null || showings.Count() == 0)
         {
             outputList.Add("No showings planned!");
@@ -361,10 +363,19 @@ public static class Movies
             return outputList;
         }
 
+        string extendedDateFormat = "dddd d MMMM yyyy";
+
+        // size = 8, verticalspace = 5
+        // selectedindex 0 => startingpoint 0
+        // selectedindex 4 => startingpoint 0
+        // selectedindex 5 => staringpoint 1
+        // selectedindex 6 => startingpoint 2
+        // selectedindex 7 => staringpoint 3
+
         for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
         {
             if (i < showings.Count())
-                outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(DATEFORMAT)}" : showings[i].Date.ToString(DATEFORMAT))}");
+                outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(extendedDateFormat)}" : showings[i].Date.ToString(extendedDateFormat))}");
             else
                 outputList.Add("");
         }
