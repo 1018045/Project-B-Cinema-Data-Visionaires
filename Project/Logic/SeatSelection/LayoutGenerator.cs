@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Project.Presentation;
 using static Project.Helpers.SeatSelectionHelpers;
 using static Project.Logic.SeatSelection.GridNavigator;
 
@@ -10,7 +11,9 @@ public class LayoutGenerator
     public List<Position> TakenSeats { get; }
     public List<Position> SelectedSeats { get; }
 
-    private const string SelectedSymbol = "()";
+    private const string SeatChar = " \u2588\u2588 ";
+    private const ConsoleColor TakenColor = ConsoleColor.Magenta;
+    private const ConsoleColor SelectedColor = ConsoleColor.DarkGreen;
 
     private readonly RoomModel _room;
     private readonly GridNavigator _navigator;
@@ -23,13 +26,7 @@ public class LayoutGenerator
         SelectedSeats = selectedSeats;
     }
 
-    public string GenerateSeatingLayout()
-    {
-        BuildSeatingString(out var sb);
-        return sb.ToString();
-    }
-
-    private void BuildSeatingString(out StringBuilder sb)
+    /*private void BuildSeatingString(out StringBuilder sb)
     {
         sb = new StringBuilder();
         
@@ -37,17 +34,9 @@ public class LayoutGenerator
         var seatDepth = _room.SeatDepth;
         var textWidth = 3 + (seatDepth * 3) + (seatDepth - 9);
 
-        var separator = new string('-', textWidth);
-        var padding = new string(' ', (textWidth / 2) - 4);
-
-        sb.AppendLine(separator);
-        sb.Append('|').Append(padding).Append("SCREEN").Append(padding).AppendLine("|");
-        sb.AppendLine(separator);
-
         for (var y = 1; y <= rows; y++)
         {
             sb.Append(Alphabet[y-1] + ": ");
-            // if (y < 10) sb.Append(' ');
 
             for (var x = 1; x <= seatDepth; x++)
             {
@@ -55,15 +44,83 @@ public class LayoutGenerator
                 var characters = !TakenSeats.Contains(currentPosition) ? $"[{x}]" : "[x]";
 
                 if (SelectedSeats.Contains(currentPosition))
-                    characters = $"{SelectedSymbol}"; //already selected seat
+                    characters = $""; //already selected seat
                 if (_navigator.Cursor.Equals(currentPosition))
-                    characters = $" {SelectedSymbol} "; //cursor position
+                    characters = $""; //cursor position
 
                 sb.Append(characters);
             }
 
             if (y != rows)
                 sb.Append('\n');
+        }
+
+        var separator = new string('-', textWidth);
+        var padding = new string(' ', (textWidth / 2) - 4);
+
+        sb.AppendLine(separator);
+        sb.Append('|').Append(padding).Append("SCREEN").Append(padding).AppendLine("|");
+        sb.AppendLine(separator);
+    }*/
+
+    public void BuildSeatingLayoutV2()
+    {
+        var high = _room.SeatCategories.High;
+        var medium = _room.SeatCategories.Medium;
+        var low = _room.SeatCategories.Low;
+
+        Dictionary<Position, ConsoleColor> map = [];
+        AddSeats(high, ref map);
+        AddSeats(medium, ref map);
+        AddSeats(low, ref map);
+
+        for (var row = 0; row < _room.Height + 1; row++)
+        {
+            StringBuilder sb = new();
+            List<ConsoleColor> colors = [];
+
+            sb.Append($"{Alphabet[row]}: ");
+            colors.AddRange([ConsoleColor.White, ConsoleColor.White, ConsoleColor.White]);
+
+            for (var seat = 0; seat < _room.Width + 1; seat++)
+            {
+                var pos = new Position(seat, row);
+
+                sb.Append($" {seat}:");
+                colors.AddRange(Enumerable.Repeat(ConsoleColor.White, 2 + seat.ToString().Length));
+
+                ConsoleColor? color = null;
+                if (_navigator.Cursor.Equals(pos))
+                    color = ConsoleColor.Cyan;
+
+
+                if (TakenSeats.Contains(pos))
+                {
+                    sb.Append(SeatChar);
+                    colors.AddRange([color ?? TakenColor, color ?? TakenColor, color ?? TakenColor, color ?? TakenColor]);
+                    continue;
+                }
+
+                if (SelectedSeats.Contains(pos))
+                {
+                    sb.Append(SeatChar);
+                    colors.AddRange([SelectedColor, SelectedColor, SelectedColor, SelectedColor]);
+                    continue;
+                }
+
+                if (!map.ContainsKey(pos))
+                {
+                    sb.Append('x');
+                    colors.Add(color ?? ConsoleColor.Black);
+                }
+                else
+                {
+                    sb.Append(SeatChar);
+                    colors.AddRange([color ?? map[pos], color ?? map[pos], color ?? map[pos], color ?? map[pos]]);
+                }
+            }
+            colors.Add(ConsoleColor.Black); //add redundant for newline entry
+            SeatingPresentation.PrintInColor(sb + "\n", colors);
         }
     }
 }

@@ -1,21 +1,58 @@
 ﻿using System.Text.Json.Serialization;
 
-
-public class RoomModel(int id, int rows, int seatDepth, int price)
+public class RoomModel
 {
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+
     [JsonPropertyName("id")]
-    public int Id { get; set; } = id;
+    public int Id { get; set; }
 
-    [JsonPropertyName("rows")]
-    public int Rows { get; set; } = rows;
+    [JsonPropertyName("height")]
+    public int Height { get; set; }
 
-    [JsonPropertyName("seat_depth")]
-    public int SeatDepth { get; set; } = seatDepth;
+    [JsonPropertyName("width")]
+    public int Width { get; set; }
 
-    [JsonPropertyName("price")]
-    public int Price { get; set; } = price;
+
+    [JsonPropertyName("capacity")]
+    public int Capacity { get; set; }
+
+    [JsonPropertyName("seat_categories")]
+    public SeatCategories SeatCategories { get; set; }
+
+    [JsonPropertyName("walk_ways")]
+    public List<object> WalkWays { get; set; }
 }
 
+public class SeatCategories
+{
+    [JsonPropertyName("high")]
+    public SeatCategory High { get; set; }
 
+    [JsonPropertyName("medium")]
+    public SeatCategory Medium { get; set; }
+
+    [JsonPropertyName("low")]
+    public SeatCategory Low { get; set; }
+}
+
+public class SeatCategory
+{
+    [JsonPropertyName("color")]
+    public string Color { get; set; }
+
+    [JsonPropertyName("rows")]
+    public List<Row> Rows { get; set; }
+}
+
+public class Row
+{
+    [JsonPropertyName("row")]
+    public int RowNumber { get; set; }
+
+    [JsonPropertyName("seats")]
+    public List<int> Seats { get; set; }
+}
 
 

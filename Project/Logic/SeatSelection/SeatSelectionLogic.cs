@@ -18,14 +18,14 @@ public class SeatSelectionLogic
         var room = GetRoomByShowing(showingId);
         _seatCount = seatCount;
         _takenSeats = GetTakenSeats(showingId);
-        GridGenerator = new GridNavigator(room.SeatDepth, room.Rows);
+        GridGenerator = new GridNavigator(room.Width, room.Height);
         LayoutGenerator = new LayoutGenerator(room.Id,  showingId, GridGenerator, ref _selectedSeats);
     }
 
     public List<string> StartSeatSelection()
     {
         GridGenerator.SelectAction = ActionMethod;
-        GridGenerator.RefreshAction = _ => UpdateSeatingPresentation(LayoutGenerator.GenerateSeatingLayout(), _seatCount - _selectedSeats.Count);
+        GridGenerator.RefreshAction = _ => UpdateSeatingPresentation(LayoutGenerator.BuildSeatingLayoutV2, _seatCount - _selectedSeats.Count);
         GridGenerator.Start();
         return PositionsToStrings(_selectedSeats);
     }

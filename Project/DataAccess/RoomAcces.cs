@@ -4,12 +4,12 @@ using System.Text.Json;
 
 static class RoomAccess
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/cinema_rooms.json"));
+    static string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"DataSources/cinema_rooms.json"));
 
     public static List<RoomModel> LoadAll()
     {
         string json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<List<RoomModel>>(json);
+        return JsonSerializer.Deserialize<List<RoomModel>>(json)!;
     }
 
     public static void WriteAll(List<RoomModel> rooms)

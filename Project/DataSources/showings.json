@@ -15,108 +15,108 @@
     "id": 2,
     "movieId": 7,
     "date": "18-12-2024 19:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 3,
     "movieId": 7,
     "date": "25-12-2024 19:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 4,
     "movieId": 7,
     "date": "01-01-2025 19:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 5,
     "movieId": 7,
     "date": "08-01-2025 19:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 6,
     "movieId": 7,
     "date": "15-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 7,
     "movieId": 7,
     "date": "16-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 8,
     "movieId": 7,
     "date": "17-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 9,
     "movieId": 7,
     "date": "18-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 10,
     "movieId": 7,
     "date": "19-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 11,
     "movieId": 7,
     "date": "20-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 12,
     "movieId": 7,
     "date": "21-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 13,
     "movieId": 7,
     "date": "22-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 14,
     "movieId": 7,
     "date": "23-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 15,
     "movieId": 7,
     "date": "24-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 16,
     "movieId": 7,
     "date": "25-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 17,
     "movieId": 7,
     "date": "26-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 18,
     "movieId": 7,
     "date": "27-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   },
   {
     "id": 19,
     "movieId": 7,
     "date": "28-01-2025 18:30:00",
-    "room": 2
+    "room": 1
   }
 ]

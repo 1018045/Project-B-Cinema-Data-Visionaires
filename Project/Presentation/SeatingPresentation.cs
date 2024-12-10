@@ -13,7 +13,7 @@ public class SeatingPresentation
             Console.WriteLine("How many seats would you like to book?");
             var seatAmountInput = Console.ReadLine() ?? "";
             resolved = int.TryParse(seatAmountInput, out seatCount)
-                       && CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), GenerateSeatingLayoutContent(showingId));
+                       && CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), GenerateRowSeatMap(GetRoomByShowing(showingId)));
         }
 
         if (seatCount == -1)
@@ -24,7 +24,7 @@ public class SeatingPresentation
     }
 
     //used to constantly refresh the seating
-    public static void UpdateSeatingPresentation(string presentation, int seatsLeft)
+    public static void UpdateSeatingPresentation(Action generatePresentation, int seatsLeft)
     {
         Console.Clear();
 
@@ -33,7 +33,7 @@ public class SeatingPresentation
         Console.WriteLine($"You need to select {seatsLeft} more seat(s)");
         Console.WriteLine();
 
-        Console.WriteLine(presentation);
+        generatePresentation.Invoke();
     }
 
     public static bool SuccessfulSelection(string seatDisplay)
@@ -61,5 +61,19 @@ public class SeatingPresentation
         Console.WriteLine("This seat is already taken (TIP: [x] means taken)");
         Thread.Sleep(2000);
         return false;
+    }
+
+    public static void PrintInColor(string message, List<ConsoleColor> colors)
+    {
+        if (message.Length != colors.Count)
+            throw new ArgumentException("message doesn't correspond to color length");
+
+        var chars = message.ToCharArray();
+        for (var i = 0; i < colors.Count; i++)
+        {
+            Console.ForegroundColor = colors[i];
+            Console.Write(chars[i]);
+        }
+        Console.ResetColor();
     }
 }

@@ -57,7 +57,7 @@ public static class SeatSelectionHelpers
         List<Position> positions = new();
         foreach (string seat in seats)
         {
-            positions.Add(new Position(Convert.ToInt32(seat.Split(';')[0]), Convert.ToInt32(seat.Split(';')[1])));
+            positions.Add(new Position(Convert.ToInt32(seat.Split(';')[1])-1, Convert.ToInt32(seat.Split(';')[0])-1));
         }
         return positions;
     }
@@ -74,22 +74,23 @@ public static class SeatSelectionHelpers
             (selectedSeat.X == newSeat.X - 1 || selectedSeat.X == newSeat.X + 1));
     }
 
-    public static bool CanFitAdjacentSeats(int seatCount, List<Position> takenSeats, List<int> roomDimensions)
+    public static bool CanFitAdjacentSeats(int seatCount, List<Position> takenSeats, Dictionary<int, List<int>> rowSeatMap)
     {
-        for (var row = 0; row < roomDimensions.Count; row++)
+        foreach (var rowEntry in rowSeatMap)
         {
-            var rowDepth = roomDimensions[row];
+            var rowIndex = rowEntry.Key;
+            var rowSeats = rowEntry.Value;
 
             var takenPositionsInRow = takenSeats
-                .Where(seat => seat.Y == row)
+                .Where(seat => seat.Y == rowIndex)
                 .Select(seat => seat.X)
                 .ToHashSet();
 
             var currentStreak = 0;
 
-            for (var x = 0; x < rowDepth; x++)
+            foreach (var seat in rowSeats)
             {
-                if (!takenPositionsInRow.Contains(x))
+                if (!takenPositionsInRow.Contains(seat))
                 {
                     currentStreak++;
                     if (currentStreak == seatCount)
@@ -103,12 +104,55 @@ public static class SeatSelectionHelpers
                 }
             }
         }
+
         return false;
     }
 
-    public static List<int> GenerateSeatingLayoutContent(int showingId)
+    public static Dictionary<int, List<int>> GenerateRowSeatMap(RoomModel room)
     {
-        var room = GetRoomByShowing(showingId);
-        return Enumerable.Repeat(room.SeatDepth, room.Rows).ToList();
+        var rowSeatMap = new Dictionary<int, List<int>>();
+
+        AddSeatsToMap(room.SeatCategories.High, rowSeatMap);
+        AddSeatsToMap(room.SeatCategories.Medium, rowSeatMap);
+        AddSeatsToMap(room.SeatCategories.Low, rowSeatMap);
+
+        return rowSeatMap;
+    }
+
+    private static void AddSeatsToMap(SeatCategory category, Dictionary<int, List<int>> rowSeatMap)
+    {
+        foreach (var row in category.Rows)
+        {
+            if (!rowSeatMap.ContainsKey(row.RowNumber))
+            {
+                rowSeatMap[row.RowNumber] = new List<int>();
+            }
+
+            rowSeatMap[row.RowNumber].AddRange(row.Seats);
+        }
+    }
+
+    public static void AddSeats(SeatCategory category, ref Dictionary<Position, ConsoleColor> dictionary)
+    {
+        var color = StringToConsoleColor(category.Color);
+        foreach (var row in category.Rows)
+        {
+            foreach (var seat in row.Seats)
+            {
+                dictionary[new Position(seat, row.RowNumber)] = color;
+            }
+        }
+    }
+
+    public static ConsoleColor StringToConsoleColor(string colorName)
+    {
+        if (Enum.TryParse(colorName, true, out ConsoleColor color))
+        {
+            return color;
+        }
+        else
+        {
+            throw new ArgumentException($"'{colorName}' is not a valid ConsoleColor.");
+        }
     }
 }
