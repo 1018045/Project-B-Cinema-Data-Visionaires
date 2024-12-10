@@ -57,14 +57,14 @@ public static class SeatSelectionHelpers
         List<Position> positions = new();
         foreach (string seat in seats)
         {
-            positions.Add(new Position(Convert.ToInt32(seat.Split(';')[0]), Convert.ToInt32(seat.Split(';')[1])));
+            positions.Add(new Position(Convert.ToInt32(seat.Split(';')[1]), Convert.ToInt32(seat.Split(';')[0])));
         }
         return positions;
     }
 
     public static string PositionsToRowSeatString(List<Position> positions)
     {
-        return string.Join(", ", positions.Select(p => $"row: {Alphabet[p.Y]}, seat: {p.X + 1}"));
+        return string.Join(", ", positions.Select(p => $"row: {Alphabet[p.Y - 1]}, seat: {p.X}"));
     }
 
     public static bool IsAdjacentOnSameRow(Position newSeat, List<Position> selectedSeats)
