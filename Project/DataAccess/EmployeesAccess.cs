@@ -2,7 +2,8 @@ using System.Text.Json;
 
 static class EmployeesAccess
 {
-     static string path = Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/Employees.json"));
+    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/Employees.json"));
+
 
     public static List<EmployeeModel> LoadAll()
     {
@@ -11,10 +12,10 @@ static class EmployeesAccess
     }
 
 
-    public static void WriteAll(List<EmployeeModel> reservations)
+    public static void WriteAll(List<EmployeeModel> employees)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(reservations.OrderBy(r => r.EmployeeID).ToList(), options);
+        string json = JsonSerializer.Serialize(employees, options);
         File.WriteAllText(path, json);
     }
 }

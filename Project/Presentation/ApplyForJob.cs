@@ -39,7 +39,6 @@ public static class ApplyForJob
         string input = Console.ReadLine();
         int vacancyId;
 
-
         if (!int.TryParse(input, out vacancyId) || vacancyId == 0)
         {
             Console.WriteLine("Application cancelled.");
@@ -47,7 +46,6 @@ public static class ApplyForJob
             return;
         }
 
-      
         if (!_vacancyLogic.VacancyExists(vacancyId))
         {
             Console.WriteLine("Vacancy not found.");
@@ -61,24 +59,35 @@ public static class ApplyForJob
         Console.WriteLine("\nEnter your motivation:");
         string motivation = Console.ReadLine();
 
+        Console.WriteLine("\nAre you sure you want to submit this application? (Y/N)");
+        string confirmation = Console.ReadLine().ToUpper();
         
-        int newId;
+        if (confirmation != "Y")
+        {
+            Console.WriteLine("\nApplication cancelled.");
+            Thread.Sleep(2000);
+            ShowJobMenu();
+            return;
+        }
 
+        int newId;
         if (_applications.Count == 0)
         {
             newId = 1;
         }
         else
         {
-            
             int hoogsteId = 0;
-            foreach(var sollicitatie in _applications) {
-                if (sollicitatie.ApplicationId > hoogsteId) {
+            foreach(var sollicitatie in _applications) 
+            {
+                if (sollicitatie.ApplicationId > hoogsteId) 
+                {
                     hoogsteId = sollicitatie.ApplicationId;
                 }
             }
             newId = hoogsteId + 1;
         }
+
         var application = new JobApplication(newId, vacancyId, email, motivation, DateTime.Now);
         
         _applications.Add(application);
