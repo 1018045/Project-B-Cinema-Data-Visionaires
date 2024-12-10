@@ -12,7 +12,7 @@ public static class AccountPresentation
         {
             "Update account details",
             "Remove account (DANGER)",
-            "Add extra's to your reservation (not yet implemented)",
+            
             "Main menu"
         };
 
