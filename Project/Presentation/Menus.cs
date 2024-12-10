@@ -19,7 +19,7 @@ static class Menus
         List<Action> actions = new List<Action>
         {
             Movies.MoviesBrowser,
-            Showings.ShowUpcomingOnDate,
+            Reservation.SelectDate,
             () => Login(),
             ChooseAccount,
             ApplyForJob.ShowJobMenu,
@@ -33,8 +33,7 @@ static class Menus
         List<string> options = new List<string>
         {
             "Browse movies",
-            "Show upcoming movie showings",
-            "Show upcoming movie showings on a specific date",
+            "Select a date",
             "Your reservations",
             "Manage your account",
             "Log out"
@@ -42,8 +41,7 @@ static class Menus
         List<Action> actions = new List<Action>
         {
             Movies.MoviesBrowser,
-            () => Showings.ShowUpcoming(),
-            Showings.ShowUpcomingOnDate,
+            Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
             AccountPresentation.Menu,
             () => 
@@ -53,45 +51,6 @@ static class Menus
             }
         };
         MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
-    }
-
-    static public void Start()
-    {
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to create an account");
-        Console.WriteLine("Enter 3 to show upcoming movie showings");
-        Console.WriteLine("Enter 4 to show upcoming movie showings on a specific date");
-        Console.WriteLine("Enter 5 View Job Menu");
-        Console.WriteLine("Enter 6 to exit program");
-
-        string input = Console.ReadLine();
-        switch (input)
-        {
-            case "1":
-                Login();
-                break;
-            case "2":
-                ChooseAccount();
-                break;
-            case "3":
-                Showings.ShowUpcoming();
-                Start();
-                break;
-            case "4":
-                Showings.ShowUpcomingOnDate();
-                Start();
-                break;
-            case "5":
-                ApplyForJob.ShowJobMenu();
-                break;
-            case "6":
-                Environment.Exit(0);
-                break;
-            default:
-                Console.WriteLine("Invalid input");
-                Start();
-                break;
-        }
     }
 
     public static void Login(Action action = null)
@@ -284,9 +243,7 @@ static class Menus
 
         //wait so that it is more clear
         Thread.Sleep(1500);
-
-        Console.WriteLine("\n");
-        Menus.Start();
+        MenuHelper.WaitForKey(LoggedInMenu);
     }
 
     public static void ChooseAccount(Action action)

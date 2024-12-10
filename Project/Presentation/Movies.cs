@@ -209,14 +209,24 @@ public static class Movies
         {
             Console.Clear();
             System.Console.WriteLine("Your console is not tall enough!\nPlease expand your console window to browse movies.");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
             return;
         }
+        List<MovieModel> movies = _moviesLogic.Movies;
+        // no current movies and showings
+        if (movies.Count == 0)
+        {
+            Console.Clear();
+            System.Console.WriteLine("It seems there aren't any movies...\nPlease be patient while we resolve this issue.");
+            Thread.Sleep(2000);
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
+            return;
+        }
+
         int currentIndex = 0;
         ConsoleKey key;
-        List<MovieModel> movies = _moviesLogic.Movies;
-        // can still have count of 0
+
         List<int> showingIndices = new List<int>();
         for (int i = 0; i < movies.Count(); i++) 
             showingIndices.Add(0);

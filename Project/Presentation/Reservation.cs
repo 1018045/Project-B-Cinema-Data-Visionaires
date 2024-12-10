@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.VisualBasic;
 using Project.Logic.Account;
 using Project.Presentation;
@@ -7,7 +8,6 @@ public static class Reservation
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
     private static readonly ReservationsLogic _reservationsLogic = new();
 
-    // Remove during code factoring bc of bad code practice
     private static readonly ShowingsLogic _showingsLogic = new ();
 
     private static readonly MoviesLogic _moviesLogic = new ();
@@ -18,9 +18,16 @@ public static class Reservation
     {
         Console.Clear();
 
-        if (AccountsLogic.CurrentAccount == null)
+        while (AccountsLogic.CurrentAccount is not UserModel)
         {
+            AccountsLogic.LogOut();
+            // line hieronder is fout. Actions runnen de functio opnieuw (recursief)
             MenuHelper.NewMenu(new List<string> { "Login", "Create account", "Return"}, new List<Action> { () => Menus.Login(action: () => Make(showing)), () => Menus.ChooseAccount(() => Make(showing)), Movies.MoviesBrowser}, "Account", "You need an account to make a reservation!");
+            if (AccountsLogic.CurrentAccount is not UserModel)
+            {
+                System.Console.WriteLine("Error: you can only book tickets with a customer account!");
+                Thread.Sleep(2500);
+            }
             return;
         }
 
@@ -113,9 +120,9 @@ public static class Reservation
 
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("You have successfully booked your tickets!\n");
+        Console.WriteLine("You have successfully booked your ticket(s)!\n");
         Console.ResetColor();
-        Console.WriteLine($"Your unique reservation ID is {reservation.Id}.");
+        Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
 
@@ -188,7 +195,7 @@ public static class Reservation
             "Change or add seats (NOT YET IMPLEMENTED!!!)",
             "Change date",
             "Cancel reservation",
-            "Cancel"
+            "Return"
         };
 
         List<Action> actions = new List<Action>() 
@@ -249,5 +256,64 @@ public static class Reservation
         }
 
         MenuHelper.WaitForKey(() => Adjust(oldReservation.UserId));
+    }
+
+    public static void SelectDate()
+    {
+        int howManyDatesFitOnScreen = Console.WindowHeight - 3;
+        string extendedDateFormat = "dddd d MMMM yyyy";
+
+        List<DateTime> dates = GetDateTimeList(howManyDatesFitOnScreen);
+        List<Action> actions = new();
+
+        List<string> dateOptions = dates.Select(d => d.ToString(extendedDateFormat)).ToList();
+        dateOptions.Add("[Select a different date]");
+
+        dates.ForEach(d => actions.Add(() => SelectShowingOnDate(d)));
+        actions.Add(() => SelectShowingOnDate(AskAndParseDate()));
+
+        MenuHelper.NewMenu(dateOptions, actions, "Select a date:");
+    }
+
+    private static void SelectShowingOnDate(DateTime date)
+    {
+        string extendedDateFormat = "dddd d MMMM yyyy";
+
+        List<MovieModel> movies = _moviesLogic.Movies.Where(m => _moviesLogic.HasUpcomingShowingsOnDate(_showingsLogic, m, date)).ToList();
+        List<string> movieOptions = movies.Select(m => m.Title).ToList();
+        if (movies.Count == 0)
+        {
+            Console.Clear();
+            System.Console.WriteLine($"No movies found on {date.ToString(extendedDateFormat)}");
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
+            return;
+        }
+        MovieModel movie = MenuHelper.NewMenu(movieOptions, movies, $"Movies on {date.ToString(extendedDateFormat)}");
+
+
+        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).Where(s => s.Date.Date == date.Date).ToList();
+        List<string> showingOptions = showings.Select(s => $"Room {s.Room}: {s.Date.ToString("HH:mm")}").ToList();
+
+        Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(extendedDateFormat)}"));
+    }
+
+    private static List<DateTime> GetDateTimeList(int amount)
+    {
+        List<DateTime> dates = new();
+        for (int i = 0; i < amount; i++) dates.Add(DateTime.Now.Date.AddDays(i));
+        return dates;
+    }
+
+    private static DateTime AskAndParseDate()
+    {  
+        string dateInput = "";
+        do
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please enter a future date in this format 'dd-MM-yyyy'");
+            dateInput = Console.ReadLine();
+        }
+        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) && DateTime.Now.Date > date.Date);             
+        return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
 }

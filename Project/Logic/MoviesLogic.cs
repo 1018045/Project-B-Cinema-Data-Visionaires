@@ -90,7 +90,13 @@ public class MoviesLogic
 
     public bool HasUpcomingShowings(ShowingsLogic showingsLogic, MovieModel movie)
     {
-        IEnumerable<ShowingModel> showings = showingsLogic.Showings.Where(s => s.MovieId == movie.Id).ToList().Where(s => s.Date > DateTime.Now);
+        IEnumerable<ShowingModel> showings = showingsLogic.Showings.Where(s => s.MovieId == movie.Id).Where(s => s.Date > DateTime.Now.Date);
+        return showings.Count() > 0;
+    }
+
+    public bool HasUpcomingShowingsOnDate(ShowingsLogic showingsLogic, MovieModel movie, DateTime date)
+    {
+        IEnumerable<ShowingModel> showings = showingsLogic.Showings.Where(s => s.MovieId == movie.Id && s.Date.Date == date.Date);
         return showings.Count() > 0;
     }
 }
