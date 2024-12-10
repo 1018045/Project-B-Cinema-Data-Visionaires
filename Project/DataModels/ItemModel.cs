@@ -7,7 +7,7 @@ public class Item
     
 
 
-    public Item(string name, double price, int amount)
+    public Item(string name, double price)
     {
         Name = name; 
         Price = price; 
