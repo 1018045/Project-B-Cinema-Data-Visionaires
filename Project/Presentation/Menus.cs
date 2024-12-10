@@ -53,7 +53,7 @@ static class Menus
         MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
     }
 
-    public static void Login(Action action = null)
+    public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
     {
         AccountModel acc;
         int loginAttempts = 3;
@@ -81,6 +81,14 @@ static class Menus
             }    
         }
         while (acc == null);
+
+        if (acceptOnlyCustomerLogin && acc is not UserModel)
+        {
+            System.Console.WriteLine("Error: You can only login with a user account on this screen");
+            Thread.Sleep(2500);
+            MenuHelper.WaitForKey();
+            return;
+        }
 
         if (action != null)
         {

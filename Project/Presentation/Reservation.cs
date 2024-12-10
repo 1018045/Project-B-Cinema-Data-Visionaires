@@ -18,17 +18,9 @@ public static class Reservation
     {
         Console.Clear();
 
-        while (AccountsLogic.CurrentAccount is not UserModel)
+        while (AccountsLogic.CurrentAccount == null)
         {
-            AccountsLogic.LogOut();
-            // line hieronder is fout. Actions runnen de functio opnieuw (recursief)
-            MenuHelper.NewMenu(new List<string> { "Login", "Create account", "Return"}, new List<Action> { () => Menus.Login(action: () => Make(showing)), () => Menus.ChooseAccount(() => Make(showing)), Movies.MoviesBrowser}, "Account", "You need an account to make a reservation!");
-            if (AccountsLogic.CurrentAccount is not UserModel)
-            {
-                System.Console.WriteLine("Error: you can only book tickets with a customer account!");
-                Thread.Sleep(2500);
-            }
-            return;
+            Menus.Login(acceptOnlyCustomerLogin: true);
         }
 
         bool confirmSeats = false;
