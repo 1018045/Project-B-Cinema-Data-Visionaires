@@ -1,4 +1,4 @@
-public class AccountantLogic<T> : IReportable<T>
+public class AccountantLogic: IReportable
 {
     public static List<BillModel> Bills = new();
 
@@ -60,7 +60,7 @@ public class AccountantLogic<T> : IReportable<T>
     
     }
 
-    public List<BillModel> FindBy(T WhatToFind)
+    public List<BillModel> FindBy<T>(T WhatToFind)
     {
         List<BillModel> BillsToReturn = new();
 
@@ -105,6 +105,21 @@ public class AccountantLogic<T> : IReportable<T>
     }
 
 
+    public double GetRecordsByMonth(int month)
+    {
+    
+      List<BillModel> BillsToView =  FindBy(month); 
+
+      double TotalAmount = 0;
+
+      foreach(BillModel bill in BillsToView)
+      {
+        TotalAmount += bill.TotalAmount;
+      }
+    
+     return TotalAmount; 
+
+    }
 
 
 

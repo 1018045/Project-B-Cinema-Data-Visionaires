@@ -105,15 +105,19 @@ public static class Reservation
             }
 
             Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
-            List<Item> food = new();
+            //Dit moet veranderen wanneer we de prijs van stoelen krijgen
+            double prijsvanStoelen = selectedSeats.Count * 10;
+            List<Item> items = new();
             Item item = new(name,2.50);
-            food.Add(item);
+            items.Add(item);
 
-            AccountantLogic<BillModel> accountantLogic = new ();
+            AccountantLogic accountantLogic = new ();
 
             int billID = accountantLogic.FindFirstAvailableID();
 
-            BillModel bill = new(billID,false, food, item.Price,DateTime.Now);
+            BillModel bill = new(billID,false, items, item.Price,DateTime.Now);
+
+            accountantLogic.AddBill(bill);
 
             
             

@@ -5,6 +5,7 @@ using Project.Helpers;
 
 static class Menus
 {
+    
     static public void GuestMenu()
     {
         List<string> options = new List<string>
@@ -131,6 +132,8 @@ static class Menus
 
     public static void AdminMenu()
     {
+        AccountantLogic accountantLogic = new();
+
         List<string> options = new List<string>
         {
             "Add a movie",
@@ -141,6 +144,7 @@ static class Menus
             "Add job vacancy",
             "Remove job vacancy",
             "View all vacancies",
+            "Show accountant options",
             "Logout"
         };
         List<Action> actions = new List<Action>
@@ -153,6 +157,7 @@ static class Menus
             AddJobVacancy,
             RemoveJobVacancy,
             ViewAllVacancies,
+            AccountantMenu,
             GuestMenu
         };
         MenuHelper.NewMenu("Admin menu", options, actions);
@@ -325,161 +330,99 @@ static class Menus
     {
         List<string> options = new List<string>
         {
-            "View all financial records",
-            "View records for a date",
-            "View total tickets sold",
-            "View employee salaries",
-            "Log out"
+            // "View all financial records",
+            "View records for specific month",
+            // "View total tickets sold",
+            // "View employee salaries",
+            // "Log out"
         };
 
         List<Action> actions = new List<Action>
         {
-            ViewAllRecords,
-            ViewRecordsByMonth,  
-            ViewTotalTickets,
-            ViewEmployeeSalaries,   
-            GuestMenu
+            // ViewAllRecords,
+        () => 
+        {
+            Console.Write("Enter the month number: ");
+            int month = Convert.ToInt32(Console.ReadLine());
+            ViewRecordsByMonth(month); // Calling with the month entered by the user
+        }
+            // ViewTotalTickets,
+            // ViewEmployeeSalaries,   
+            // GuestMenu
         };
 
         MenuHelper.NewMenu("Accountant Menu", options, actions); 
     }
 
-    private static void ViewRecordsByMonth()
-    {
-        Console.Clear();
-        Console.WriteLine("=== Reserveringen Per Maand ===\n");
+   public static void ViewRecordsByMonth(int month)
+   {
+        AccountantLogic accountantLogic = new();
+        
+        double Records = accountantLogic.GetRecordsByMonth(month);
 
-        var reservationsLogic = new ReservationsLogic();
-        var reservations = reservationsLogic.Reservations;
-        var showingsLogic = new ShowingsLogic();
+        Console.WriteLine(Records);
 
-       
-        Console.WriteLine("Januari:");
-        BerekenMaandTotalen(reservations, showingsLogic, 1);
-
-        Console.WriteLine("\nFebruari:");
-        BerekenMaandTotalen(reservations, showingsLogic, 2);
-
-        Console.WriteLine("\nMaart:");
-        BerekenMaandTotalen(reservations, showingsLogic, 3);
-
-        Console.WriteLine("\nApril:");
-        BerekenMaandTotalen(reservations, showingsLogic, 4);
-
-        Console.WriteLine("\nMei:");
-        BerekenMaandTotalen(reservations, showingsLogic, 5);
-
-        Console.WriteLine("\nJuni:");
-        BerekenMaandTotalen(reservations, showingsLogic, 6);
-
-        Console.WriteLine("\nJuli:");
-        BerekenMaandTotalen(reservations, showingsLogic, 7);
-
-        Console.WriteLine("\nAugustus:");
-        BerekenMaandTotalen(reservations, showingsLogic, 8);
-
-        Console.WriteLine("\nSeptember:");
-        BerekenMaandTotalen(reservations, showingsLogic, 9);
-
-        Console.WriteLine("\nOktober:");
-        BerekenMaandTotalen(reservations, showingsLogic, 10);
-
-        Console.WriteLine("\nNovember:");
-        BerekenMaandTotalen(reservations, showingsLogic, 11);
-
-        Console.WriteLine("\nDecember:");
-        BerekenMaandTotalen(reservations, showingsLogic, 12);
-
-        MenuHelper.WaitForKey(AccountantMenu);
-    }
-
+   }
    
-    private static void BerekenMaandTotalen(List<ReservationModel> reservations, ShowingsLogic showingsLogic, int maand)
-    {
-        double totaalInkomsten = 0;
-        int totaalTickets = 0;
-
-       
-        foreach (var reservation in reservations)
-        {
-            var showing = showingsLogic.FindShowingByIdReturnShowing(reservation.ShowingId);
-            
-            if (showing.Date.Month == maand)
-            {
-                totaalInkomsten += reservation.Price;
-
-                string stoelen = reservation.Seats;
-                int aantalTickets = 1; 
-                for (int i = 0; i < stoelen.Length; i++)
-                {
-                    if (stoelen[i] == ',')
-                    {
-                        aantalTickets = aantalTickets + 1;
-                    }
-                }
-                totaalTickets = totaalTickets + aantalTickets;
-            }
-        }
-
-        
-        Console.WriteLine($"  Inkomsten: €{totaalInkomsten:F2}");
-        Console.WriteLine($"  Aantal tickets: {totaalTickets}");
-    }
+    // private static void BerekenMaandTotalen(List<ReservationModel> reservations, ShowingsLogic showingsLogic, int maand)
+    // {
+      
+    // }
 
     
 
-    private static void ViewTotalTickets()
-    {
-        Console.Clear();
-        Console.WriteLine("=== Totaal Verkochte Tickets ===\n");
+    // private static void ViewTotalTickets()
+    // {
+    //     Console.Clear();
+    //     Console.WriteLine("=== Totaal Verkochte Tickets ===\n");
 
-        var reservationsLogic = new ReservationsLogic();
-        var reservations = reservationsLogic.Reservations;
-        int totalTickets = 0;
+    //     var reservationsLogic = new ReservationsLogic();
+    //     var reservations = reservationsLogic.Reservations;
+    //     int totalTickets = 0;
 
-        foreach (var reservation in reservations)
-        {
+    //     foreach (var reservation in reservations)
+    //     {
             
-            int ticketsInReservation = 1; 
-            string seats = reservation.Seats;
+    //         int ticketsInReservation = 1; 
+    //         string seats = reservation.Seats;
             
     
-            for (int i = 0; i < seats.Length; i++)
-            {
-                if (seats[i] == ',')
-                {
-                    ticketsInReservation++;
-                }
-            }
+    //         for (int i = 0; i < seats.Length; i++)
+    //         {
+    //             if (seats[i] == ',')
+    //             {
+    //                 ticketsInReservation++;
+    //             }
+    //         }
             
-            totalTickets += ticketsInReservation;
-        }
+    //         totalTickets += ticketsInReservation;
+    //     }
 
-        Console.WriteLine($"Totaal aantal verkochte tickets: {totalTickets}");
+    //     Console.WriteLine($"Totaal aantal verkochte tickets: {totalTickets}");
         
-        MenuHelper.WaitForKey(AccountantMenu);
-    }
+    //     MenuHelper.WaitForKey(AccountantMenu);
+    // }
 
-    private static void ViewAllRecords()
-    {
-        Console.Clear();
+    // private static void ViewAllRecords()
+    // {
+    //     Console.Clear();
         
         
-        EmployeeLogic employeeLogic = new();
-        double totalSalary = employeeLogic.GetTotalMonthlySalary();
+    //     EmployeeLogic employeeLogic = new();
+    //     double totalSalary = employeeLogic.GetTotalMonthlySalary();
         
       
-        var reservationsLogic = new ReservationsLogic();
-        var totalMovieRevenue = reservationsLogic.GetTotalRevenue();
+    //     var reservationsLogic = new ReservationsLogic();
+    //     var totalMovieRevenue = reservationsLogic.GetTotalRevenue();
         
       
-        Console.WriteLine("=== Financieel Overzicht ===\n");
-        Console.WriteLine($"Totale maandelijkse salariskosten: €{totalSalary:F2}");
-        Console.WriteLine($"Totale filminkomsten: €{totalMovieRevenue:F2}");
-        Console.WriteLine($"Netto resultaat: €{totalMovieRevenue - totalSalary:F2}\n");
+    //     Console.WriteLine("=== Financieel Overzicht ===\n");
+    //     Console.WriteLine($"Totale maandelijkse salariskosten: €{totalSalary:F2}");
+    //     Console.WriteLine($"Totale filminkomsten: €{totalMovieRevenue:F2}");
+    //     Console.WriteLine($"Netto resultaat: €{totalMovieRevenue - totalSalary:F2}\n");
         
-        MenuHelper.WaitForKey(AccountantMenu);
-    }
+    //     MenuHelper.WaitForKey(AccountantMenu);
+    // }
 
 
 

@@ -1,4 +1,4 @@
-public interface IReportable<T>
+public interface IReportable
 {
     public double CalculateYearlyTurnover(int whatToCalculate);
 
@@ -6,6 +6,6 @@ public interface IReportable<T>
 
     public double CalculateCosts();
 
-    public List<BillModel> FindBy(T WhatToFind);
+    public List<BillModel> FindBy<T>(T WhatToFind);
     
 }
