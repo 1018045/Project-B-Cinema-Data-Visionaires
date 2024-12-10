@@ -2,7 +2,7 @@ using System.Globalization;
 
 public class ShowingsLogic
 {
-    private const int CLEANUP_TIME_BETWEENShowings = 30;
+    private const int CLEANUP_TIME_BETWEEN_SHOWINGS = 30;
     
     public List<ShowingModel> Showings {get; private set;}
 
@@ -41,12 +41,12 @@ public class ShowingsLogic
         List<ShowingModel> showings = new();
         foreach (ShowingModel showing in Showings)
         {
-            if (showing.MovieId == id)
+            if (showing.MovieId == id && showing.Date > DateTime.Now)
             {
                 showings.Add(showing);
             }
         }
-        return showings;
+        return showings.OrderBy(s => s.Date).ToList();
     }
 
     public ShowingModel FindShowingByIdReturnShowing(int id)
@@ -168,8 +168,8 @@ public class ShowingsLogic
             if (showing.Room == room)
             {   // de showings overlappen:
                 // alleen als het BEGIN van showing 2 EERDER is dan het begin van showing 1, en het EINDE van showing 2 LATER is dan het begin van showing 1
-                if ((newDate <= showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEENShowings + showingDuration) >= showing.Date) ||
-                    (showing.Date <= newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEENShowings + showingDuration) >= newDate))
+                if ((newDate <= showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= showing.Date) ||
+                    (showing.Date <= newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= newDate))
                 {
                     return false;
                 }

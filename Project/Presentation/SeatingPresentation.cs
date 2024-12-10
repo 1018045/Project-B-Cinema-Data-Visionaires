@@ -1,5 +1,4 @@
-﻿using Project.Logic;
-using Project.Logic.SeatSelection;
+﻿using Project.Logic.SeatSelection;
 using static Project.Helpers.SeatSelectionHelpers;
 
 namespace Project.Presentation;
@@ -39,13 +38,12 @@ public class SeatingPresentation
 
     public static bool SuccessfulSelection(string seatDisplay)
     {
-        Console.Clear();
+        // Commented out this code so the confirmation only gets printed in the confirm menu
+        
+        // Console.Clear();
+        // Console.WriteLine($"You've selected the following seats: {seatDisplay}");
+        // Thread.Sleep(5000);
 
-        Console.WriteLine($"You've selected the following seats: {seatDisplay}");
-
-        Thread.Sleep(5000);
-
-        Console.Clear();
         return true;
     }
 

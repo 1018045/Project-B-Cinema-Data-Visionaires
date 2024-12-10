@@ -1,43 +1,47 @@
+using System.Globalization;
 using Microsoft.VisualBasic;
+using Project.Helpers;
 using Project.Logic.Account;
 using Project.Presentation;
 
 public static class Reservation
 {
+    private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
+    private const string EXTENDEDDATEFORMAT = "dddd d MMMM yyyy";
     private static readonly ReservationsLogic _reservationsLogic = new();
 
-    // Remove during code factoring bc of bad code practice
     private static readonly ShowingsLogic _showingsLogic = new ();
 
     private static readonly MoviesLogic _moviesLogic = new ();
 
-    public static void Make()
+    private static readonly AccountsLogic _accountsLogic = new();
+
+    public static void Make(ShowingModel showing)
     {
         Console.Clear();
-
-        Console.WriteLine("\nUpcoming showings:\n");
-        Showings.ShowUpcoming(makingReservation: true);
-
-        Console.WriteLine("Select a showing (Enter the number in front of the showing to continue)");
-
-        var id = Console.ReadLine();
-        var showingId = Convert.ToInt32(id);
-
-        string confirmSeats = "";
-        List<string> selectedSeats;
-
-        do        
+        
+        while (AccountsLogic.CurrentAccount == null)
         {
-            selectedSeats = SeatingPresentation.Present(showingId);
-            System.Console.WriteLine("Enter Y to confirm your seats.");
-            System.Console.WriteLine("Enter any other key to change your seat selection, or the amount of seats you want to book.");
-            confirmSeats = Console.ReadLine();
-        } while(confirmSeats.ToLower().Trim() != "y");
+            System.Console.WriteLine("Please login to continue making your reservation.");
+            System.Console.WriteLine("You are being redirected to the login screen.");
+            Thread.Sleep(2500);
+            Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
+        }
 
-        Console.WriteLine("Would you like to order extra's?"); 
-        Console.WriteLine("Enter Y for Yes/N for No");
-        string decision = Console.ReadLine();
-        if(decision.Equals("Y", StringComparison.OrdinalIgnoreCase))
+        bool confirmSeats = false;
+        List<string> selectedSeats;
+        do        
+        {  
+            selectedSeats = SeatingPresentation.Present(showing.Id);
+            confirmSeats = MenuHelper.NewMenu(
+                new List<string> {"Confirm", "Retry"},
+                new List<bool> {true, false}, 
+                subtext: "You have selected the following seats: " +
+                $"{SeatSelectionHelpers.PositionsToRowSeatString(SeatSelectionHelpers.StringToPositions(selectedSeats))}"
+            );
+        } while(!confirmSeats);
+
+        if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to order extra's?")) 
         {
             Console.WriteLine("These are the food choices:");
             Console.WriteLine("1. Gourmet Truffle Cheeseburger");
@@ -98,153 +102,138 @@ public static class Reservation
 
             Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
         }
-        else if (decision.Equals("N", StringComparison.OrdinalIgnoreCase))
-        {
-            Console.WriteLine("No extras ordered. Thank you for your response.");
-        }
         else
         {
-            Console.WriteLine("Invalid input. Please enter Y for Yes or N for No.");
+            Console.WriteLine("No extras ordered. Thank you for your response.");
         }
         
         string payment = "X";
         while (payment != "")
         {
-            Console.WriteLine("\nBank details:");
+            Console.Clear();
+            Console.WriteLine("Please enter your bank details:");
             payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine()!);
             Console.WriteLine(payment);
         }
     
-        _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showingId, string.Join(",", selectedSeats), true);
+        FakeProcessingPayment(5000);
+        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true);
 
-        Console.WriteLine("\nYou have successfully booked your tickets!\n");
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("You have successfully booked your ticket(s)!\n");
+        Console.ResetColor();
+        Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
 
-    public static void Show(int userId)
+    public static void ChooseShowing(MovieModel movie)
     {
-        Console.WriteLine("These are your current reservations:");
-        List<ReservationModel> reservations = _reservationsLogic.ShowAllUserReservations(userId);
-        int counter = 1;
-        if (reservations.Count == 0)
+        Console.Clear();
+        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).ToList<object>();
+        if (showings.Count() == 0)
         {
-            Console.WriteLine("You have 0 reservations!");
-            
+            System.Console.WriteLine("There are no upcoming showings for this movie");
+            Thread.Sleep(1000);
+            MenuHelper.WaitForKey(() => Movies.MoviesBrowser());
+            return;
         }
-        else
+        List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(DATEFORMAT)).ToList();
+        options.Add("Return");
+        showings.Add(Menus.LoggedInMenu);
+
+        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress:");
+        ShowingModel selectedShowing = (ShowingModel)show;
+        Make(selectedShowing);
+    }
+
+    private static void FakeProcessingPayment(int lengthInMilliSeconds)
+    {
+
+        for (int i = 0; i < lengthInMilliSeconds/400; i++)
         {
-            foreach (ReservationModel reservation in reservations)
-            {
-                Console.WriteLine($"{counter++}. {_showingsLogic.FindShowingById(reservation.ShowingId)}");
-            }
+            Console.Clear();
+            string dots = new string('.', (i % 3) + 1);
+            System.Console.WriteLine("Payment processing" + dots);
+            Thread.Sleep(400);
         }
-        MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
 
     public static void Adjust(int userId)
     {
-        Console.Clear();
-
-        List<ReservationModel> reservations = _reservationsLogic.Reservations;
-        List<string> reservationStrings = new();
-        foreach (ReservationModel res in reservations)
-        {
-            ShowingModel showing = _showingsLogic.FindShowingByIdReturnShowing(res.ShowingId);
-            reservationStrings.Add($"{_moviesLogic.GetMovieById(showing.MovieId).Title}: {showing.Date}");
-        }
+        List<ReservationModel> reservations = _reservationsLogic.Reservations.Where(r => r.UserId == userId).ToList();
         
-
-        List<string> showings = new List<string> 
-        {
-
-        };
-
-        List<Action> actions = new List<Action>
-        {
-
-        };
-
-        MenuHelper.NewMenu("Your reservations", showings, actions);
-        MoviesLogic moviesLogic = new();
-
         if (reservations.Count == 0)
         {
-            Console.WriteLine("You have 0 reservations!");
+            Console.Clear();
+            Console.WriteLine("You have no reservations!");
+            Thread.Sleep(1500);
             MenuHelper.WaitForKey(Menus.LoggedInMenu);
+            return;
         }
-        else
-        {
-            int counter = 1;
-            foreach (ReservationModel reservation in reservations)
-            {
-                Console.WriteLine($"{counter++}. {_showingsLogic.FindShowingById(reservation.ShowingId)}");
-            }
-            Console.WriteLine("Which reservation would you like to change?");
-            string userChoice;
-            do
-            {
-                userChoice = Console.ReadLine();
-            } while(!AccountsLogic.IsInt(userChoice) || AccountsLogic.ParseInt(userChoice) > counter - 1 || AccountsLogic.ParseInt(userChoice) < 1);
 
-            ShowingModel showing = _showingsLogic.FindShowingByIdReturnShowing(reservations[AccountsLogic.ParseInt(userChoice) - 1].ShowingId);
-            // Console.WriteLine($"Reservation:\n{showing.Id}");
-            AdjustmentMenu(reservations[AccountsLogic.ParseInt(userChoice) - 1], moviesLogic.GetMovieById(showing.MovieId).Title);
+        List<string> reservationStrings = new();
+        List<Action> actions = new();
+
+        foreach (ReservationModel res in reservations)
+        {
+            ShowingModel s = _showingsLogic.FindShowingByIdReturnShowing(res.ShowingId);
+            MovieModel m = _moviesLogic.GetMovieById(s.MovieId);
+            reservationStrings.Add($"{m.Title}: {s.Date.ToString(DATEFORMAT)}");
+            actions.Add(() => AdjustmentMenu(res, m.Title));
         }
+
+        reservationStrings.Add("Return");
+        actions.Add(Menus.LoggedInMenu);
+
+        MenuHelper.NewMenu(reservationStrings, actions, "Your reservations");   
     }
 
     private static void AdjustmentMenu(ReservationModel reservation, string showing)
-    {
-        Console.WriteLine("What would you like to adjust?");
-        Console.WriteLine("1. Change or add seats (NOT YET IMPLEMENTED!!!)"); // Implement after youri's part
-        Console.WriteLine("2. Change date");
-        Console.WriteLine("3. Remove reservation");
-        Console.WriteLine("4. Cancel");
-        
-        string userChoice = Console.ReadLine();
-
-        switch(userChoice)
+    {   
+        List<string> options = new List<string>() 
         {
-            case "1":
-                Console.WriteLine("(NOT YET IMPLEMENTED!!!)");
-                break;
-            case "2":
-                ChangeReservationDate(reservation, showing);
-                break;
-            case "3":
-                Console.WriteLine("(NOT YET IMPLEMENTED!!!)");
-                break;
-            case "4":
-                _reservationsLogic.RemoveReservation(reservation);
-                Console.WriteLine("Your reservation has been removed.");
-                break;
-            case "5":
-                Console.WriteLine("Editing your reservation has been cancelled.");
-                break;
-            default:
-                Console.WriteLine("Invalid input, try again!");
-                AdjustmentMenu(reservation, showing);
-                break;
-        }
-        Menus.LoggedInMenu();
-    }
+            "Change or add seats (NOT YET IMPLEMENTED!!!)",
+            "Change date",
+            "Cancel reservation",
+            "Return"
+        };
 
+        List<Action> actions = new List<Action>() 
+        {
+            () => {
+                Console.Clear();
+                Console.WriteLine("(NOT YET IMPLEMENTED!!!)");
+                MenuHelper.WaitForKey(() => AdjustmentMenu(reservation, showing));
+                },
+            () => ChangeReservationDate(reservation, showing),
+            () => {
+                if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, "Are you sure you want to cancel your reservation?"))
+                    _reservationsLogic.RemoveReservation(reservation);
+                Adjust(reservation.UserId);
+            },
+            () => Adjust(reservation.UserId)
+        };
+
+        MenuHelper.NewMenu(options, actions);
+    }
 
     // CHANGE SEAT IMPLEMENTATION AFTER YOURI IS DONE
     private static void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
     {
         List<ShowingModel> upcomingShowings = _showingsLogic.GetUpcomingShowingsOfMovie(movieTitle);
-        if (upcomingShowings.Count == 0)
+        if (upcomingShowings.Count == 1)
         {
             Console.WriteLine("There are no available shows planned, please cancel your reservation if you are unavailable at that time.");
         }
         else
         {
             Console.WriteLine("Which date do you want to change your reservation to?");
-            Console.WriteLine("We charge a fee of 25 euros for changing a reservation");
+            Console.WriteLine("We charge a fee of 5 euros for changing a reservation");
             int counter = 1;
             foreach (ShowingModel showing in upcomingShowings)
             {
-                Console.WriteLine($"{counter++}: {showing.Date.ToString("dd-MM-yyyy HH:mm:ss")}");
+                Console.WriteLine($"{counter++}: {showing.Date.ToString(DATEFORMAT)}");
             }
             string userChoice;
             do
@@ -264,9 +253,79 @@ public static class Reservation
             _reservationsLogic.RemoveReservation(oldReservation);
             ShowingModel newShowing = upcomingShowings[AccountsLogic.ParseInt(userChoice) - 1];
             _reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true);
-            Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString("dd-MM-yyyy HH:mm:ss")}");
+            Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString(DATEFORMAT)}");
         }
 
-        Menus.LoggedInMenu();
+        MenuHelper.WaitForKey(() => Adjust(oldReservation.UserId));
+    }
+
+    public static void SelectDate()
+    {
+        // print less than 2 weeks of showings if it doesn't fit
+        int howManyDatesFitOnScreen = Console.WindowHeight - 4;
+        int actualAmountOfDatesShown = Math.Min(howManyDatesFitOnScreen, 14);
+
+        List<DateTime> dates = GetDateTimeList(actualAmountOfDatesShown);
+        List<Action> actions = new();
+
+        List<string> dateOptions = dates.Select(d => d.ToString(EXTENDEDDATEFORMAT)).ToList();
+        dateOptions.Add("[Select a different date]");
+        dateOptions.Add("Return");
+
+        dates.ForEach(d => actions.Add(() => SelectMovieOnDate(d)));
+        actions.Add(() => SelectMovieOnDate(AskAndParseDate()));
+        actions.Add(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
+
+        MenuHelper.NewMenu(dateOptions, actions, "Select a date:");
+    }
+
+    private static void SelectMovieOnDate(DateTime date)
+    {
+        List<Action> actions = new();
+        _moviesLogic.Movies.Where(m => _moviesLogic.HasUpcomingShowingsOnDate(_showingsLogic, m, date)).ToList()
+                            .ForEach(m => actions.Add(() => SelectShowingOnDate(m, date)));
+
+        if (actions.Count == 0)
+        {
+            Console.Clear();
+            System.Console.WriteLine($"No movies found on {date.ToString(EXTENDEDDATEFORMAT)}");
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
+            return;
+        }
+        
+        List<string> movieOptions = _moviesLogic.Movies.Where(m => _moviesLogic.HasUpcomingShowingsOnDate(_showingsLogic, m, date))
+                                                        .Select(m => m.Title).ToList();
+
+        actions.Add(SelectDate);
+        movieOptions.Add("Return");
+        MenuHelper.NewMenu(movieOptions, actions, $"Movies on {date.ToString(EXTENDEDDATEFORMAT)}");
+    }
+
+    private static void SelectShowingOnDate(MovieModel movie, DateTime date)
+    {
+        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).Where(s => s.Date.Date == date.Date).ToList();
+        List<string> showingOptions = showings.Select(s => $"Room {s.Room}: {s.Date.ToString("HH:mm")}").ToList();
+
+        Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(EXTENDEDDATEFORMAT)}"));
+    }
+
+    private static List<DateTime> GetDateTimeList(int amount)
+    {
+        List<DateTime> dates = new();
+        for (int i = 0; i < amount; i++) dates.Add(DateTime.Now.Date.AddDays(i));
+        return dates;
+    }
+
+    private static DateTime AskAndParseDate()
+    {  
+        string dateInput = "";
+        do
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please enter a future date in this format 'dd-MM-yyyy'");
+            dateInput = Console.ReadLine();
+        }
+        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) && DateTime.Now.Date > date.Date);             
+        return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
 }

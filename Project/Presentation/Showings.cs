@@ -15,14 +15,14 @@ public static class Showings
     {
         Console.Clear();
 
-        List<MovieModel> movieList = moviesLogic.GetMovies();
+        List<MovieModel> movieList = moviesLogic.Movies;
         List<string> movies = movieList.Select(movie => movie.Title).ToList();
         movies.Add("Cancel");
 
         List<int> moviesIndices = movieList.Select(movie => movie.Id).ToList();
         moviesIndices.Add(-1);
 
-        return MenuHelper.NewMenu("Which movie do you want to manage?", movies, moviesIndices);
+        return MenuHelper.NewMenu(movies, moviesIndices, "Which movie do you want to manage?");
     }
 
     public static int SelectShowing()
@@ -36,7 +36,7 @@ public static class Showings
         List<int> showingsIndices = showings.Select(showing => showing.Id).ToList();
         showingsIndices.Add(-1);
 
-        return MenuHelper.NewMenu("Which showing do you want to manage?", showingsStrings, showingsIndices);
+        return MenuHelper.NewMenu(showingsStrings, showingsIndices, "Which showing do you want to manage?");
     }
 
     public static void ManageShowings()
@@ -59,7 +59,7 @@ public static class Showings
                 () => RemoveShowing(chosenId, moviesLogic),
                 Menus.AdminMenu
             };
-            MenuHelper.NewMenu($"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?", options, actions);
+            MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
@@ -85,7 +85,7 @@ public static class Showings
                 () => RemoveShowing(chosenId, moviesLogic),
                 Menus.AdminMenu
             };
-            MenuHelper.NewMenu($"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?", options, actions);
+            MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
@@ -139,20 +139,20 @@ public static class Showings
             };
         List<int> outputs = new List<int> {1, 2, 3};
 
-        int userChoice = MenuHelper.NewMenu("Do you want to repeat the showing?", options, outputs);
+        int userChoice = MenuHelper.NewMenu(options, outputs, "Do you want to repeat the showing?");
         bool DoMore = true;
         string pattern = "";
 
         switch (userChoice)
         {
             case 1:
-                pattern = "daily";
+                BookShowings(date, room, moviesLogic, movieId);
                 break;
             case 2:
-                pattern = "weekly";
+                pattern = "daily";
                 break;
             case 3:
-                BookShowings(date, room, moviesLogic, movieId);
+                pattern = "weekly";
                 return;
             default:
                 ManageShowings(movieId, moviesLogic);
@@ -213,37 +213,6 @@ public static class Showings
         int chosenShowing = SelectShowing();
         if (chosenShowing != -1) _showingsLogic.RemoveShowing(chosenShowing);
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
-    }
-
-    public static void ShowUpcoming(bool makingReservation = false)
-    {
-        string showingsOutput = _showingsLogic.ShowUpcoming(showId: makingReservation);
-        if (showingsOutput == "")
-            System.Console.WriteLine("No showings found");
-        else
-            System.Console.WriteLine(showingsOutput);   
-    }
-
-    public static void ShowUpcomingOnDate()
-    {     
-        DateTime date = AskAndParseDate();
-        string showingsOutput = _showingsLogic.ShowUpcoming(date);
-        if (showingsOutput == "")
-            System.Console.WriteLine($"No showings found on {date:dd-MM-yyyy}\n");
-        else
-            System.Console.WriteLine(showingsOutput);
-    }
-
-    private static DateTime AskAndParseDate()
-    {  
-        string dateInput;
-        do
-        {
-            System.Console.WriteLine("Please enter the date in the format 'dd-MM-yyyy'");
-            dateInput = Console.ReadLine();
-        }
-        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime _));             
-        return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
 
     private static DateTime AskAndParseDateAndTime()

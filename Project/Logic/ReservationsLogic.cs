@@ -12,10 +12,12 @@ public class ReservationsLogic
         Reservations = ReservationsAccess.LoadAll();
     }
 
-    public void AddReservation(int userId, int showingId, string seats, bool paymentComplete)
+    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete)
     {
-        Reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete));
+        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete);
+        Reservations.Add(reservation);
         ReservationsAccess.WriteAll(Reservations);
+        return reservation;
     }
     public void AddReservation(ReservationModel reservation)
     {
@@ -31,9 +33,9 @@ public class ReservationsLogic
         if (bankDetails.Length != 18)
             return "Error: incorrect IBAN length. Please try again!";
         
-        if (!bankDetails.Substring(0,2).All(char.IsLetter))
+        if (bankDetails.Substring(0,2) != "NL")
         {
-            return "The first 2 characters of the IBAN should only be letters (Country signature). Please try again!";
+            return "The first 2 characters of the IBAN should be 'NL' (Country signature). Please try again!";
         }
         if (!bankDetails.Substring(2,2).All(char.IsNumber))
         {

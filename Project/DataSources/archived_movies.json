@@ -1,0 +1,47 @@
+[
+  {
+    "id": 8,
+    "title": "The Lord of the Rings: The Two Towers",
+    "duration": 98,
+    "minimumAge": 16,
+    "summary": "The second installment of the epic saga, where the divided fellowship battles to protect Middle-earth from Saruman's armies.",
+    "actors": ["Elijah Wood", "Viggo Mortensen", "Ian McKellen"],
+    "director": "Peter Jackson"
+  },
+  {
+    "id": 9,
+    "title": "The Lord of the Rings: The Return of the King",
+    "duration": 99,
+    "minimumAge": 17,
+    "summary": "The thrilling conclusion of the trilogy, where the final battle against Sauron unfolds as Frodo nears Mount Doom.",
+    "actors": ["Elijah Wood", "Viggo Mortensen", "Ian McKellen"],
+    "director": "Peter Jackson"
+  },
+  {
+    "id": 10,
+    "title": "Star Wars: Episode IV - A New Hope",
+    "duration": 100,
+    "minimumAge": 13,
+    "summary": "The beginning of the iconic space saga, where Luke Skywalker joins the Rebel Alliance to fight the Galactic Empire.",
+    "actors": ["Mark Hamill", "Harrison Ford", "Carrie Fisher"],
+    "director": "George Lucas"
+  },
+  {
+    "id": 11,
+    "title": "Star Wars: Episode V - The Empire Strikes Back",
+    "duration": 101,
+    "minimumAge": 14,
+    "summary": "The Rebels face setbacks as Darth Vader hunts them, and Luke begins his Jedi training under Yoda.",
+    "actors": ["Mark Hamill", "Harrison Ford", "Carrie Fisher"],
+    "director": "Irvin Kershner"
+  },
+  {
+    "id": 12,
+    "title": "Star Wars: Episode VI - Return of the Jedi",
+    "duration": 102,
+    "minimumAge": 15,
+    "summary": "The Rebel Alliance mounts a final attack on the Empire while Luke confronts Darth Vader to save his father.",
+    "actors": ["Mark Hamill", "Harrison Ford", "Carrie Fisher"],
+    "director": "Richard Marquand"
+  }
+]

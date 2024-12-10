@@ -9,68 +9,52 @@ static class Menus
     {
         List<string> options = new List<string>
         {
+            "Browse movies",
+            "Select a date",
             "Login",
             "Create account",
-            "Upcoming movies",
-            "Select a date",
             "Jobs",
             "Exit"
         };
         List<Action> actions = new List<Action>
         {
-            Login,
-            CreateAccount,
-            () => Showings.ShowUpcoming(),
-            Showings.ShowUpcomingOnDate,
+            Movies.MoviesBrowser,
+            Reservation.SelectDate,
+            () => Login(),
+            ChooseAccount,
             ApplyForJob.ShowJobMenu,
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions);
+        MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane");
     }
     
-    static public void Start()
+    static public void LoggedInMenu()
     {
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to create an account");
-        Console.WriteLine("Enter 3 to show upcoming movie showings");
-        Console.WriteLine("Enter 4 to show upcoming movie showings on a specific date");
-        Console.WriteLine("Enter 5 View Job Menu");
-        Console.WriteLine("Enter 6 to exit program");
-
-        string input = Console.ReadLine();
-        switch (input)
+        List<string> options = new List<string>
         {
-            case "1":
-                Login();
-                break;
-            case "2":
-                CreateAccount();
-                break;
-            case "3":
-                Showings.ShowUpcoming();
-                Start();
-                break;
-            case "4":
-                Showings.ShowUpcomingOnDate();
-                Start();
-                break;
-            case "5":
-                ApplyForJob.ShowJobMenu();
-                break;
-            case "6":
-                Environment.Exit(0);
-                break;
-            default:
-                Console.WriteLine("Invalid input");
-                Start();
-                break;
-        }
+            "Browse movies",
+            "Select a date",
+            "Your reservations",
+            "Manage your account",
+            "Log out"
+        };
+        List<Action> actions = new List<Action>
+        {
+            Movies.MoviesBrowser,
+            Reservation.SelectDate,
+            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
+            AccountPresentation.Menu,
+            () => 
+            {
+                AccountsLogic.LogOut();
+                GuestMenu();
+            }
+        };
+        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
     }
 
-    public static void Login()
+    public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
     {
-
-
         AccountModel acc;
         int loginAttempts = 3;
         do
@@ -97,6 +81,20 @@ static class Menus
             }    
         }
         while (acc == null);
+
+        if (acceptOnlyCustomerLogin && acc is not UserModel)
+        {
+            System.Console.WriteLine("Error: You can only login with a user account on this screen");
+            Thread.Sleep(2500);
+            MenuHelper.WaitForKey();
+            return;
+        }
+
+        if (action != null)
+        {
+            action.Invoke();
+            return;
+        }
 
         if (acc is UserModel user)
         {
@@ -133,8 +131,8 @@ static class Menus
     {
         List<string> options = new List<string>
         {
-            "Add a movie",
-            "Manage movie showings",
+            "Manage movies",
+            "Manage showings",
             "View all users",
             "Remove a user",
             "Add an Employee",
@@ -145,7 +143,7 @@ static class Menus
         };
         List<Action> actions = new List<Action>
         {
-            AddMovie,
+            Movies.Start,
             Showings.ManageShowings,
             ViewUsers,
             RemoveUser,
@@ -155,33 +153,7 @@ static class Menus
             ViewAllVacancies,
             GuestMenu
         };
-        MenuHelper.NewMenu("Admin menu", options, actions);
-    }
-
-    private static void AddMovie()
-    {
-        Console.Clear();
-        MoviesLogic moviesLogic = new();
-        Console.WriteLine("Enter the movie title:");
-        string title = Console.ReadLine();
-        if (moviesLogic.FindMovieByTitle(title) != null)
-        {
-            Console.WriteLine("Movie is already in the database");
-            return;
-        }
-        Console.WriteLine("Enter the total screen time in minutes:");
-        int duration = Math.Abs(int.Parse(Console.ReadLine()));
-
-        Console.WriteLine("Enter the minimum age (11-18):");
-        int minimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
-
-        moviesLogic.AddMovie(title, duration, minimumAge);
-        Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
-
-        // System.Console.WriteLine("Which extra's are mandatory for this movie?");
-        // TODO
-        Thread.Sleep(1000);
-        MenuHelper.WaitForKey(AdminMenu);
+        MenuHelper.NewMenu(options, actions, "Admin menu");
     }
 
     private static void RemoveUser()
@@ -217,44 +189,16 @@ static class Menus
         MenuHelper.WaitForKey(AdminMenu);
     }
 
-    static public void LoggedInMenu()
+    public static void ChooseAccount()
     {
-        List<string> options = new List<string>
-        {
-            "Make a reservation",
-            "Show upcoming movie showings",
-            "Show upcoming movie showings on a specific date",
-            "Show your reservations",
-            "Adjust your reservations",
-            "Manage your account",
-            "Log out"
-        };
-        List<Action> actions = new List<Action>
-        {
-            Reservation.Make,
-            () => Showings.ShowUpcoming(),
-            Showings.ShowUpcomingOnDate,
-            () => Reservation.Show(AccountsLogic.CurrentAccount.Id),
-            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
-            AccountPresentation.Menu,
-            AccountsLogic.LogOut
-        };
-        MenuHelper.NewMenu($"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", options, actions);
-    }
-
-    public static void CreateAccount()
-    {
-        Console.Clear();
-        Console.WriteLine("Enter your information below");
         Console.WriteLine("Email: ");
-        var userEmail = Console.ReadLine();
-        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true)
+        string userEmail;
+        do
         {
             Console.WriteLine("Email: ");
             userEmail = Console.ReadLine();
         }
-
-
+        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true);
 
         Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
         SecureString pass = AccountsLogic.MaskInputstring();
@@ -263,8 +207,6 @@ static class Menus
         while (AccountsLogic.VerifyPassword(Password) == false)
         {
             Console.WriteLine("Password was not valid. Try again.");
-        
-        
             pass = AccountsLogic.MaskInputstring();
             Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
         }
@@ -278,7 +220,6 @@ static class Menus
             SecureString confirmPass = AccountsLogic.MaskInputstring();
             confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
 
-            
             if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
             {
                 passwordsMatch = true;
@@ -310,15 +251,99 @@ static class Menus
 
         //wait so that it is more clear
         Thread.Sleep(1500);
+        MenuHelper.WaitForKey(LoggedInMenu);
+    }
 
-        Console.WriteLine("\n");
-        Menus.Start();
-        // accountsLogic.UpdateList(new AccountModel(userEmail, userPassword, fullName));
-            
+    public static void ChooseAccount(Action action)
+    {
+        List<string> options = new List<string>
+        {
+            "Make a reservation",
+            "Show upcoming movie showings",
+            "Show upcoming movie showings on a specific date",
+            "Show your reservations",
+            "Adjust your reservations",
+            "Manage your account",
+            "Log out"
+        };
+        List<Action> actions = new List<Action>
+        {
+            Reservation.Make,
+            () => Showings.ShowUpcoming(),
+            Showings.ShowUpcomingOnDate,
+            () => Reservation.Show(AccountsLogic.CurrentAccount.Id),
+            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
+            AccountPresentation.Menu,
+            AccountsLogic.LogOut
+        };
+        MenuHelper.NewMenu($"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", options, actions);
+    }
+
+    public static void CreateAccount()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter your information below");
+        Console.WriteLine("Email: ");
+        string userEmail;
+        do
+        {
+            Console.WriteLine("Email: ");
+            userEmail = Console.ReadLine();
+        }
+        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true);
+
+        Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
+        SecureString pass = AccountsLogic.MaskInputstring();
+        string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+   
+        while (AccountsLogic.VerifyPassword(Password) == false)
+        {
+            Console.WriteLine("Password was not valid. Try again.");
+            pass = AccountsLogic.MaskInputstring();
+            Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+        }
+        Console.WriteLine("Confirm your password");
         
-        //    System.Console.WriteLine("2)Admin");
-        //    System.Console.WriteLine("3)Finance");
-        //    System.Console.WriteLine("4)Employee");
+        string confirmPassword = string.Empty;
+        bool passwordsMatch = false;
+
+        while (!passwordsMatch)
+        {
+            SecureString confirmPass = AccountsLogic.MaskInputstring();
+            confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
+
+            if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+            {
+                passwordsMatch = true;
+            }
+            else
+            {
+                Console.WriteLine("Passwords do not match or are not valid. Try again.");
+            }
+        }
+
+        Console.WriteLine("Password confirmed successfully.");
+
+        Console.WriteLine("Your fullname: ");
+        var fullName = Console.ReadLine();
+        Console.WriteLine("Your age");
+        var userAge = Console.ReadLine();
+        while(AccountsLogic.IsInt(userAge) == false)
+        {
+            Console.WriteLine("Input is not valid. Please enter a number");
+            userAge = Console.ReadLine();
+        }
+
+        AccountsLogic accountsLogic = new();
+        accountsLogic.UpdateList(userEmail, Password, fullName, Convert.ToInt32(userAge));
+
+        Console.WriteLine($"\nSuccessfully created your account, welcome {fullName}!");
+
+        accountsLogic.CheckLogin(userEmail, Password);
+
+        //wait so that it is more clear
+        Thread.Sleep(1500);
+        action.Invoke();
     }
 
     public static void AccountantMenu()
@@ -341,7 +366,7 @@ static class Menus
             GuestMenu
         };
 
-        MenuHelper.NewMenu("Accountant Menu", options, actions); 
+        MenuHelper.NewMenu(options, actions, "Accountant Menu"); 
     }
 
     private static void ViewRecordsByDate()

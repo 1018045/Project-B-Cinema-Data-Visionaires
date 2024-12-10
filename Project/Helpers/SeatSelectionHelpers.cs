@@ -52,6 +52,16 @@ public static class SeatSelectionHelpers
         return positions.Select(p => $"{p.Y + 1};{p.X + 1}").ToList();
     }
 
+    public static List<Position> StringToPositions(List<string> seats)
+    {
+        List<Position> positions = new();
+        foreach (string seat in seats)
+        {
+            positions.Add(new Position(Convert.ToInt32(seat.Split(';')[0]), Convert.ToInt32(seat.Split(';')[1])));
+        }
+        return positions;
+    }
+
     public static string PositionsToRowSeatString(List<Position> positions)
     {
         return string.Join(", ", positions.Select(p => $"row: {Alphabet[p.Y]}, seat: {p.X + 1}"));
@@ -95,7 +105,6 @@ public static class SeatSelectionHelpers
         }
         return false;
     }
-
 
     public static List<int> GenerateSeatingLayoutContent(int showingId)
     {
