@@ -463,8 +463,8 @@ static class Menus
         Console.Clear();
         
         
-        var employeeLogic = new EmployeeLogic();
-        var totalSalary = employeeLogic.GetTotalMonthlySalary();
+        EmployeeLogic employeeLogic = new();
+        double totalSalary = employeeLogic.GetTotalMonthlySalary();
         
       
         var reservationsLogic = new ReservationsLogic();

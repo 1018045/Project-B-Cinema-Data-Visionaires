@@ -38,5 +38,13 @@
     "seats": "3;7,3;8,3;9,3;10,3;11,3;12,3;13,3;14,3;15,3;16",
     "paymentComplete": true,
     "price": 150
+  },
+  {
+    "id": 5,
+    "userId": 8,
+    "showingId": 0,
+    "seats": "12;1",
+    "paymentComplete": true,
+    "price": 10
   }
 ]

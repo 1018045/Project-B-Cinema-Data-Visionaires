@@ -1,6 +1,17 @@
 public class AccountantLogic<T> : IReportable<T>
 {
-    List<BillModel> Bills = new();
+    public static List<BillModel> Bills = new();
+
+    public AccountantLogic()
+    {
+        Bills = AccountantAccess.LoadAll();
+    }
+
+    public void AddBill(BillModel bill)
+    {
+        Bills.Add(bill);
+        AccountantAccess.WriteAll(Bills);
+    }
     public int FindFirstAvailableID()
     {
         int pointer = 0;
@@ -20,7 +31,6 @@ public class AccountantLogic<T> : IReportable<T>
 
     public double CalculateYearlyTurnover(int Year)
     {
-        List<BillModel> BillsInThisYear = new(); 
         double YearTotal = 0; 
 
         foreach(BillModel bill in Bills)
@@ -34,15 +44,21 @@ public class AccountantLogic<T> : IReportable<T>
         return YearTotal;
     }
 
-    // public double CalculateYearlyProfits(int whatToCalculate)
-    // {
+    public double CalculateYearlyProfits(int Year)
+    {
+        return CalculateYearlyTurnover(Year) - CalculateCosts();
+    }
 
-    // }
+    public double CalculateCosts()
+    {
+        
+        EmployeeLogic employeeLogic = new();
+        double totalSalary = employeeLogic.GetTotalMonthlySalary();
 
-    // public double CalculateYearlyCosts(int whatToCalculate)
-    // {
+        return totalSalary; 
 
-    // }
+    
+    }
 
     public List<BillModel> FindBy(T WhatToFind)
     {
