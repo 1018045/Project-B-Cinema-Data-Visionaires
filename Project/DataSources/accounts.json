@@ -3,31 +3,36 @@
     "id": 0,
     "role": "user",
     "emailAddress": "mr47@gmail.com",
-    "password": "Kl@rashond3nbist4"
+    "password": "Kl@rashond3nbist4",
+    "birthDate": "2001-01-12"
   },
   {
     "id": 1,
     "role": "user",
     "emailAddress": "t@b.c",
-    "password": "xyz"
+    "password": "xyz",
+    "birthDate": "2001-01-12"
   },
   {
     "id": 2,
     "role": "user",
     "emailAddress": "xxx@x.com",
-    "password": "xxxxxxxx"
+    "password": "xxxxxxxx",
+    "birthDate": "2001-01-12"
   },
   {
     "id": 3,
     "role": "user",
     "emailAddress": "hoi@doei.nl",
-    "password": "K@mala Harr1s"
+    "password": "K@mala Harr1s",
+    "birthDate": "2001-01-12"
   },
   {
     "id": 4,
     "role": "user",
     "emailAddress": "JoeBiden@gmail.nl",
-    "password": "1@mSleepy"
+    "password": "1@mSleepy",
+    "birthDate": "2001-01-12"
   },
   {
     "id": 5,
@@ -51,18 +56,21 @@
     "id": 8,
     "role": "user",
     "emailAddress": "user@user",
-    "password": "user"
+    "password": "user",
+    "birthDate": "2016-01-12"
   },
   {
     "id": 9,
     "role": "user",
     "emailAddress": "frisoboot@gmail.com",
-    "password": "@Vlaardingen123"
+    "password": "@Vlaardingen123",
+    "birthDate": "2001-01-12"
   },
   {
     "id": 10,
     "role": "user",
     "emailAddress": "marleen@hotmail.com",
-    "password": "AAAA2222@"
+    "password": "AAAA2222@",
+    "birthDate": "2001-01-12"
   }
 ]

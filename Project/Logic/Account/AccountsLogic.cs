@@ -23,10 +23,9 @@ public class AccountsLogic
 
     public static bool CheckForExistingEmail(string email) => Logic.Accounts.Any(account => account.EmailAddress == email);
 
-    public AccountModel UpdateList(string email, string password, string fullname, int age)
+    public AccountModel UpdateList(string email, string password, string fullname, DateTime birthDate)
     {
-
-        AccountModel acc = new UserModel(FindFirstAvailableID(), email, password, fullname, age);
+        AccountModel acc = new UserModel(FindFirstAvailableID(), email, password, fullname, birthDate);
         //Find if there is already an model with the same id
         int index = Accounts.FindIndex(s => s.Id == acc.Id);
 
@@ -44,7 +43,6 @@ public class AccountsLogic
         AccountsAccess.WriteAll(Accounts);
 
         return acc;
-
     }
 
     public AccountModel? GetById(int id)
@@ -166,4 +164,8 @@ public class AccountsLogic
         return true;
     }
 
+    public bool IsOldEnough(int minimumAge) 
+    {
+        return CurrentAccount is UserModel acc && DateTime.Now.Year - acc.BirthDate.Year >= minimumAge;
+    }
 }

@@ -240,16 +240,13 @@ static class Menus
 
         Console.WriteLine("Your fullname: ");
         var fullName = Console.ReadLine();
-        Console.WriteLine("Your age");
-        var userAge = Console.ReadLine();
-        while(AccountsLogic.IsInt(userAge) == false)
-        {
-            Console.WriteLine("Input is not valid. Please enter a number");
-            userAge = Console.ReadLine();
-        }
+        DateTime userBirthDate;
+
+        Console.WriteLine("Your BirthDay");
+        userBirthDate = Reservation.AskAndParsePastDate();
 
         AccountsLogic accountsLogic = new();
-        accountsLogic.UpdateList(userEmail, Password, fullName, Convert.ToInt32(userAge));
+        accountsLogic.UpdateList(userEmail, Password, fullName, userBirthDate.Date);
 
         Console.WriteLine($"\nSuccessfully created your account, welcome {fullName}!");
 
@@ -293,38 +290,22 @@ static class Menus
         MenuHelper.NewMenu(options, actions, "Accountant Menu"); 
     }
 
-   public static void ViewRecordsByMonth(int month)
-   {
+    public static void ViewRecordsByMonth(int month)
+    {
         AccountantLogic accountantLogic = new();
         
         double Records = accountantLogic.GetRecordsByMonth(month);
 
         Console.WriteLine(Records);
-
-   }
+    }
 
    public static void ViewMonthlyExpenses()
    {
         AccountantLogic accountantLogic = new (); 
 
         Console.WriteLine(accountantLogic.CalculateCosts());
-   }
+    }    
    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private static void AddEmployee()
     {
         Console.Clear();
@@ -366,8 +347,6 @@ static class Menus
         Console.WriteLine("Job vacancy has been added.");
         MenuHelper.WaitForKey(AdminMenu);
     }
-
-
 
     private static void RemoveJobVacancy()
     {
