@@ -203,7 +203,7 @@ public static class Movies
         return MenuHelper.NewMenu(options, indices, message: "Movies");
     }
 
-    public static void MoviesBrowser()
+    public static void MoviesBrowser(int startingIndex = 0)
     {
         // Window needs to have a height of at least 17 to show all movie info
         if (Console.WindowHeight < 19)
@@ -225,7 +225,7 @@ public static class Movies
             return;
         }
 
-        int currentIndex = 0;
+        int currentIndex = startingIndex;
         ConsoleKey key;
 
         List<int> showingIndices = new List<int>();
@@ -274,14 +274,24 @@ public static class Movies
             showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id).Count - 1, 0));
         } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
 
-        if (key == ConsoleKey.Backspace) 
+        if (key == ConsoleKey.Enter) 
+        {
+            if (_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id).Count != 0)
+            {
+                Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
+            }
+            else
+            {
+                MoviesBrowser(startingIndex: currentIndex);
+            }
+        }
+        else 
         {
             if (AccountsLogic.CurrentAccount == null)
                 Menus.GuestMenu();
             else
                 Menus.LoggedInMenu();
         }
-        else Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
     }
 
     private static List<string> CreateBlock(MovieModel movie, int blockWidth, int blockIndex = -1)

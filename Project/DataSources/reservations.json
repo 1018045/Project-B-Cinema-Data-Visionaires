@@ -19,5 +19,12 @@
     "showingId": 0,
     "seats": "7;7",
     "paymentComplete": true
+  },
+  {
+    "id": 3,
+    "userId": 1,
+    "showingId": 0,
+    "seats": "9;1,9;2,9;3,9;4",
+    "paymentComplete": true
   }
 ]

@@ -18,7 +18,7 @@ static class Menus
         };
         List<Action> actions = new List<Action>
         {
-            Movies.MoviesBrowser,
+            () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Login(),
             () => CreateAccount(LoggedInMenu),
@@ -40,7 +40,7 @@ static class Menus
         };
         List<Action> actions = new List<Action>
         {
-            Movies.MoviesBrowser,
+            () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
             AccountPresentation.Menu,
