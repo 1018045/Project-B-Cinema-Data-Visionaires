@@ -127,8 +127,6 @@ public static class Reservation
         double basePrice = 10.00; 
         double specialPrice = 0.00; 
 
-       
-        ShowingModel showing = _showingsLogic.FindShowingByIdReturnShowing(showingId);
         if (showing.Special == "Premier")
         {
             specialPrice += 5.00;
@@ -137,17 +135,11 @@ public static class Reservation
         {
             specialPrice += 3.50;
         }
-
-        
+  
         double totalPrice = (basePrice + specialPrice) * selectedSeats.Count;
 
-        int gebruikerId = AccountsLogic.CurrentAccount.Id; 
-        string stoelen = string.Join(",", selectedSeats);  
-        bool betaald = true; 
-        
-        _reservationsLogic.AddReservation(gebruikerId, showingId, stoelen, betaald, totalPrice);
         FakeProcessingPayment(5000);
-        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true);
+        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice);
 
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
@@ -261,7 +253,7 @@ public static class Reservation
             Console.WriteLine("Which date do you want to change your reservation to?");
             Console.WriteLine("We charge a fee of 5 euros for changing a reservation");
             int counter = 1;
-            foreach (ShowingModel showing in upcomingShowings)
+            foreach (ShowingModel showing in upcomingShowings.Where(s => s.Date != _showingsLogic.FindShowingByIdReturnShowing(oldReservation.ShowingId).Date))
             {
                 Console.WriteLine($"{counter++}: {showing.Date.ToString(DATEFORMAT)}");
             }
@@ -279,10 +271,9 @@ public static class Reservation
                 Console.WriteLine(payment);
             }
 
-
             _reservationsLogic.RemoveReservation(oldReservation);
             ShowingModel newShowing = upcomingShowings[AccountsLogic.ParseInt(userChoice) - 1];
-            _reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true);
+            _reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true, oldReservation.Price + 5);
             Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString(DATEFORMAT)}");
         }
 

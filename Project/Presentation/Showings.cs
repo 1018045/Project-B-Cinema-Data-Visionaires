@@ -143,7 +143,6 @@ public static class Showings
             _ => "none"
         };
 
-
         List<string> options = new List<string>
             {
                 "Single showing",
@@ -153,13 +152,12 @@ public static class Showings
         List<int> outputs = new List<int> {1, 2, 3};
 
         int userChoice = MenuHelper.NewMenu(options, outputs, "Do you want to repeat the showing?");
-        bool DoMore = true;
         string pattern = "";
 
         switch (userChoice)
         {
             case 1:
-                BookShowings(date, room, moviesLogic, movieId);
+                BookShowings(date, room, moviesLogic, movieId, special);
                 break;
             case 2:
                 pattern = "daily";

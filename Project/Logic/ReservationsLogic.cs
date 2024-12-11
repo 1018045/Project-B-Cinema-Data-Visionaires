@@ -12,17 +12,12 @@ public class ReservationsLogic
         Reservations = ReservationsAccess.LoadAll();
     }
 
-    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete)
+    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price)
     {
-        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete);
+        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price);
         Reservations.Add(reservation);
         ReservationsAccess.WriteAll(Reservations);
         return reservation;
-    }
-    public void AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price)
-{
-    Reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price));
-        ReservationsAccess.WriteAll(Reservations);
     }
 
     public string ValidateBankDetails(string bankDetails)
@@ -33,7 +28,7 @@ public class ReservationsLogic
         if (bankDetails.Length != 18)
             return "Error: incorrect IBAN length. Please try again!";
         
-        if (bankDetails.Substring(0,2) != "NL")
+        if (bankDetails.Substring(0,2).ToUpper() != "NL")
         {
             return "The first 2 characters of the IBAN should be 'NL' (Country signature). Please try again!";
         }
@@ -41,7 +36,6 @@ public class ReservationsLogic
         {
             return "The first 2 characters after the Country signature should only be numbers. Please try again!";
         }
-
         if (!bankDetails.Substring(4,4).All(char.IsLetter) || !ApprovedBankCodes.Contains(bankDetails.Substring(4,4)))
         {
             return "Please check the bank identifiers in your IBAN. Please try again!";
