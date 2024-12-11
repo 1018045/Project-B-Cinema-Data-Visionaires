@@ -5,7 +5,6 @@ using Project.Helpers;
 
 static class Menus
 {
-    
     static public void GuestMenu()
     {
         List<string> options = new List<string>
