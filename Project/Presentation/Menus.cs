@@ -266,6 +266,7 @@ static class Menus
         {
             // "View all financial records",
             "View records for specific month",
+            "View current expenses"
             // "View total tickets sold",
             // "View employee salaries",
             // "Log out"
@@ -279,6 +280,10 @@ static class Menus
             Console.Write("Enter the month number: ");
             int month = Convert.ToInt32(Console.ReadLine());
             ViewRecordsByMonth(month); // Calling with the month entered by the user
+        },
+        () => 
+        {
+            ViewExpenses();
         }
             // ViewTotalTickets,
             // ViewEmployeeSalaries,   
@@ -296,6 +301,13 @@ static class Menus
 
         Console.WriteLine(Records);
 
+   }
+
+   public static void ViewExpenses()
+   {
+        AccountantLogic accountantLogic = new (); 
+
+        Console.WriteLine(accountantLogic.CalculateCosts());
    }
    
     
@@ -357,27 +369,6 @@ static class Menus
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private static void RemoveJobVacancy()
     {
         Console.Clear();
@@ -424,32 +415,4 @@ static class Menus
         AdminMenu();
     }
 
-    private static void ViewEmployeeSalaries()
-    {
-        Console.Clear();
-        Console.WriteLine("=== Werknemers Salarissen ===\n");
-
-        var employeeLogic = new EmployeeLogic();
-        var employees = employeeLogic.ListOfEmployees;
-
-        if (employees.Count == 0)
-        {
-            Console.WriteLine("Er zijn momenteel geen werknemers in het systeem.");
-        }
-        else
-        {
-            Console.WriteLine("Naam\t\t\tID\t\tSalaris");
-            Console.WriteLine("----------------------------------------");
-            
-            foreach (var employee in employees)
-            {
-                Console.WriteLine($"{employee.EmployeeName,-20}\t{employee.EmployeeID}\t\t€{employee.EmployeeSalary:F2}");
-            }
-
-            Console.WriteLine("\n----------------------------------------");
-            Console.WriteLine($"Totale maandelijkse salariskosten: €{employeeLogic.GetTotalMonthlySalary():F2}");
-        }
-
-        MenuHelper.WaitForKey(AccountantMenu);
-    }
 }
