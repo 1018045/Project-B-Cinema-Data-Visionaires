@@ -144,11 +144,11 @@ public static class Showings
         };
 
         List<string> options = new List<string>
-            {
-                "Single showing",
-                "Repeat daily",
-                "Repeat weekly"
-            };
+        {
+            "Single showing",
+            "Repeat daily",
+            "Repeat weekly"
+        };
         List<int> outputs = new List<int> {1, 2, 3};
 
         int userChoice = MenuHelper.NewMenu(options, outputs, "Do you want to repeat the showing?");

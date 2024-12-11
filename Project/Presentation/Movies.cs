@@ -393,7 +393,6 @@ public static class Movies
         // selectedindex 5 => staringpoint 1
         // selectedindex 6 => startingpoint 2
         // selectedindex 7 => staringpoint 3
-
         for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
         {
             if (i < showings.Count())
