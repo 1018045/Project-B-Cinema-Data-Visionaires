@@ -266,7 +266,7 @@ static class Menus
         {
             // "View all financial records",
             "View records for specific month",
-            "View current expenses"
+            "View current monthly expenses"
             // "View total tickets sold",
             // "View employee salaries",
             // "Log out"
@@ -283,7 +283,7 @@ static class Menus
         },
         () => 
         {
-            ViewExpenses();
+            ViewMonthlyExpenses();
         }
             // ViewTotalTickets,
             // ViewEmployeeSalaries,   
@@ -303,7 +303,7 @@ static class Menus
 
    }
 
-   public static void ViewExpenses()
+   public static void ViewMonthlyExpenses()
    {
         AccountantLogic accountantLogic = new (); 
 
