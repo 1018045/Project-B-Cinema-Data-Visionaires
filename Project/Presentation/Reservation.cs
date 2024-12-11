@@ -19,14 +19,35 @@ public static class Reservation
     public static void Make(ShowingModel showing)
     {
         Console.Clear();
+        MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
         
         while (AccountsLogic.CurrentAccount == null)
         {
             System.Console.WriteLine("Please login to continue making your reservation.");
             System.Console.WriteLine("You are being redirected to the login screen.");
-            Thread.Sleep(2500);
+            Thread.Sleep(2000);
             Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
         }
+
+        if (!_accountsLogic.IsOldEnough(movie.MinimumAge))
+        {
+            System.Console.WriteLine("You are not old enough to watch this movie.");
+            System.Console.WriteLine("You are being redirected to the menu.");
+            Thread.Sleep(2000);
+            MenuHelper.WaitForKey(Menus.LoggedInMenu);
+            return;
+        }
+        else
+        {
+            if (!MenuHelper.NewMenu(new List<string>() {"Yes", "No"}, new List<bool>() {true, false}, subtext: $"Is everyone in your party at the age of {movie.MinimumAge} or above?"))
+            {
+                System.Console.WriteLine("You are being redirected to the menu.");
+                Thread.Sleep(2000);
+                MenuHelper.WaitForKey(Menus.LoggedInMenu);
+                return;
+            }
+        }
+        Console.Clear();
 
         bool confirmSeats = false;
         List<string> selectedSeats;
@@ -294,7 +315,7 @@ public static class Reservation
         dateOptions.Add("Return");
 
         dates.ForEach(d => actions.Add(() => SelectMovieOnDate(d)));
-        actions.Add(() => SelectMovieOnDate(AskAndParseDate()));
+        actions.Add(() => SelectMovieOnDate(AskAndParseFutureDate()));
         actions.Add(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
 
         MenuHelper.NewMenu(dateOptions, actions, "Select a date:");
@@ -337,7 +358,7 @@ public static class Reservation
         return dates;
     }
 
-    private static DateTime AskAndParseDate()
+    private static DateTime AskAndParseFutureDate()
     {  
         string dateInput = "";
         do
@@ -346,7 +367,20 @@ public static class Reservation
             System.Console.WriteLine("Please enter a future date in this format 'dd-MM-yyyy'");
             dateInput = Console.ReadLine();
         }
-        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) && DateTime.Now.Date > date.Date);             
+        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) || DateTime.Now.Date > date.Date);             
+        return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+    }
+
+    public static DateTime AskAndParsePastDate()
+    {  
+        string dateInput;
+        do
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please enter a future date in this format 'dd-MM-yyyy'");
+            dateInput = Console.ReadLine();
+        }
+        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) || DateTime.Now.Date < date.Date);             
         return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
 }
