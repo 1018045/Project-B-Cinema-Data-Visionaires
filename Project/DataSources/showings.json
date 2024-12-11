@@ -3,7 +3,8 @@
     "id": 0,
     "movieId": 5,
     "date": "19-12-2024 18:00:00",
-    "room": 1
+    "room": 1,
+    "special": ""
   },
   {
     "id": 1,
@@ -118,5 +119,14 @@
     "movieId": 7,
     "date": "28-01-2025 18:30:00",
     "room": 1
+    "room": 1,
+    "special": ""
+  },
+  {
+    "id": 2,
+    "movieId": 14,
+    "date": "11-10-2025 02:00:00",
+    "room": 1,
+    "special": "Premier"
   }
 ]

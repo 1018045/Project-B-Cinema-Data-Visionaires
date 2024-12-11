@@ -77,23 +77,31 @@ public static class Reservation
    
             Console.WriteLine("Please enter the number of your drink choice (1-5):");
             string drinkChoice = Console.ReadLine();
-          
+            string name;
             switch (drinkChoice)
             {
                 case "1":
                     Console.WriteLine("You have selected Red Wine.");
+                    name = "Red Wine";
                     break;
                 case "2":
                     Console.WriteLine("You have selected White Wine.");
+                    name = "White Wine";
                     break;
                 case "3":
                     Console.WriteLine("You have selected Vitamin Water.");
+                    name = "Vitamin Water";
                     break;
+
                 case "4":
                     Console.WriteLine("You have selected Sparkling Water.");
+                    name = "Sparkling Water";
                     break;
+
                 case "5":
                     Console.WriteLine("You have selected Orange Juice.");
+                    name = "Orange Juice";
+
                     break;
                 default:
                     Console.WriteLine("Invalid choice, please choose a number between 1 and 5.");
@@ -116,6 +124,28 @@ public static class Reservation
             Console.WriteLine(payment);
         }
     
+        double basePrice = 10.00; 
+        double specialPrice = 0.00; 
+
+       
+        ShowingModel showing = _showingsLogic.FindShowingByIdReturnShowing(showingId);
+        if (showing.Special == "Premier")
+        {
+            specialPrice += 5.00;
+        }
+        else if (showing.Special == "Dolby")
+        {
+            specialPrice += 3.50;
+        }
+
+        
+        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count;
+
+        int gebruikerId = AccountsLogic.CurrentAccount.Id; 
+        string stoelen = string.Join(",", selectedSeats);  
+        bool betaald = true; 
+        
+        _reservationsLogic.AddReservation(gebruikerId, showingId, stoelen, betaald, totalPrice);
         FakeProcessingPayment(5000);
         ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true);
 

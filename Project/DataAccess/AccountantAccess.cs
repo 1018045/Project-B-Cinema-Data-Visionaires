@@ -2,18 +2,23 @@ using System.Text.Json;
 
 static class AccountantAccess
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/AccountantSource.json"));
+    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/reports.json"));
 
-    public static List<AccountantModel> LoadAll()
+
+     public static List<BillModel> LoadAll()
     {
         string json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<List<AccountantModel>>(json);
+        return JsonSerializer.Deserialize<List<BillModel>>(json);
     }
 
-    public static void WriteAll(List<AccountantModel> accountantData)
+
+    public static void WriteAll(List<BillModel> bills)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(accountantData, options);
+        string json = JsonSerializer.Serialize(bills.OrderBy(b => b.ID).ToList(), options);
         File.WriteAllText(path, json);
     }
+   
+
+
 } 

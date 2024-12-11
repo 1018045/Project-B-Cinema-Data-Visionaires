@@ -36,4 +36,14 @@ public class EmployeeLogic
         return pointer;
     }
 
+    public double GetTotalMonthlySalary()
+    {
+        double totalSalary = 0;
+        foreach (EmployeeModel employee in ListOfEmployees)
+        {
+            totalSalary += employee.EmployeeSalary;
+        }
+        return totalSalary;
+    }
+
 }

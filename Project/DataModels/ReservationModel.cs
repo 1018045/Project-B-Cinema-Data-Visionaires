@@ -18,14 +18,18 @@ public class ReservationModel
     [JsonPropertyName("paymentComplete")]
     public bool PaymentComplete { get; set; }
 
+    [JsonPropertyName("price")]
+    public double Price { get; set; }
 
-    public ReservationModel(int id, int userId, int showingId, string seats, bool paymentComplete)
+
+   public ReservationModel(int id, int userId, int showingId, string seats, bool paymentComplete, double price)
     {
         Id = id;
         UserId = userId;
         ShowingId = showingId;
         Seats = seats;
         PaymentComplete = paymentComplete;
+        Price = price;
     }
 
 }

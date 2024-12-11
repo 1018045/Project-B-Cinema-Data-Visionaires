@@ -19,9 +19,9 @@ public class ReservationsLogic
         ReservationsAccess.WriteAll(Reservations);
         return reservation;
     }
-    public void AddReservation(ReservationModel reservation)
-    {
-        Reservations.Add(reservation);
+    public void AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price)
+{
+    Reservations.Add(new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price));
         ReservationsAccess.WriteAll(Reservations);
     }
 
@@ -105,5 +105,15 @@ public class ReservationsLogic
     {
         Reservations.Remove(reservation);
         ReservationsAccess.WriteAll(Reservations);
+    }
+
+    public double GetTotalRevenue()
+    {
+        double totaal = 0;
+        foreach (var reservering in Reservations)
+        {
+            totaal += reservering.Price;
+        }
+        return totaal;
     }
 }
