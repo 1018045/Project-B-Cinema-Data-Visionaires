@@ -7,6 +7,7 @@ public static class Movies
     private static readonly MoviesLogic _moviesLogic = new ();
     private static readonly ShowingsLogic _showingsLogic = new ();
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
+    private const string EXTENDED_DATE_FORMAT = "dddd d MMMM yyyy";
 
     public static void Start()
     {
@@ -205,7 +206,7 @@ public static class Movies
     public static void MoviesBrowser()
     {
         // Window needs to have a height of at least 17 to show all movie info
-        if (Console.WindowHeight < 17)
+        if (Console.WindowHeight < 19)
         {
             Console.Clear();
             System.Console.WriteLine("Your console is not tall enough!\nPlease expand your console window to browse movies.");
@@ -228,8 +229,7 @@ public static class Movies
         ConsoleKey key;
 
         List<int> showingIndices = new List<int>();
-        for (int i = 0; i < movies.Count(); i++) 
-            showingIndices.Add(0);
+        for (int i = 0; i < movies.Count(); i++) showingIndices.Add(0);
 
         do
         {
@@ -244,7 +244,11 @@ public static class Movies
             else if (currentIndex == movies.Count - 1) moviesOnScreen = movies.Slice(currentIndex - 2, 3);
             else moviesOnScreen = movies.Slice(currentIndex - 1, 3);
 
-            int blockWidth = Console.WindowWidth % 3 == 0 ? Console.WindowWidth : Console.WindowWidth - Console.WindowWidth % 3;
+            // width % 3 moet 2 zijn
+            // % 3 = 1 dan - 2 ; % 3 = 0 dan - 1 ; 
+            int blockWidth = Console.WindowWidth % 3 == 2 ? Console.WindowWidth : 
+                                Console.WindowWidth % 3 == 1 ? Console.WindowWidth - 2 :
+                                Console.WindowWidth - 1;
             blockWidth = blockWidth/3;
             List<List<string>> blocks = new();
             
@@ -267,7 +271,7 @@ public static class Movies
             if (key == ConsoleKey.DownArrow) showingIndices[currentIndex]++;
 
             currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1);
-            showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id).Count() - 1, 0));
+            showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id).Count - 1, 0));
         } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
 
         if (key == ConsoleKey.Backspace) 
@@ -285,7 +289,7 @@ public static class Movies
         string openANSI = blockIndex >= 0 ? "\u001b[1m" : "\u001b[90m";
         string resetANSI = "\u001b[0m";
 
-        int verticalSpaceForShowings = Math.Max(Console.WindowHeight - 18, 0);
+        int verticalSpaceForShowings = Math.Max(Console.WindowHeight - 18, 1);
 
         List<string> wrappedTitle = WrapString(movie.Title, blockWidth, 2);
         List<string> wrappedSummary = WrapString(movie.Summary, blockWidth, 4);
@@ -373,8 +377,6 @@ public static class Movies
             return outputList;
         }
 
-        string extendedDateFormat = "dddd d MMMM yyyy";
-
         // size = 8, verticalspace = 5
         // selectedindex 0 => startingpoint 0
         // selectedindex 4 => startingpoint 0
@@ -385,7 +387,7 @@ public static class Movies
         for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
         {
             if (i < showings.Count())
-                outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(extendedDateFormat)}" : showings[i].Date.ToString(extendedDateFormat))}");
+                outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))}");
             else
                 outputList.Add("");
         }
