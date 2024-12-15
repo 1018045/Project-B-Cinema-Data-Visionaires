@@ -268,7 +268,7 @@ static class Menus
             // "View all financial records",
             "View records for specific month",
             // "View total tickets sold",
-            // "View employee salaries",
+            "View employee salaries",
             // "Log out"
         };
 
@@ -280,9 +280,9 @@ static class Menus
             Console.Write("Enter the month number: ");
             int month = Convert.ToInt32(Console.ReadLine());
             ViewRecordsByMonth(month); // Calling with the month entered by the user
-        }
+        },
             // ViewTotalTickets,
-            // ViewEmployeeSalaries,   
+            ViewEmployeeSalaries,   
             // GuestMenu
         };
 
@@ -312,10 +312,37 @@ static class Menus
     private static void AddEmployee()
     {
         Console.Clear();
-       System.Console.WriteLine("NOT IMPLEMENTED YET");
+        Console.WriteLine("=== Add New Employee ===\n");
+        
+        Console.WriteLine("Enter employee name:");
+        string employeeName = Console.ReadLine();
+
+        Console.WriteLine("Enter monthly salary:");
+        int salary = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("\nPlease confirm the following details:");
+        Console.WriteLine($"Name: {employeeName}");
+        Console.WriteLine($"Monthly Salary: €{salary:F2}");
+        Console.WriteLine("\nAre you sure you want to add this employee? (Y/N)");
+        
+        string confirmation = Console.ReadLine().ToUpper();
+        if (confirmation == "Y")
+        {
+            EmployeeLogic employeeLogic = new();
+            int newId = employeeLogic.FindFirstAvailableID();
+            EmployeeModel newEmployee = new(employeeName, newId, salary);
+            employeeLogic.AddEmployee(newEmployee);
+
+            Console.WriteLine("\nEmployee successfully added!");
+            Thread.Sleep(2000);
+        }
+        else
+        {
+            Console.WriteLine("\nEmployee addition cancelled.");
+            Thread.Sleep(2000);
+        }
 
         MenuHelper.WaitForKey(AdminMenu);
-
     }
 
     private static void AddJobVacancy()
