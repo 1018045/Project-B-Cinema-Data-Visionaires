@@ -1,6 +1,3 @@
-using System.ComponentModel.Design;
-using System.Runtime.InteropServices;
-
 static class MenuHelper
 {
     public static T NewMenu<T>(List<string> options, List<T> actions, string message = null, string subtext = null)

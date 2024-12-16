@@ -6,7 +6,8 @@
     "minimumAge": 16,
     "summary": "The second installment of the epic saga, where the divided fellowship battles to protect Middle-earth from Saruman's armies.",
     "actors": ["Elijah Wood", "Viggo Mortensen", "Ian McKellen"],
-    "director": "Peter Jackson"
+    "director": "Peter Jackson",
+    "isPromoted": false
   },
   {
     "id": 9,
@@ -15,7 +16,8 @@
     "minimumAge": 17,
     "summary": "The thrilling conclusion of the trilogy, where the final battle against Sauron unfolds as Frodo nears Mount Doom.",
     "actors": ["Elijah Wood", "Viggo Mortensen", "Ian McKellen"],
-    "director": "Peter Jackson"
+    "director": "Peter Jackson",
+    "isPromoted": false
   },
   {
     "id": 10,
@@ -24,7 +26,8 @@
     "minimumAge": 13,
     "summary": "The beginning of the iconic space saga, where Luke Skywalker joins the Rebel Alliance to fight the Galactic Empire.",
     "actors": ["Mark Hamill", "Harrison Ford", "Carrie Fisher"],
-    "director": "George Lucas"
+    "director": "George Lucas",
+    "isPromoted": false
   },
   {
     "id": 11,
@@ -33,7 +36,8 @@
     "minimumAge": 14,
     "summary": "The Rebels face setbacks as Darth Vader hunts them, and Luke begins his Jedi training under Yoda.",
     "actors": ["Mark Hamill", "Harrison Ford", "Carrie Fisher"],
-    "director": "Irvin Kershner"
+    "director": "Irvin Kershner",
+    "isPromoted": false
   },
   {
     "id": 12,
@@ -42,6 +46,7 @@
     "minimumAge": 15,
     "summary": "The Rebel Alliance mounts a final attack on the Empire while Luke confronts Darth Vader to save his father.",
     "actors": ["Mark Hamill", "Harrison Ford", "Carrie Fisher"],
-    "director": "Richard Marquand"
+    "director": "Richard Marquand",
+    "isPromoted": false
   }
 ]

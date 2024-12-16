@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 
-
 public class MovieModel
 {
     [JsonPropertyName("id")]
@@ -24,6 +23,9 @@ public class MovieModel
     [JsonPropertyName("director")]
     public string Director { get; set; }
 
+    [JsonPropertyName("isPromoted")]
+    public bool IsPromoted {get; set;}
+
 
     public MovieModel(int id, string title, int duration, int minimumAge, string summary, List<string> actors, string director)
     {
@@ -34,6 +36,7 @@ public class MovieModel
         Summary = summary;
         Actors = actors;
         Director = director;
+        IsPromoted = false;
     }
 
 }
