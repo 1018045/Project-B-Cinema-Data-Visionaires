@@ -262,8 +262,8 @@ static class Menus
         List<string> options = new List<string>
         {
             // "View all financial records",
-            "View records for specific month",
-            "View current monthly expenses"
+            "View income for specific month",
+            "View current monthly expenses",
             // "View total tickets sold",
             "View employee salaries",
             // "Log out"
@@ -276,12 +276,12 @@ static class Menus
         {
             Console.Write("Enter the month number: ");
             int month = Convert.ToInt32(Console.ReadLine());
-            ViewRecordsByMonth(month); // Calling with the month entered by the user
+            ViewIncomeByMonth(month); // Calling with the month entered by the user
         },
         () => 
         {
             ViewMonthlyExpenses();
-        }
+        },
             // ViewTotalTickets,
             ViewEmployeeSalaries,   
             // GuestMenu
@@ -290,11 +290,11 @@ static class Menus
         MenuHelper.NewMenu(options, actions, "Accountant Menu"); 
     }
 
-    public static void ViewRecordsByMonth(int month)
+    public static void ViewIncomeByMonth(int month)
     {
         AccountantLogic accountantLogic = new();
         
-        double Records = accountantLogic.GetRecordsByMonth(month);
+        double Records = accountantLogic.GetIncomeByMonth(month);
 
         Console.WriteLine(Records);
     }
@@ -341,6 +341,7 @@ static class Menus
 
         MenuHelper.WaitForKey(AdminMenu);
     }
+   
 
     private static void AddJobVacancy()
     {
@@ -421,4 +422,69 @@ static class Menus
         AdminMenu();
     }
 
+
+    private static void AddEmployee()
+    {
+        Console.Clear();
+        Console.WriteLine("=== Add New Employee ===\n");
+        
+        Console.WriteLine("Enter employee name:");
+        string employeeName = Console.ReadLine();
+ 
+        Console.WriteLine("Enter monthly salary:");
+        int salary = int.Parse(Console.ReadLine());
+ 
+        Console.WriteLine("\nPlease confirm the following details:");
+        Console.WriteLine($"Name: {employeeName}");
+        Console.WriteLine($"Monthly Salary: €{salary:F2}");
+        Console.WriteLine("\nAre you sure you want to add this employee? (Y/N)");
+        
+        string confirmation = Console.ReadLine().ToUpper();
+        if (confirmation == "Y")
+        {
+            EmployeeLogic employeeLogic = new();
+            int newId = employeeLogic.FindFirstAvailableID();
+            EmployeeModel newEmployee = new(employeeName, newId, salary);
+            employeeLogic.AddEmployee(newEmployee);
+ 
+            Console.WriteLine("\nEmployee successfully added!");
+            Thread.Sleep(2000);
+        }
+        else
+        {
+            Console.WriteLine("\nEmployee addition cancelled.");
+            Thread.Sleep(2000);
+        }
+ 
+        MenuHelper.WaitForKey(AdminMenu);
+    }
+
+    private static void ViewEmployeeSalaries()
+    {
+        Console.Clear();
+        Console.WriteLine("=== Werknemers Salarissen ===\n");
+ 
+        var employeeLogic = new EmployeeLogic();
+        var employees = employeeLogic.ListOfEmployees;
+ 
+        if (employees.Count == 0)
+        {
+            Console.WriteLine("Er zijn momenteel geen werknemers in het systeem.");
+        }
+        else
+        {
+            Console.WriteLine("Naam\t\t\tID\t\tSalaris");
+            Console.WriteLine("----------------------------------------");
+            
+            foreach (var employee in employees)
+            {
+                Console.WriteLine($"{employee.EmployeeName,-20}\t{employee.EmployeeID}\t\t€{employee.EmployeeSalary:F2}");
+            }
+ 
+            Console.WriteLine("\n----------------------------------------");
+            Console.WriteLine($"Totale maandelijkse salariskosten: €{employeeLogic.GetTotalMonthlySalary():F2}");
+        }
+ 
+        MenuHelper.WaitForKey(AccountantMenu);
+    }
 }
