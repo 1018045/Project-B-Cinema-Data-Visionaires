@@ -9,7 +9,7 @@ public class BillModel
    public bool PaymentCompleted{get;set;}
 
    [JsonPropertyName("foodOrdered")]
-   public List<Item> FoodOrdered { get; set; } 
+   public List<Item> Items{ get; set; } 
 
    [JsonPropertyName("totalAmount")]
    public double TotalAmount{get; set;}
@@ -17,11 +17,11 @@ public class BillModel
    [JsonPropertyName("paymentDate")]
    public DateTime Paymentdate{get; set;}
 
-   public BillModel(int id, bool paymentCompleted, List<Item> foodOrdered, double totalAmount, DateTime paymentdate)
+   public BillModel(int id, bool paymentCompleted, List<Item> items, double totalAmount, DateTime paymentdate)
    {
         ID = id; 
         PaymentCompleted = paymentCompleted; 
-        FoodOrdered = foodOrdered; 
+         Items = items; 
         Paymentdate = paymentdate;
         TotalAmount = totalAmount;
         

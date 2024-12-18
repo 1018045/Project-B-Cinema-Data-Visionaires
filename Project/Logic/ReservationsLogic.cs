@@ -12,9 +12,9 @@ public class ReservationsLogic
         Reservations = ReservationsAccess.LoadAll();
     }
 
-    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price)
+    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete, int billID)
     {
-        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price);
+        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, billID);
         Reservations.Add(reservation);
         ReservationsAccess.WriteAll(Reservations);
         return reservation;
@@ -101,13 +101,5 @@ public class ReservationsLogic
         ReservationsAccess.WriteAll(Reservations);
     }
 
-    public double GetTotalRevenue()
-    {
-        double totaal = 0;
-        foreach (var reservering in Reservations)
-        {
-            totaal += reservering.Price;
-        }
-        return totaal;
-    }
+    
 }
