@@ -14,7 +14,7 @@ public static class Movies
         MenuHelper.NewMenu(
             new List<string> {"Manage movies", "Manage archived movies", "Return"},
             new List<Action> {ManageMovies, ManageArchivedMovies, Menus.AdminMenu}
-        ).Invoke();
+        );
     }
 
     private static void ManageMovies()
@@ -200,7 +200,7 @@ public static class Movies
         options.Add("Return");
         indices.Add(-1);
 
-        return MenuHelper.NewMenu(options, indices, message: "Movies");
+        return MenuHelper.NewMenu(options, indices, header: "Movies");
     }
 
     public static void MoviesBrowser(int startingIndex = 0)
@@ -404,4 +404,45 @@ public static class Movies
     }
 
     private static int GetLengthWithoutANSI(string text) => Regex.Replace(text, @"\u001b\[[0-9;]*m", "").Length;
+
+    public static void PromoteMovies(int slot)
+    {
+        List<string> options = _moviesLogic.Movies.Select(m => m.Title).ToList();
+        options.Add("Empty slot");
+        options.Add("Back");
+
+        List<object> actions = new List<object> {};
+        _moviesLogic.Movies.ForEach(actions.Add);
+        actions.Add(() => _moviesLogic.RemovePromotion(slot));
+        actions.Add(SelectPromotionSlot);
+
+        System.Console.WriteLine($"options: {options.Count}, actions: {actions.Count}");
+
+        var movieToPromote = MenuHelper.NewMenu(options, actions, $"Which movie do you want to promote in slot {slot}");
+
+        Console.Clear();
+        if (movieToPromote is MovieModel movie) 
+        {
+            _moviesLogic.PromoteMovie(movie, slot);
+            System.Console.WriteLine($"Succesfully changed the movie in promotionslot {slot + 1} to {movie.Title}");
+        }
+        if (movieToPromote is null) 
+        {
+            _moviesLogic.PromoteMovie(null, slot);
+            System.Console.WriteLine($"Succesfully emptied promotionslot {slot + 1}");
+        }
+
+        Thread.Sleep(1000);
+        MenuHelper.WaitForKey(Menus.AdminMenu);
+    }
+
+    public static void SelectPromotionSlot()
+    {
+        MenuHelper.NewMenu(new List<string> {   $"1: currently promoted: {(_moviesLogic.PromotedMovies[0] != null ? _moviesLogic.PromotedMovies[0].Title : "Empty")}",
+                                                $"2: currently promoted: {(_moviesLogic.PromotedMovies[1] != null ? _moviesLogic.PromotedMovies[1].Title : "Empty")}",
+                                                $"3: currently promoted: {(_moviesLogic.PromotedMovies[2] != null ? _moviesLogic.PromotedMovies[2].Title : "Empty")}",
+                                                "return"}, 
+            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), () => PromoteMovies(2), Menus.AdminMenu},
+            "Which slot do you want to put this movie in?");
+    }
 }

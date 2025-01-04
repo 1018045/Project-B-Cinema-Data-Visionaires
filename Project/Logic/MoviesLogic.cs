@@ -10,7 +10,11 @@ public class MoviesLogic
         ArchivedMovies = ArchivedMoviesAccess.LoadAll();
         
         List<MovieModel> temp = Movies.Where(m => m.IsPromoted == true).ToList();
-        if (temp.Count > 3) temp.ForEach(t => PromotedMovies.Append(t));
+        int count = 0;
+        foreach (MovieModel movie in temp.Slice(0, temp.Count < 3 ? temp.Count : 3))
+        {
+            PromotedMovies[count++] = movie;
+        }
     }
 
     public void AddMovie(string title, int duration, int minimumAge, string summary, List<string> actors, string director)
@@ -104,21 +108,24 @@ public class MoviesLogic
         return showings.Count() > 0;
     }
 
-    public bool PromoteMovie(MovieModel movie, int position)
+    public void PromoteMovie(MovieModel movie, int position)
     {
-        if (position < 0 && position < 3) return false;
+        if (movie == null)
+        {
+            PromotedMovies[position] = null;
+            return;
+        }
         if (PromotedMovies[position] != null) PromotedMovies[position].IsPromoted = false;
-        movie.IsPromoted = true;
         PromotedMovies[position] = movie;
-        return true;
-
+        movie.IsPromoted = true;
+        MoviesAccess.WriteAll(Movies);
     }
 
-    public bool RemovePromotion(int position)
+    public void RemovePromotion(int position)
     {
-        if (position < 0 && position < 3) return false;
+        if (position < 0 && position > 2) return;
         PromotedMovies[position].IsPromoted = false;
         PromotedMovies[position] = null;
-        return true;
+        MoviesAccess.WriteAll(Movies);
     } 
 }
