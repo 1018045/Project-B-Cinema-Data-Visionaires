@@ -60,6 +60,7 @@ static class Menus
             "Select a date",
             "Your reservations",
             "Manage your account",
+            "View Total Spending", 
             "Log out"
         };
         List<Action> actions = new List<Action>
@@ -68,6 +69,7 @@ static class Menus
             Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
             AccountPresentation.Menu,
+            ShowTotalSpending,
             () => 
             {
                 AccountsLogic.LogOut();
@@ -75,6 +77,20 @@ static class Menus
             }
         };
         MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
+    }
+
+    private static void ShowTotalSpending()
+    {
+        Console.Clear();
+        if (AccountsLogic.CurrentAccount != null)
+        {
+            Console.WriteLine($"Uw totale uitgaven: €{AccountsLogic.CurrentAccount.TotalSpent:F2}");
+        }
+        else
+        {
+            Console.WriteLine("Er is geen account ingelogd.");
+        }
+        MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
 
     public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
