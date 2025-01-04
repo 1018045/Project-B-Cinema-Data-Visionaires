@@ -418,7 +418,7 @@ public static class Movies
 
         System.Console.WriteLine($"options: {options.Count}, actions: {actions.Count}");
 
-        var movieToPromote = MenuHelper.NewMenu(options, actions, $"Which movie do you want to promote in slot {slot}");
+        var movieToPromote = MenuHelper.NewMenu(options, actions, $"Which movie do you want to promote in slot {slot + 1}");
 
         Console.Clear();
         if (movieToPromote is MovieModel movie) 
@@ -443,6 +443,6 @@ public static class Movies
                                                 $"3: currently promoted: {(_moviesLogic.PromotedMovies[2] != null ? _moviesLogic.PromotedMovies[2].Title : "Empty")}",
                                                 "return"}, 
             new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), () => PromoteMovies(2), Menus.AdminMenu},
-            "Which slot do you want to put this movie in?");
+            "Which slot do you want to change?");
     }
 }

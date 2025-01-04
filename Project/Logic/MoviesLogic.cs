@@ -2,18 +2,17 @@ public class MoviesLogic
 {
     public List<MovieModel> Movies {get; private set;}
     public List<MovieModel> ArchivedMovies {get; private set;}
-    public MovieModel[] PromotedMovies {get; private set;} = new MovieModel[3];
+    public List<MovieModel> PromotedMovies {get; private set;}
 
     public MoviesLogic()
     {
         Movies = MoviesAccess.LoadAll();
         ArchivedMovies = ArchivedMoviesAccess.LoadAll();
         
-        List<MovieModel> temp = Movies.Where(m => m.IsPromoted == true).ToList();
-        int count = 0;
-        foreach (MovieModel movie in temp.Slice(0, temp.Count < 3 ? temp.Count : 3))
+        PromotedMovies = Movies.Where(m => m.IsPromoted == true).ToList();
+        if (PromotedMovies.Count > 3)
         {
-            PromotedMovies[count++] = movie;
+            PromotedMovies = new List<MovieModel> {PromotedMovies[0], PromotedMovies[1], PromotedMovies[2]};
         }
     }
 

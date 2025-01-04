@@ -1,6 +1,6 @@
 static class MenuHelper
 {
-    public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, MovieModel[] promotedMovies = null)
+    public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, List<MovieModel> promotedMovies = null)
     {
         if (options.Count != actions.Count)
         {
