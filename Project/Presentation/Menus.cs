@@ -14,6 +14,7 @@ static class Menus
             "Login",
             "Create account",
             "Jobs",
+            "about/Contact",
             "Exit"
         };
         List<Action> actions = new List<Action>
@@ -23,11 +24,33 @@ static class Menus
             () => Login(),
             () => CreateAccount(LoggedInMenu),
             ApplyForJob.ShowJobMenu,
+            AboutContact,
             () => Environment.Exit(0)
         };
         MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane");
     }
     
+    static public void AboutContact()
+    {
+        Console.Clear();
+        Console.WriteLine("=== About Cine&Dine Zidane ===\n");
+        Console.WriteLine("Welcome to Cine&Dine Zidane - where film and culinary delight come together!");
+        Console.WriteLine("We offer a unique cinema experience where you can enjoy the latest movies");
+        Console.WriteLine("while being pampered with delicious dishes and drinks.\n");
+        
+        Console.WriteLine("=== Contact Information ===");
+        Console.WriteLine("Address: Coolsingel 123");
+        Console.WriteLine("        3012 AA Rotterdam");
+        Console.WriteLine("Phone: 010-1234567");
+        Console.WriteLine("Email: info@cineanddine.nl\n");
+        
+        Console.WriteLine("=== Opening Hours ===");
+        Console.WriteLine("Monday through Sunday: 12:00 - 00:00\n");
+        
+        Console.WriteLine("Press any key to return to main menu...");
+        Console.ReadKey();
+        GuestMenu();
+    }
     static public void LoggedInMenu()
     {
         List<string> options = new List<string>
@@ -130,6 +153,7 @@ static class Menus
     public static void AdminMenu()
     {
         AccountantLogic accountantLogic = new();
+
 
         List<string> options = new List<string>
         {
