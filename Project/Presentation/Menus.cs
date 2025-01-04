@@ -311,8 +311,6 @@ static class Menus
         Console.WriteLine(accountantLogic.CalculateCosts());
     }    
    
-
-
     private static void AddJobVacancy()
     {
         Console.Clear();

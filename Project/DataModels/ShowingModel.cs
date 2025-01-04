@@ -18,13 +18,17 @@ public class ShowingModel
     [JsonPropertyName("special")]
     public string Special { get; set; }
 
+    [JsonPropertyName("cinema_id")]
+    public int CinemaId { get; set; }
 
-    public ShowingModel(int id, int movieId, DateTime date, int room, string special = "")
+
+    public ShowingModel(int id, int movieId, DateTime date, int room, int cinemaId, string special = "")
     {
         Id = id;
         MovieId = movieId;
         Date = date;
         Room = room;
         Special = special;
+        CinemaId = cinemaId;
     }
 }
