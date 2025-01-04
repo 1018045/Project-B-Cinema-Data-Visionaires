@@ -1,12 +1,13 @@
 using System.Security;
 using Project.Logic.Account;
 using Project.Presentation;
-using Project.Helpers;
 
 static class Menus
 {
     static public void GuestMenu()
     {
+        MoviesLogic _moviesLogic = new();
+
         List<string> options = new List<string>
         {
             "Browse movies",
@@ -25,11 +26,13 @@ static class Menus
             ApplyForJob.ShowJobMenu,
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane");
+        MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane", promotedMovies: _moviesLogic.PromotedMovies);
     }
     
     static public void LoggedInMenu()
     {
+        MoviesLogic _moviesLogic = new();
+
         List<string> options = new List<string>
         {
             "Browse movies",
@@ -50,7 +53,7 @@ static class Menus
                 GuestMenu();
             }
         };
-        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
+        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", promotedMovies: _moviesLogic.PromotedMovies);
     }
 
     public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
@@ -135,6 +138,7 @@ static class Menus
         {
             "Manage movies",
             "Manage showings",
+            "Movie promotions",
             "View all users",
             "Remove a user",
             "Add an Employee",
@@ -148,6 +152,7 @@ static class Menus
         {
             Movies.Start,
             Showings.ManageShowings,
+            Movies.SelectPromotionSlot,
             ViewUsers,
             RemoveUser,
             AddEmployee,
@@ -386,7 +391,6 @@ static class Menus
         Console.ReadKey();
         AdminMenu();
     }
-
 
     private static void AddEmployee()
     {

@@ -152,7 +152,7 @@ public static class Reservation
         {
             specialPrice += 5.00;
         }
-        else if (showing.Special == "Dolby")
+        if (showing.Special == "Dolby")
         {
             specialPrice += 3.50;
         }
@@ -183,9 +183,9 @@ public static class Reservation
         }
         List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(DATEFORMAT)).ToList();
         options.Add("Return");
-        showings.Add(Menus.LoggedInMenu);
+        showings.Add(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
 
-        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress:");
+        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress");
         ShowingModel selectedShowing = (ShowingModel)show;
         Make(selectedShowing);
     }
