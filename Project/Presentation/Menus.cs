@@ -159,7 +159,7 @@ static class Menus
         {
             "Manage movies",
             "Manage showings",
-            "Movie promotions",
+            "Manage movie promotions",
             "View all users",
             "Remove a user",
             "Add an Employee",
@@ -167,6 +167,7 @@ static class Menus
             "Remove job vacancy",
             "View all vacancies",
             "Show accountant options",
+            "Manage cinema locations",
             "Logout"
         };
         List<Action> actions = new List<Action>
@@ -181,6 +182,7 @@ static class Menus
             RemoveJobVacancy,
             ViewAllVacancies,
             AccountantMenu,
+            CinemaLocations.ChooseCinemaLocationToManage,
             GuestMenu
         };
         MenuHelper.NewMenu(options, actions, "Admin menu");
