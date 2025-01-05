@@ -75,6 +75,7 @@ public static class Reservation
 
         string? selectedFood = null;
         string? selectedDrink = null;
+        
 
         if (MenuHelper.NewMenu(new List<string> { "Yes", "No" }, new List<bool> { true, false }, subtext: "Would you like to order extra's?"))
         {
@@ -131,15 +132,16 @@ public static class Reservation
             }
         }
 
-        int numberOfTickets = selectedSeats.Count; // Aantal geselecteerde tickets
+        int numberOfTickets = selectedSeats.Count; 
 
-        // Toon de rekening
-        ShowBill(selectedFood, selectedDrink, numberOfTickets);
+        
+        
         
         string payment = "X";
         while (payment != "")
         {
             Console.Clear();
+            ShowBill(selectedFood, selectedDrink, numberOfTickets);
             Console.WriteLine("Please enter your bank details:");
             payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine()!);
             Console.WriteLine(payment);
@@ -157,7 +159,8 @@ public static class Reservation
             specialPrice += 3.50;
         }
   
-        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count;
+        double extrasPrice = ShowBill(selectedFood, selectedDrink, selectedSeats.Count);
+        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count + extrasPrice;
 
         FakeProcessingPayment(5000);
         ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice);
@@ -170,55 +173,59 @@ public static class Reservation
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
 
-    private static void ShowBill(string? foodChoice, string? drinkChoice, int numberOfTickets)
+    private static double ShowBill(string? foodChoice, string? drinkChoice, int numberOfTickets)
     {
         Console.Clear();
-        double totalPrice = BASE_TICKET_PRICE * numberOfTickets; // Basis ticketprijs
 
-        Console.WriteLine("========== UW BESTELLING ==========");
-        Console.WriteLine($"Tickets: {numberOfTickets} x €{BASE_TICKET_PRICE:F2} = €{totalPrice:F2}");
+        double ticketPrice = 10.00;
+        double totalPrice = ticketPrice * numberOfTickets;
 
-        if (foodChoice != null)
+        Console.WriteLine("Your order:");
+        Console.WriteLine($"Tickets: {numberOfTickets} x €{ticketPrice:F2} = €{totalPrice:F2}");
+
+        if (foodChoice == "Gourmet Truffle Cheeseburger")
         {
-            double foodPrice = foodChoice switch
-            {
-                "Gourmet Truffle Cheeseburger" => BURGER_PRICE,
-                "Italian Style Pizza" => PIZZA_PRICE,
-                "Cheeseboard" => CHEESE_PRICE,
-                _ => 0
-            };
-            Console.WriteLine($"Eten: {foodChoice} - €{foodPrice:F2}");
-            totalPrice += foodPrice;
+            Console.WriteLine($"Food: {foodChoice} = €15.00");
+            totalPrice += 15.00;
+        }
+        else if (foodChoice == "Italian Style Pizza")
+        {
+            Console.WriteLine($"Food: {foodChoice} = €12.00");
+            totalPrice += 12.00;
+        }
+        else if (foodChoice == "Cheeseboard")
+        {
+            Console.WriteLine($"Food: {foodChoice} = €10.00");
+            totalPrice += 10.00;
         }
 
-        if (drinkChoice != null)
+        if (drinkChoice == "Red Wine" || drinkChoice == "White Wine")
         {
-            double drinkPrice = drinkChoice switch
-            {
-                "Red Wine" => WINE_PRICE,
-                "White Wine" => WINE_PRICE,
-                "Vitamin Water" => VITAMIN_WATER_PRICE,
-                "Sparkling Water" => WATER_PRICE,
-                "Orange Juice" => JUICE_PRICE,
-                _ => 0
-            };
-            Console.WriteLine($"Drinken: {drinkChoice} - €{drinkPrice:F2}");
-            totalPrice += drinkPrice;
+            Console.WriteLine($"Drink: {drinkChoice} = €5.00");
+            totalPrice += 5.00;
+        }
+        else if (drinkChoice == "Vitamin Water")
+        {
+            Console.WriteLine($"Drink: {drinkChoice} = €3.00");
+            totalPrice += 3.00;
+        }
+        else if (drinkChoice == "Sparkling Water" || drinkChoice == "Orange Juice")
+        {
+            Console.WriteLine($"Drink: {drinkChoice} = €2.50");
+            totalPrice += 2.50;
         }
 
-        Console.WriteLine($"Totaal te betalen: €{totalPrice:F2}");
-        Console.WriteLine("=================================");
-      
+        Console.WriteLine($"Total spent: €{totalPrice:F2}");
+
         if (AccountsLogic.CurrentAccount != null)
         {
             AccountsLogic.CurrentAccount.TotalSpent += totalPrice;
-            
         }
-      
 
-        Console.WriteLine("\nDruk op een toets om door te gaan met betalen...");
+        Console.WriteLine("\nPress any key to continue...");
         Console.ReadKey();
 
+        return totalPrice - (ticketPrice * numberOfTickets);
     }
 
     public static void ChooseShowing(MovieModel movie)

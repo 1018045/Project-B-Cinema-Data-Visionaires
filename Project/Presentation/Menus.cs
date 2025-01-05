@@ -60,7 +60,8 @@ static class Menus
             "Select a date",
             "Your reservations",
             "Manage your account",
-            "View Total Spending", 
+            "about/contact",
+           
             "Log out"
         };
         List<Action> actions = new List<Action>
@@ -69,7 +70,8 @@ static class Menus
             Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
             AccountPresentation.Menu,
-            ShowTotalSpending,
+            AboutContact,
+         
             () => 
             {
                 AccountsLogic.LogOut();
@@ -79,19 +81,7 @@ static class Menus
         MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
     }
 
-    private static void ShowTotalSpending()
-    {
-        Console.Clear();
-        if (AccountsLogic.CurrentAccount != null)
-        {
-            Console.WriteLine($"Uw totale uitgaven: €{AccountsLogic.CurrentAccount.TotalSpent:F2}");
-        }
-        else
-        {
-            Console.WriteLine("Er is geen account ingelogd.");
-        }
-        MenuHelper.WaitForKey(Menus.LoggedInMenu);
-    }
+
 
     public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
     {
@@ -467,29 +457,28 @@ static class Menus
     private static void ViewEmployeeSalaries()
     {
         Console.Clear();
-        Console.WriteLine("=== Werknemers Salarissen ===\n");
- 
+        Console.WriteLine("Employee Salaries\n");
+
         var employeeLogic = new EmployeeLogic();
         var employees = employeeLogic.ListOfEmployees;
- 
-        if (employees.Count == 0)
+
+        if (employees == null || employees.Count == 0) 
         {
-            Console.WriteLine("Er zijn momenteel geen werknemers in het systeem.");
+            Console.WriteLine("check if there are no empoyee.");
         }
         else
         {
-            Console.WriteLine("Naam\t\t\tID\t\tSalaris");
-            Console.WriteLine("----------------------------------------");
-            
+            Console.WriteLine("Name\t\t\tID\t\tSalary");
+
             foreach (var employee in employees)
             {
                 Console.WriteLine($"{employee.EmployeeName,-20}\t{employee.EmployeeID}\t\t€{employee.EmployeeSalary:F2}");
             }
- 
+
             Console.WriteLine("\n----------------------------------------");
-            Console.WriteLine($"Totale maandelijkse salariskosten: €{employeeLogic.GetTotalMonthlySalary():F2}");
+            Console.WriteLine($"Total Monthly Cost: €{employeeLogic.GetTotalMonthlySalary():F2}");
         }
- 
-        MenuHelper.WaitForKey(AccountantMenu);
+
+        MenuHelper.WaitForKey(AccountantMenu); 
     }
 }
