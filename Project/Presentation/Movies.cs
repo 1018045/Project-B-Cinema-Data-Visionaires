@@ -6,6 +6,7 @@ public static class Movies
 {
     private static readonly MoviesLogic _moviesLogic = new ();
     private static readonly ShowingsLogic _showingsLogic = new ();
+    private static readonly CinemaLogic _cinemaLogic = new();
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
     private const string EXTENDED_DATE_FORMAT = "dddd d MMMM yyyy";
 
@@ -271,12 +272,12 @@ public static class Movies
             if (key == ConsoleKey.DownArrow) showingIndices[currentIndex]++;
 
             currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1);
-            showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id).Count - 1, 0));
+            showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count - 1, 0));
         } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
 
         if (key == ConsoleKey.Enter) 
         {
-            if (_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id).Count != 0)
+            if (_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count != 0)
             {
                 Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
             }
@@ -316,7 +317,7 @@ public static class Movies
         outputList.Add($"Duration: {movie.Duration} minutes; {movie.MinimumAge}+");
         outputList.Add($"");
 
-        List<string> showings = VerticalScroller(_showingsLogic.FindShowingsByMovieId(movie.Id), verticalSpaceForShowings, blockIndex);
+        List<string> showings = VerticalScroller(_showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id), verticalSpaceForShowings, blockIndex);
         foreach (string showing in showings) outputList.Add(showing);
 
         for (int i = 0; i < outputList.Count(); i++)

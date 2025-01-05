@@ -1,6 +1,6 @@
 public class CinemaLogic
 {
-    private List<CinemaModel> Cinemas;
+    public List<CinemaModel> Cinemas {get; private set;}
     public static CinemaModel? CurrentCinema {get; private set;}
 
     public CinemaLogic()
@@ -8,9 +8,9 @@ public class CinemaLogic
         Cinemas = CinemaAccess.LoadAll();
     }
 
-    public void ChangeCinema(int newCinemaId)
+    public void ChangeCinema(CinemaModel newCinema)
     {
-        CurrentCinema = Cinemas.Where(c => c.Id == newCinemaId).First();
+        CurrentCinema = newCinema;
     }
 
     public void AddCinema(string name, string city, string address, string postalCode)

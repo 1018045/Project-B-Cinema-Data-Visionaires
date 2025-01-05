@@ -1,6 +1,6 @@
 static class MenuHelper
 {
-    public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, List<MovieModel> promotedMovies = null)
+    public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, List<MovieModel> promotedMovies = null, bool showCurrentLocation = false)
     {
         if (options.Count != actions.Count)
         {
@@ -35,7 +35,23 @@ static class MenuHelper
         do
         {
             Console.Clear();
-            if (header != null) System.Console.WriteLine($"\u001b[1m===={header}====\u001b[0m");
+            string headerText = "";
+            if (header != null) headerText += $"\u001b[1m===={header}====\u001b[0m";
+            if (showCurrentLocation)
+            {
+                string locationText = "";
+                if (CinemaLogic.CurrentCinema != null)
+                    locationText = $"Selected cinema: {CinemaLogic.CurrentCinema.Name}";
+                else
+                    locationText = $"No cinema selected";
+                int locationLength = locationText.Length;
+                int padding = Console.WindowWidth - locationLength;
+                // 18 characters of ANSI code in headertext
+                if (headerText.Length > 0) padding -= headerText.Length - 8;
+                headerText += new string(' ', padding) + locationText;
+            }
+            if (headerText.Length > 0) System.Console.WriteLine(headerText);
+            
             if (subtext != null) System.Console.WriteLine(subtext);
             if (promotedMovies != null) System.Console.WriteLine("Our top picks:");
             
