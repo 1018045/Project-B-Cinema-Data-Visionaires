@@ -15,6 +15,9 @@ public abstract class AccountModel
     [JsonPropertyName("password")]
     public string Password { get; set; }
 
+    [JsonPropertyName("totalSpent")]
+    public double TotalSpent { get; set; }
+
 
     public AccountModel(int id, string role, string emailAddress, string password)
     {   
@@ -22,5 +25,6 @@ public abstract class AccountModel
         Role = role;
         EmailAddress = emailAddress;
         Password = password;
+        TotalSpent = 0.0;
     }
 }

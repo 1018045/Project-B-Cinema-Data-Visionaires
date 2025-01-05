@@ -15,6 +15,7 @@ static class Menus
             "Login",
             "Create account",
             "Jobs",
+            "About/Contact",
             "Exit"
         };
         List<Action> actions = new List<Action>
@@ -24,9 +25,32 @@ static class Menus
             () => Login(),
             () => CreateAccount(LoggedInMenu),
             ApplyForJob.ShowJobMenu,
+            AboutContact,
             () => Environment.Exit(0)
         };
         MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane", promotedMovies: _moviesLogic.PromotedMovies);
+    }
+
+    static public void AboutContact()
+    {
+        Console.Clear();
+        Console.WriteLine("=== About Cine&Dine Zidane ===\n");
+        Console.WriteLine("Welcome to Cine&Dine Zidane - where film and culinary delight come together!");
+        Console.WriteLine("We offer a unique cinema experience where you can enjoy the latest movies");
+        Console.WriteLine("while being pampered with delicious dishes and drinks.\n");
+        
+        Console.WriteLine("=== Contact Information ===");
+        Console.WriteLine("Address: Coolsingel 123");
+        Console.WriteLine("        3012 AA Rotterdam");
+        Console.WriteLine("Phone: 010-1234567");
+        Console.WriteLine("Email: info@cineanddine.nl\n");
+        
+        Console.WriteLine("=== Opening Hours ===");
+        Console.WriteLine("Monday through Sunday: 12:00 - 00:00\n");
+        
+        Console.WriteLine("Press any key to return to main menu...");
+        Console.ReadKey();
+        GuestMenu();
     }
     
     static public void LoggedInMenu()
@@ -39,6 +63,8 @@ static class Menus
             "Select a date",
             "Your reservations",
             "Manage your account",
+            "about/contact",
+           
             "Log out"
         };
         List<Action> actions = new List<Action>
@@ -47,6 +73,8 @@ static class Menus
             Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
             AccountPresentation.Menu,
+            AboutContact,
+         
             () => 
             {
                 AccountsLogic.LogOut();
@@ -55,6 +83,8 @@ static class Menus
         };
         MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", promotedMovies: _moviesLogic.PromotedMovies);
     }
+
+
 
     public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
     {
@@ -431,29 +461,28 @@ static class Menus
     private static void ViewEmployeeSalaries()
     {
         Console.Clear();
-        Console.WriteLine("=== Werknemers Salarissen ===\n");
- 
+        Console.WriteLine("Employee Salaries\n");
+
         var employeeLogic = new EmployeeLogic();
         var employees = employeeLogic.ListOfEmployees;
- 
-        if (employees.Count == 0)
+
+        if (employees == null || employees.Count == 0) 
         {
-            Console.WriteLine("Er zijn momenteel geen werknemers in het systeem.");
+            Console.WriteLine("check if there are no empoyee.");
         }
         else
         {
-            Console.WriteLine("Naam\t\t\tID\t\tSalaris");
-            Console.WriteLine("----------------------------------------");
-            
+            Console.WriteLine("Name\t\t\tID\t\tSalary");
+
             foreach (var employee in employees)
             {
                 Console.WriteLine($"{employee.EmployeeName,-20}\t{employee.EmployeeID}\t\t€{employee.EmployeeSalary:F2}");
             }
- 
+
             Console.WriteLine("\n----------------------------------------");
-            Console.WriteLine($"Totale maandelijkse salariskosten: €{employeeLogic.GetTotalMonthlySalary():F2}");
+            Console.WriteLine($"Total Monthly Cost: €{employeeLogic.GetTotalMonthlySalary():F2}");
         }
- 
-        MenuHelper.WaitForKey(AccountantMenu);
+
+        MenuHelper.WaitForKey(AccountantMenu); 
     }
 }
