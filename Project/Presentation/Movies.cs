@@ -206,6 +206,13 @@ public static class Movies
 
     public static void MoviesBrowser(int startingIndex = 0)
     {
+        if (CinemaLogic.CurrentCinema == null)
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please select a cinema before browsing movies.");
+            Menus.ChooseCinema(() => MoviesBrowser());
+            return;
+        }
         // Window needs to have a height of at least 17 to show all movie info
         if (Console.WindowHeight < 19)
         {

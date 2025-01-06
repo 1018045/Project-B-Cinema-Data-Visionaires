@@ -1,5 +1,4 @@
 using System.Globalization;
-using Microsoft.VisualBasic;
 using Project.Helpers;
 using Project.Logic.Account;
 using Project.Presentation;
@@ -9,18 +8,16 @@ public static class Reservation
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
     private const string EXTENDEDDATEFORMAT = "dddd d MMMM yyyy";
     private static readonly ReservationsLogic _reservationsLogic = new();
-
     private static readonly ShowingsLogic _showingsLogic = new ();
-
     private static readonly MoviesLogic _moviesLogic = new ();
-
     private static readonly AccountsLogic _accountsLogic = new();
+
 
     public static void Make(ShowingModel showing)
     {
         Console.Clear();
+
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
-        
         while (AccountsLogic.CurrentAccount == null)
         {
             System.Console.WriteLine("Please login to continue making your reservation.");
@@ -28,7 +25,6 @@ public static class Reservation
             Thread.Sleep(2000);
             Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
         }
-
         if (!_accountsLogic.IsOldEnough(movie.MinimumAge))
         {
             System.Console.WriteLine("You are not old enough to watch this movie.");
@@ -303,6 +299,13 @@ public static class Reservation
 
     public static void SelectDate()
     {
+        if (CinemaLogic.CurrentCinema == null)
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please select a cinema before browsing movies.");
+            Menus.ChooseCinema(() => SelectDate());
+            return;
+        }
         // print less than 2 weeks of showings if it doesn't fit
         int howManyDatesFitOnScreen = Console.WindowHeight - 4;
         int actualAmountOfDatesShown = Math.Min(howManyDatesFitOnScreen, 14);
