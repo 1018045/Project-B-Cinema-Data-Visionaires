@@ -5,17 +5,16 @@ public static class CinemaLocations
     
     public static void ChooseCinemaLocationToManage()
     {
-        CinemaLogic cinemaLogic = new();
-        List<string> options = cinemaLogic.Cinemas.Select(c => c.Name).ToList();
+        List<string> options = _cinemaLogic.Cinemas.Select(c => c.Name).ToList();
         options.Add("[Add new location]");
         options.Add("Return");
 
         List<Action> actions = new List<Action>();
-        foreach (CinemaModel cinema in cinemaLogic.Cinemas)
+        foreach (CinemaModel cinema in _cinemaLogic.Cinemas)
         {
             actions.Add(() => ManageCinemaLocation(cinema));
         }
-        actions.Add(() => AddCinemaLocation(cinemaLogic));
+        actions.Add(() => AddCinemaLocation());
         actions.Add(Menus.AdminMenu);
         MenuHelper.NewMenu(options, actions, subtext: "Which do you want to manage?");
     }
@@ -27,13 +26,14 @@ public static class CinemaLocations
         {
             () => ChangeLocationName(cinema),
             () => ChangeLocationAddress(cinema),
-            () => 
+            () => RemoveCinemaLocation(cinema),
+            ChooseCinemaLocationToManage
         };
 
-        MenuHelper.NewMenu(options, actions, "What do you want to manage?");
+        MenuHelper.NewMenu(options, actions, $"Cinema {cinema.Name}", subtext: $"{cinema.City}, {cinema.Address} {cinema.PostalCode}");
     }
 
-    private static void ChangeLocationName(CinemaModel cinema)
+    private static void ChangeLocationAddress(CinemaModel cinema)
     {
         Console.Clear();
 
@@ -58,7 +58,7 @@ public static class CinemaLocations
         MenuHelper.WaitForKey(() => ManageCinemaLocation(cinema));
     }
 
-    private static void ChangeLocationAddress(CinemaModel cinema)
+    private static void ChangeLocationName(CinemaModel cinema)
     {
         Console.Clear();
 
@@ -67,7 +67,17 @@ public static class CinemaLocations
         if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Are you sure you want to change the name of {cinema.Name} to {name}?"))
         {
             _cinemaLogic.EditCinemaName(cinema, name);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.WriteLine($"Succesfully renamed cinema location to {cinema.Name}!");
         }
+        else
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("Canceled renaming cinema location!");
+        }
+        Console.ResetColor();
 
         MenuHelper.WaitForKey(() => ManageCinemaLocation(cinema));
     }
@@ -108,9 +118,24 @@ public static class CinemaLocations
         MenuHelper.WaitForKey(ChooseCinemaLocationToManage);
     }
 
-    private static void RemoveCinemaLocation(CinemaModel model)
+    private static void RemoveCinemaLocation(CinemaModel cinema)
     {
+        if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Are you sure you want to delete location {cinema.Name}?"))
+        {
+            Console.Clear();
+            _cinemaLogic.RemoveCinema(cinema);
+            Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.WriteLine("Succesfully removed cinema location!");
+        }
+        else
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("Canceled removing cinema location!");
+        }
+        Console.ResetColor();
 
+        Thread.Sleep(1000);
+        MenuHelper.WaitForKey(ChooseCinemaLocationToManage);
     }
-
 }

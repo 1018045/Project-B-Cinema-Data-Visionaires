@@ -19,9 +19,9 @@ public class CinemaLogic
         CinemaAccess.WriteAll(Cinemas);
     }
 
-    public void RemoveCinema(int idToRemove)
+    public void RemoveCinema(CinemaModel cinema)
     {
-        Cinemas.Remove(Cinemas.Where(c => c.Id == idToRemove).First());
+        Cinemas.Remove(cinema);
         CinemaAccess.WriteAll(Cinemas);
     }
 

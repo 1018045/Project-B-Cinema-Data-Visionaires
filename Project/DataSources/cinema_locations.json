@@ -12,12 +12,5 @@
     "city": "Rotterdam",
     "address": "Gouvernestraat 129-133",
     "postal_code": "3014PM"
-  },
-  {
-    "id": 2,
-    "name": "test",
-    "city": "test",
-    "address": "kkk 99",
-    "postal_code": "1313AA"
   }
 ]
