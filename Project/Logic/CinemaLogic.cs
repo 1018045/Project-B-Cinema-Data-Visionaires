@@ -25,6 +25,20 @@ public class CinemaLogic
         CinemaAccess.WriteAll(Cinemas);
     }
 
+    public void EditCinemaName(CinemaModel cinema, string newName)
+    {
+        cinema.Name = newName;
+        CinemaAccess.WriteAll(Cinemas);
+    }
+    
+    public void EditCinemaAddress(CinemaModel cinema, string newCity, string newAddress, string newPostal)
+    {
+        cinema.City = newCity;
+        cinema.Address = newAddress;
+        cinema.PostalCode = newPostal;
+        CinemaAccess.WriteAll(Cinemas);
+    }
+
     private int FindFirstAvailableID()
     {
         int pointer = 0;
