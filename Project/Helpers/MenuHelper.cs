@@ -1,6 +1,6 @@
 static class MenuHelper
 {
-    public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, List<MovieModel> promotedMovies = null, bool showCurrentLocation = false)
+    public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, List<MovieModel> promotedMovies = null, bool showMenu = false, bool showCurrentLocation = false)
     {
         if (options.Count != actions.Count)
         {
@@ -35,6 +35,16 @@ static class MenuHelper
         do
         {
             Console.Clear();
+            if (showMenu)
+            {
+            Console.WriteLine("   _____ _                       _ _            ");
+            Console.WriteLine("  / ____(_)            ___      | (_)           ");
+            Console.WriteLine(" | |     _ _ __   ___ ( _ )   __| |_ _ __   ___ ");
+            Console.WriteLine(" | |    | | '_ \\ / _ \\/ _ \\/\\/ _` | | '_ \\ / _ \\");
+            Console.WriteLine(" | |____| | | | |  __/ (_>  < (_| | | | | |  __/");
+            Console.WriteLine("  \\_____|_|_| |_|\\___|\\___/\\/\\__,_|_|_| |_|\\___|");
+            }                                           
+
             string headerText = "";
             if (header != null) headerText += $"\u001b[1m===={header}====\u001b[0m";
             if (showCurrentLocation)
