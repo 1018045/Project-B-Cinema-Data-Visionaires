@@ -303,7 +303,7 @@ public static class Reservation
         {
             Console.Clear();
             System.Console.WriteLine("Please select a cinema before browsing movies.");
-            Menus.ChooseCinema(() => SelectDate());
+            Menus.ChooseCinema(SelectDate);
             return;
         }
         // print less than 2 weeks of showings if it doesn't fit

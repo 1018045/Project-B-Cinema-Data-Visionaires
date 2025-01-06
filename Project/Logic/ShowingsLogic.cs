@@ -10,6 +10,19 @@ public class ShowingsLogic
         Showings = ShowingsAccess.LoadAll();
     }
 
+    public List<ShowingModel> FindShowingsByMovieId(int id)
+    {
+        List<ShowingModel> showings = new();
+        foreach (ShowingModel showing in Showings)
+        {
+            if (showing.MovieId == id && showing.Date > DateTime.Now)
+            {
+                showings.Add(showing);
+            }
+        }
+        return showings.OrderBy(s => s.Date).ToList();
+    }
+
     public List<ShowingModel> FindShowingsByMovieId(int id, int cinemaId)
     {
         List<ShowingModel> showings = new();

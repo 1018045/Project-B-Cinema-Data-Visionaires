@@ -24,11 +24,11 @@ public static class Showings
         return MenuHelper.NewMenu(movies, moviesIndices, "Which movie do you want to manage?");
     }
 
-    public static int SelectShowing()
+    public static int SelectShowing(int movieId)
     {
         Console.Clear();
 
-        List<ShowingModel> showings = _showingsLogic.Showings;
+        List<ShowingModel> showings = _showingsLogic.Showings.Where(s => s.MovieId == movieId).ToList();
         List<string> showingsStrings = showings.Select(showing => showing.Date.ToString("dd-MM-yyyy HH:mm:ss")).ToList();
         showingsStrings.Add("Cancel");
 
@@ -94,13 +94,15 @@ public static class Showings
 
     private static void ListShowings(int movieId, MoviesLogic moviesLogic)
     {
-        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movieId, CinemaLogic.CurrentCinema.Id);
+        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movieId);
         if (showings.Count == 0)
         {
+            Console.Clear();
             System.Console.WriteLine("There are no showings planned yet for this movie");
         }
         else
-            {   
+        {   
+            Console.Clear();
             int counter = 1;
             Console.WriteLine($"Current upcoming showings for {moviesLogic.GetMovieById(movieId).Title} are:");
             foreach (ShowingModel showing in showings)
@@ -131,8 +133,12 @@ public static class Showings
             return;
         }
 
-        ListShowings(movieId, moviesLogic);
-        DateTime date = AskAndParseDateAndTime();
+        // ListShowings(movieId, moviesLogic);
+        DateTime date;
+        do
+        {
+            date = AskAndParseDateAndTime();
+        } while (date < DateTime.Now);
 
         bool correct;
         int room;
@@ -146,6 +152,7 @@ public static class Showings
         Console.WriteLine("1. Premier");
         Console.WriteLine("2. Dolby");
         Console.WriteLine("3. none");
+
         string special = Console.ReadLine() switch
         {
             "1" => "Premier",
@@ -174,7 +181,7 @@ public static class Showings
                 break;
             case 3:
                 pattern = "weekly";
-                return;
+                break;
             default:
                 ManageShowings(movieId, moviesLogic);
                 break;
@@ -182,6 +189,7 @@ public static class Showings
         
         if (pattern == "daily")
         {
+            Console.Clear();
             System.Console.WriteLine("How many days do you want to repeat the showing?");
             int res;
             string input;
@@ -196,6 +204,7 @@ public static class Showings
         } 
         else if (pattern == "weekly")
         {
+            Console.Clear();
             System.Console.WriteLine("How many weeks do you want to repeat the showing?");
             int res;
             string input;
@@ -232,7 +241,7 @@ public static class Showings
 
     private static void RemoveShowing(int movieId, MoviesLogic moviesLogic)
     {
-        int chosenShowing = SelectShowing();
+        int chosenShowing = SelectShowing(movieId);
         if (chosenShowing != -1) _showingsLogic.RemoveShowing(chosenShowing);
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
@@ -243,6 +252,7 @@ public static class Showings
         string timeInput;
         do
         {
+            Console.Clear();
             System.Console.WriteLine("Which date do you want the showing on? Format 'dd-MM-yyyy'");
             dateInput = Console.ReadLine();
         }
