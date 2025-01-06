@@ -12,7 +12,7 @@ public static class AccountPresentation
         {
             "Update account details",
             "Remove account (DANGER)",
-            "totalspending",
+            
             "Return"
         };
 
@@ -20,7 +20,7 @@ public static class AccountPresentation
         {
             () => UpdateAccountDetails(_accountManageLogic),
             () => DeleteAccount(_accountManageLogic),
-            ShowTotalSpending,
+            
             Menus.LoggedInMenu
         };
 
@@ -46,19 +46,7 @@ public static class AccountPresentation
         MenuHelper.NewMenu(options, actions, "Update account");
     }
 
-    private static void ShowTotalSpending()
-    {
-        Console.Clear();
-        if (AccountsLogic.CurrentAccount != null)
-        {
-            Console.WriteLine($"totale spend €{AccountsLogic.CurrentAccount.TotalSpent:F2}");
-        }
-        else
-        {
-            Console.WriteLine("none account found");
-        }
-        MenuHelper.WaitForKey(Menus.LoggedInMenu);
-    }
+    
 
     private static void ChangeEmail(AccountManageLogic logic)
     {

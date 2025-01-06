@@ -35,6 +35,14 @@ static class MenuHelper
         do
         {
             Console.Clear();
+            Console.WriteLine("   _____ _                       _ _            ");
+            Console.WriteLine("  / ____(_)            ___      | (_)           ");
+            Console.WriteLine(" | |     _ _ __   ___ ( _ )   __| |_ _ __   ___ ");
+            Console.WriteLine(" | |    | | '_ \\ / _ \\/ _ \\/\\/ _` | | '_ \\ / _ \\");
+            Console.WriteLine(" | |____| | | | |  __/ (_>  < (_| | | | | |  __/");
+            Console.WriteLine("  \\_____|_|_| |_|\\___|\\___/\\/\\__,_|_|_| |_|\\___|");
+                                                            
+
             if (header != null) System.Console.WriteLine($"\u001b[1m===={header}====\u001b[0m");
             if (subtext != null) System.Console.WriteLine(subtext);
             if (promotedMovies != null) System.Console.WriteLine("Our top picks:");

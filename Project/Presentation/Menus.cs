@@ -28,7 +28,7 @@ static class Menus
             AboutContact,
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane", promotedMovies: _moviesLogic.PromotedMovies);
+        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies);
     }
 
     static public void AboutContact()
