@@ -7,7 +7,6 @@ static class Menus
     static public void GuestMenu()
     {
         MoviesLogic _moviesLogic = new();
-
         List<string> options = new List<string>
         {
             "Browse movies",
@@ -28,7 +27,7 @@ static class Menus
             AboutContact,
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies);
+        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies, showMenu: true);
     }
 
     static public void AboutContact()
