@@ -183,7 +183,7 @@ public static class Reservation
         while (string.IsNullOrEmpty(payment))
         {
             Console.Clear();
-            Console.WriteLine($"Total to pay: €{totalPrice:F2}"); 
+            ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
             Console.WriteLine("Please enter your bank details: (example NL91ABNA0417164300)");
             Console.Write("IBAN: ");
             payment = Console.ReadLine(); 
@@ -200,38 +200,38 @@ public static class Reservation
         Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
-
     private static void ShowBill(List<string> selectedFoods, List<string> selectedDrinks, int numberOfTickets, double totalPrice)
     {
         Console.Clear();
 
-        Console.WriteLine("order:");
+        Console.WriteLine("===== Order Summary =====\n");
 
-       
+     
         Console.WriteLine($"Tickets: {numberOfTickets} x €{BASE_TICKET_PRICE:F2}");
 
-        
+      
         if (selectedFoods.Count > 0)
         {
-            Console.WriteLine("food:");
+            Console.WriteLine("\nFood:");
             foreach (var food in selectedFoods)
             {
-                Console.WriteLine($"  {food}");
+                Console.WriteLine($"  - {food}");
             }
         }
 
-        
+       
         if (selectedDrinks.Count > 0)
         {
-            Console.WriteLine("Drinks:");
+            Console.WriteLine("\nDrinks:");
             foreach (var drink in selectedDrinks)
             {
-                Console.WriteLine($"  {drink}");
+                Console.WriteLine($"  - {drink}");
             }
         }
 
-        
-        Console.WriteLine($"pay: €{totalPrice:F2}");
+      
+        Console.WriteLine($"\nTotal to pay: €{totalPrice:F2}");
+        Console.WriteLine("\n=========================");
     }
 
     public static void ChooseShowing(MovieModel movie)
