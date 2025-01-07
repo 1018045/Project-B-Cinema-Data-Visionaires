@@ -16,6 +16,8 @@ public static class Reservation
 
     private static readonly AccountsLogic _accountsLogic = new();
 
+    
+
     public static void Make(ShowingModel showing)
     {
         Console.Clear();
@@ -62,7 +64,7 @@ public static class Reservation
             );
         } while(!confirmSeats);
 
-        if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to order extra's?")) 
+        if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to order food")) 
         {
             Console.WriteLine("These are the food choices:");
             Console.WriteLine("1. Gourmet Truffle Cheeseburger");
@@ -135,6 +137,42 @@ public static class Reservation
         {
             Console.WriteLine("No extras ordered. Thank you for your response.");
         }
+
+        List<ExtraModel> selectedExtras = new List<ExtraModel>();
+        double extrasPrice = 0.0;
+
+        // Add mandatory extras to the total price
+        foreach (var extra in showing.Extras)
+        {
+            if (extra.IsMandatory)
+            {
+                extrasPrice += (double)extra.Price;
+                selectedExtras.Add(extra);
+            }
+        }
+
+        
+
+        // Allow user to select optional extras
+    if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to order optional extras?")) 
+    {
+        foreach (var extra in showing.Extras)
+        {
+            if (!extra.IsMandatory)
+            {
+                bool addExtra = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Would you like to add {extra.Name} for {extra.Price:C}?");
+                if (addExtra)
+                {
+                    selectedExtras.Add(extra);
+                    extrasPrice += (double)extra.Price;
+                }
+            }
+        }
+    }
+        
+
+        
+
         
         string payment = "X";
         while (payment != "")
@@ -157,7 +195,7 @@ public static class Reservation
             specialPrice += 3.50;
         }
   
-        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count;
+        double totalPrice = (basePrice + specialPrice + extrasPrice) * selectedSeats.Count;
 
         FakeProcessingPayment(5000);
         ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice);
