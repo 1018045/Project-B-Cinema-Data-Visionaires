@@ -21,15 +21,21 @@ public class ReservationModel
     [JsonPropertyName("billId")]
     public int BillID { get; set; }
 
+    [JsonPropertyName("SelectedExtras")]
+    public List<ExtraModel> SelectedExtras { get; set; }
 
-   public ReservationModel(int id, int userId, int showingId, string seats, bool paymentComplete, int billID)
+
+   public ReservationModel(int id, int userId, int showingId, string seats, bool paymentComplete, double price, List<ExtraModel> selectedExtras)
     {
         Id = id;
         UserId = userId;
         ShowingId = showingId;
         Seats = seats;
         PaymentComplete = paymentComplete;
-        BillID = billID;
+        Price = price;
+        SelectedExtras = selectedExtras;
+
+
     }
 
 }
