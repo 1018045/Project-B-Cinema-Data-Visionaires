@@ -12,6 +12,7 @@ public static class AccountPresentation
         {
             "Update account details",
             "Remove account (DANGER)",
+            
             "Return"
         };
 
@@ -19,6 +20,7 @@ public static class AccountPresentation
         {
             () => UpdateAccountDetails(_accountManageLogic),
             () => DeleteAccount(_accountManageLogic),
+            
             Menus.LoggedInMenu
         };
 
@@ -43,6 +45,8 @@ public static class AccountPresentation
 
         MenuHelper.NewMenu(options, actions, "Update account");
     }
+
+    
 
     private static void ChangeEmail(AccountManageLogic logic)
     {

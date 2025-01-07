@@ -1,57 +1,118 @@
 using System.Security;
 using Project.Logic.Account;
 using Project.Presentation;
-using Project.Helpers;
 
 static class Menus
 {
+    static public void ChooseCinema(Action originMenu)
+    {
+        CinemaLogic cinemaLogic = new();
+        List<string> options = cinemaLogic.Cinemas.Select(c => c.Name).ToList();
+        List<Action> actions = new();
+        foreach (CinemaModel cinema in cinemaLogic.Cinemas)
+        {
+            actions.Add(() => {
+                cinemaLogic.ChangeCinema(cinema);
+                originMenu.Invoke();
+            });
+        }
+        options.Add("Cancel");
+        actions.Add(originMenu);
+        MenuHelper.NewMenu(options, actions, "Please select a cinema location");
+    }
+
     static public void GuestMenu()
     {
+        MoviesLogic _moviesLogic = new();
         List<string> options = new List<string>
         {
+            "Select a cinema location",
             "Browse movies",
             "Select a date",
             "Login",
             "Create account",
             "Jobs",
+            "About/Contact",
             "Exit"
         };
         List<Action> actions = new List<Action>
         {
+            () => ChooseCinema(GuestMenu),
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Login(),
             () => CreateAccount(LoggedInMenu),
             ApplyForJob.ShowJobMenu,
+            AboutContact,
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions, "Cine&Dine Zidane");
+        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
     }
+
+    static public void AboutContact()
+    {
+        Console.Clear();
+        
+        // Gebruik de dynamische waarden uit CineDineInfo
+        Console.WriteLine($"=== About Cine&Dine {CineDineInfo.Bios} ===\n");
+        Console.WriteLine($"Welcome to Cine&Dine {CineDineInfo.Bios} - where film and culinary delight come together!");
+        Console.WriteLine("We offer a unique cinema experience where you can enjoy the latest movies");
+        Console.WriteLine("while being pampered with delicious dishes and drinks.\n");
+        
+        Console.WriteLine("=== Contact Information ===");
+        Console.WriteLine($"{CineDineInfo.Adress}");
+        
+        Console.WriteLine("Phone: 010-1234567");
+        Console.WriteLine("Email: info@cineanddine.nl\n");
+        
+        Console.WriteLine("=== Opening Hours ===");
+        Console.WriteLine("Monday through Sunday: 12:00 - 00:00\n");
+        
+        Console.WriteLine("Press any key to return to main menu...");
+        Console.ReadKey();
+        GuestMenu();
+    }
+    public static class CineDineInfo
+    {
+        public static string Bios = "Zidane";
+        public static string Adress = "wijnhaven 107, 3011 WN Rotterdam";
+    }
+
     
     static public void LoggedInMenu()
     {
+        MoviesLogic _moviesLogic = new();
+
         List<string> options = new List<string>
         {
+            "Select a cinema location",
             "Browse movies",
             "Select a date",
             "Your reservations",
             "Manage your account",
+            "about/contact",
+           
             "Log out"
         };
         List<Action> actions = new List<Action>
         {
+            () => ChooseCinema(LoggedInMenu),
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
             AccountPresentation.Menu,
+            AboutContact,
+         
             () => 
             {
                 AccountsLogic.LogOut();
                 GuestMenu();
             }
         };
-        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}");
+        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", promotedMovies: _moviesLogic.PromotedMovies);
     }
+
+
 
     public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
     {
@@ -135,6 +196,7 @@ static class Menus
         {
             "Manage movies",
             "Manage showings",
+            "Manage movie promotions",
             "View all users",
             "Remove a user",
             "Add an Employee",
@@ -142,12 +204,14 @@ static class Menus
             "Remove job vacancy",
             "View all vacancies",
             "Show accountant options",
+            "Manage cinema locations",
             "Logout"
         };
         List<Action> actions = new List<Action>
         {
             Movies.Start,
             Showings.ManageShowings,
+            Movies.SelectPromotionSlot,
             ViewUsers,
             RemoveUser,
             AddEmployee,
@@ -155,6 +219,7 @@ static class Menus
             RemoveJobVacancy,
             ViewAllVacancies,
             AccountantMenu,
+            CinemaLocations.ChooseCinemaLocationToManage,
             GuestMenu
         };
         MenuHelper.NewMenu(options, actions, "Admin menu");
@@ -306,8 +371,6 @@ static class Menus
         Console.WriteLine(accountantLogic.CalculateCosts());
     }    
    
-
-
     private static void AddJobVacancy()
     {
         Console.Clear();
@@ -387,7 +450,6 @@ static class Menus
         AdminMenu();
     }
 
-
     private static void AddEmployee()
     {
         Console.Clear();
@@ -427,29 +489,28 @@ static class Menus
     private static void ViewEmployeeSalaries()
     {
         Console.Clear();
-        Console.WriteLine("=== Werknemers Salarissen ===\n");
- 
+        Console.WriteLine("Employee Salaries\n");
+
         var employeeLogic = new EmployeeLogic();
         var employees = employeeLogic.ListOfEmployees;
- 
-        if (employees.Count == 0)
+
+        if (employees == null || employees.Count == 0) 
         {
-            Console.WriteLine("Er zijn momenteel geen werknemers in het systeem.");
+            Console.WriteLine("check if there are no empoyee.");
         }
         else
         {
-            Console.WriteLine("Naam\t\t\tID\t\tSalaris");
-            Console.WriteLine("----------------------------------------");
-            
+            Console.WriteLine("Name\t\t\tID\t\tSalary");
+
             foreach (var employee in employees)
             {
                 Console.WriteLine($"{employee.EmployeeName,-20}\t{employee.EmployeeID}\t\t€{employee.EmployeeSalary:F2}");
             }
- 
+
             Console.WriteLine("\n----------------------------------------");
-            Console.WriteLine($"Totale maandelijkse salariskosten: €{employeeLogic.GetTotalMonthlySalary():F2}");
+            Console.WriteLine($"Total Monthly Cost: €{employeeLogic.GetTotalMonthlySalary():F2}");
         }
- 
-        MenuHelper.WaitForKey(AccountantMenu);
+
+        MenuHelper.WaitForKey(AccountantMenu); 
     }
 }
