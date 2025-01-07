@@ -210,7 +210,11 @@ public static class Movies
         {
             Console.Clear();
             System.Console.WriteLine("Please select a cinema before browsing movies.");
-            Menus.ChooseCinema(() => MoviesBrowser());
+            Menus.ChooseCinema(() => MoviesBrowser(), () => 
+            {
+                if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
+                else Menus.LoggedInMenu();
+            });
             return;
         }
         // Window needs to have a height of at least 17 to show all movie info

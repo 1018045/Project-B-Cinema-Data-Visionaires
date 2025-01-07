@@ -232,6 +232,18 @@ public static class Reservation
     public static void ChooseShowing(MovieModel movie)
     {
         Console.Clear();
+        if (CinemaLogic.CurrentCinema == null)
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please select a cinema before continuing.");
+            Thread.Sleep(2000);
+            Menus.ChooseCinema(() => ChooseShowing(movie), () => 
+            {
+                if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
+                else Menus.LoggedInMenu();
+            });
+            return;
+        }
         List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).ToList<object>();
         if (showings.Count() == 0)
         {
@@ -366,7 +378,11 @@ public static class Reservation
         {
             Console.Clear();
             System.Console.WriteLine("Please select a cinema before browsing movies.");
-            Menus.ChooseCinema(SelectDate);
+            Menus.ChooseCinema(SelectDate, () => 
+            {
+                if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
+                else Menus.LoggedInMenu();
+            });
             return;
         }
         // print less than 2 weeks of showings if it doesn't fit

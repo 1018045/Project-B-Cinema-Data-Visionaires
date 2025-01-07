@@ -13,9 +13,9 @@ public class CinemaLogic
         CurrentCinema = newCinema;
     }
 
-    public void AddCinema(string name, string city, string address, string postalCode)
+    public void AddCinema(string name, string city, string address, string postalCode, string phoneNumber)
     {
-        Cinemas.Add(new CinemaModel(FindFirstAvailableID(), name, city, address, postalCode));
+        Cinemas.Add(new CinemaModel(FindFirstAvailableID(), name, city, address, postalCode, phoneNumber));
         CinemaAccess.WriteAll(Cinemas);
     }
 

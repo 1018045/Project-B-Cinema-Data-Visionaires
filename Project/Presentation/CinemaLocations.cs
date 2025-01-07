@@ -98,11 +98,14 @@ public static class CinemaLocations
             System.Console.WriteLine("Please enter the postal code of the new cinema location: (format: 0000AA)");
             postal = Console.ReadLine().Trim();
         }while (postal.Length != 6 && postal.Substring(0,4).All(char.IsDigit) && postal.Substring(4,2).All(char.IsLetter));
+
+        System.Console.WriteLine("Please enter the phone number that the cinema will be reachable on:");
+        string phoneNumber = Console.ReadLine();
         
         if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Are you sure you want to add cinema {name} in {city} at {address} {postal}?"))
         {
             Console.Clear();
-            _cinemaLogic.AddCinema(name, city, address, postal);
+            _cinemaLogic.AddCinema(name, city, address, postal, phoneNumber);
             Console.ForegroundColor = ConsoleColor.Green;
             System.Console.WriteLine("Succesfully added cinema location!");
         }

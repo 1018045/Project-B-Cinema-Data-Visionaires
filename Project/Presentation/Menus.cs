@@ -1,10 +1,12 @@
+using System.Runtime.CompilerServices;
 using System.Security;
 using Project.Logic.Account;
 using Project.Presentation;
 
 static class Menus
 {
-    static public void ChooseCinema(Action originMenu)
+    private static CinemaLogic _cinemaLogic = new();
+    static public void ChooseCinema(Action originMenu, Action cancellationMenu)
     {
         CinemaLogic cinemaLogic = new();
         List<string> options = cinemaLogic.Cinemas.Select(c => c.Name).ToList();
@@ -17,7 +19,7 @@ static class Menus
             });
         }
         options.Add("Cancel");
-        actions.Add(originMenu);
+        actions.Add(cancellationMenu);
         MenuHelper.NewMenu(options, actions, "Please select a cinema location");
     }
 
@@ -26,90 +28,87 @@ static class Menus
         MoviesLogic _moviesLogic = new();
         List<string> options = new List<string>
         {
-            "Select a cinema location",
             "Browse movies",
             "Select a date",
             "Login",
             "Create account",
+            "Select a cinema location",
             "Jobs",
             "About/Contact",
             "Exit"
         };
         List<Action> actions = new List<Action>
         {
-            () => ChooseCinema(GuestMenu),
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Login(),
             () => CreateAccount(LoggedInMenu),
+            () => ChooseCinema(GuestMenu, GuestMenu),
             ApplyForJob.ShowJobMenu,
-            AboutContact,
+            () => AboutContact(GuestMenu),
             () => Environment.Exit(0)
         };
         MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
     }
 
-    static public void AboutContact()
+    static public void AboutContact(Action returnMenu)
     {
         Console.Clear();
+        if (CinemaLogic.CurrentCinema == null)
+        {
+            System.Console.WriteLine("Please first select a cinema!");
+            Thread.Sleep(2000);
+            ChooseCinema(() => AboutContact(returnMenu), returnMenu);
+            return;
+        }
         
-        // Gebruik de dynamische waarden uit CineDineInfo
-        Console.WriteLine($"=== About Cine&Dine {CineDineInfo.Bios} ===\n");
-        Console.WriteLine($"Welcome to Cine&Dine {CineDineInfo.Bios} - where film and culinary delight come together!");
+        Console.WriteLine($"=== About Cine&Dine {CinemaLogic.CurrentCinema.Name} ===\n");
+        Console.WriteLine($"Welcome to Cine&Dine {CinemaLogic.CurrentCinema.Name} - where film and culinary delight come together!");
         Console.WriteLine("We offer a unique cinema experience where you can enjoy the latest movies");
         Console.WriteLine("while being pampered with delicious dishes and drinks.\n");
         
         Console.WriteLine("=== Contact Information ===");
-        Console.WriteLine($"{CineDineInfo.Adress}");
+        Console.WriteLine($"{CinemaLogic.CurrentCinema.Address}, {CinemaLogic.CurrentCinema.City} {CinemaLogic.CurrentCinema.PostalCode}");
         
-        Console.WriteLine("Phone: 010-1234567");
-        Console.WriteLine("Email: info@cineanddine.nl\n");
+        Console.WriteLine($"Phone: {CinemaLogic.CurrentCinema.PhoneNumber}");
+        Console.WriteLine($"Email: info-{CinemaLogic.CurrentCinema.Name}@cineanddine.nl\n");
         
         Console.WriteLine("=== Opening Hours ===");
         Console.WriteLine("Monday through Sunday: 12:00 - 00:00\n");
         
-        Console.WriteLine("Press any key to return to main menu...");
-        Console.ReadKey();
-        GuestMenu();
-    }
-    public static class CineDineInfo
-    {
-        public static string Bios = "Zidane";
-        public static string Adress = "wijnhaven 107, 3011 WN Rotterdam";
+        MenuHelper.WaitForKey(returnMenu);
     }
 
-    
+
     static public void LoggedInMenu()
     {
         MoviesLogic _moviesLogic = new();
 
         List<string> options = new List<string>
         {
-            "Select a cinema location",
             "Browse movies",
             "Select a date",
             "Your reservations",
+            "Select a cinema location",
             "Manage your account",
             "about/contact",
-           
             "Log out"
         };
         List<Action> actions = new List<Action>
         {
-            () => ChooseCinema(LoggedInMenu),
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
+            () => ChooseCinema(LoggedInMenu, LoggedInMenu),
             AccountPresentation.Menu,
-            AboutContact,
-         
+            () => AboutContact(LoggedInMenu),   
             () => 
             {
                 AccountsLogic.LogOut();
                 GuestMenu();
             }
         };
-        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", promotedMovies: _moviesLogic.PromotedMovies);
+        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", promotedMovies: _moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
     }
 
 
@@ -262,7 +261,6 @@ static class Menus
     {
         Console.Clear();
         Console.WriteLine("Enter your information below");
-        Console.WriteLine("Email: ");
         string userEmail;
         do
         {
