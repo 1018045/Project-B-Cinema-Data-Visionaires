@@ -33,14 +33,16 @@ static class Menus
     static public void AboutContact()
     {
         Console.Clear();
-        Console.WriteLine("=== About Cine&Dine Zidane ===\n");
+        
+        // Gebruik de dynamische waarden uit CineDineInfo
+        Console.WriteLine($"=== About Cine&Dine {CineDineInfo.Bios} ===\n");
         Console.WriteLine("Welcome to Cine&Dine Zidane - where film and culinary delight come together!");
         Console.WriteLine("We offer a unique cinema experience where you can enjoy the latest movies");
         Console.WriteLine("while being pampered with delicious dishes and drinks.\n");
         
         Console.WriteLine("=== Contact Information ===");
-        Console.WriteLine("Address: Coolsingel 123");
-        Console.WriteLine("        3012 AA Rotterdam");
+        Console.WriteLine($"{CineDineInfo.Adress}");
+        
         Console.WriteLine("Phone: 010-1234567");
         Console.WriteLine("Email: info@cineanddine.nl\n");
         
@@ -50,6 +52,11 @@ static class Menus
         Console.WriteLine("Press any key to return to main menu...");
         Console.ReadKey();
         GuestMenu();
+    }
+    public static class CineDineInfo
+    {
+        public static string Bios = "Zidane";
+        public static string Adress = "Coolsingel 60, 3012 AD Rotterdam";
     }
     static public void LoggedInMenu()
     {
