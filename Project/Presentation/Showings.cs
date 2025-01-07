@@ -147,28 +147,42 @@ public static class Showings
 
 
  
-       bool answer = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to add extra's?");
+
+        bool answer = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to add extra's?");
 
         if (answer)
         {
-            Console.WriteLine("What will be the name for this extra?"); 
-                string extraName = Console.ReadLine();
-            Console.WriteLine("What will be the price for this extra?");
-                    decimal extraPrice = decimal.Parse(Console.ReadLine());
+          
+            Console.WriteLine("How many extras would you like to add?");
+            int extraCount = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Is this extra mandatory?");
+         
+            for (int i = 0; i < extraCount; i++)
+            {
+                Console.WriteLine($"Adding extra {i + 1} of {extraCount}:");
 
-            bool mandatory = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Is this extra mandatory?");
-
-
-                
-            ExtraModel extra = new(extraName, extraPrice,mandatory);
-
-            Extras.Add(extra);
-
-           
             
+                Console.WriteLine("What will be the name for this extra?");
+                string extraName = Console.ReadLine();
+
+              
+                Console.WriteLine("What will be the price for this extra?");
+                decimal extraPrice = decimal.Parse(Console.ReadLine());
+
+            
+                Console.WriteLine("Is this extra mandatory?");
+                bool mandatory = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Is this extra mandatory?");
+
+              
+                ExtraModel extra = new(extraName, extraPrice, mandatory);
+
+             
+                Extras.Add(extra);
+            }
+
+            Console.WriteLine($"{extraCount} extra(s) have been successfully added!");
         }
+
  
 
         
