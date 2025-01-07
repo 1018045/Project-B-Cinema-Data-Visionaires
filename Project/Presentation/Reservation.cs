@@ -127,6 +127,7 @@ public static class Reservation
                 default:
                     Console.WriteLine("Invalid choice, please choose a number between 1 and 5.");
                     return;  // Exit if invalid drink choice
+                    return;  
             }
 
             Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
@@ -143,6 +144,7 @@ public static class Reservation
             Console.WriteLine("Please enter your bank details:");
             payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine()!);
             Console.WriteLine(payment);
+            
         }
     
         double basePrice = 10.00; 
