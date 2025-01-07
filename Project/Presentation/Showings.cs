@@ -148,6 +148,8 @@ public static class Showings
             correct = int.TryParse(Console.ReadLine(), out room) && room > 0 && room < 4;          
         } while (!correct);
 
+        bool is3d = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, "Will this showing be in 3D?");
+
         Console.WriteLine("Select a special for this showing:");
         Console.WriteLine("1. Premier");
         Console.WriteLine("2. Dolby");
@@ -174,7 +176,7 @@ public static class Showings
         switch (userChoice)
         {
             case 1:
-                BookShowings(date, room, moviesLogic, movieId, cinemaId, special);
+                BookShowings(date, room, moviesLogic, movieId, cinemaId, is3d, special);
                 break;
             case 2:
                 pattern = "daily";
@@ -199,7 +201,7 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i), room, moviesLogic, movieId, cinemaId, special);
+                BookShowings(date.AddDays(i), room, moviesLogic, movieId, cinemaId, is3d, special);
             }
         } 
         else if (pattern == "weekly")
@@ -214,14 +216,14 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, cinemaId, special);
+                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, cinemaId, is3d, special);
             }
         }
 
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
 
-    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, int chosenCinemaId, string special)
+    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, int chosenCinemaId, bool is3d, string special)
     {
         if (!_showingsLogic.IsRoomFree(date, room, moviesLogic.GetMovieById(movieId).Duration, chosenCinemaId))
         {
@@ -232,7 +234,7 @@ public static class Showings
             return;
         }
 
-        _showingsLogic.AddShowing(movieId, date, room, chosenCinemaId, special);
+        _showingsLogic.AddShowing(movieId, date, room, chosenCinemaId, is3d, special);
         Console.ForegroundColor = ConsoleColor.Green;
         System.Console.WriteLine($"Showing has been successfully added on {date.ToString("dd-MM-yyyy HH:mm:ss")} with special: {special}");
         Console.ResetColor();
