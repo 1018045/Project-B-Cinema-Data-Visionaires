@@ -117,10 +117,10 @@ public class ShowingsLogic
         return showings;
     }
 
-    public void AddShowing(int movieId, DateTime date, int room, string special)
+    public void AddShowing(int movieId, DateTime date, int room, string special, List<ExtraModel> extras)
     {
         int newId = FindNextAvailableId();
-        var showing = new ShowingModel(newId, movieId, date, room, special);
+        var showing = new ShowingModel(newId, movieId, date, room, extras,special);
         Showings.Add(showing);
         ShowingsAccess.WriteAll(Showings);
     }

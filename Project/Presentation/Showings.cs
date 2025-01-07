@@ -7,6 +7,8 @@ public static class Showings
 {
     static private ShowingsLogic _showingsLogic = new ShowingsLogic();
 
+    public static List<ExtraModel> Extras = new List<ExtraModel>();
+
     public static void ShowAll()
     {
         Console.WriteLine(_showingsLogic.ShowAll());
@@ -143,6 +145,35 @@ public static class Showings
             _ => "none"
         };
 
+
+ 
+       bool answer = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to add extra's?");
+
+        if (answer)
+        {
+            Console.WriteLine("What will be the name for this extra?"); 
+                string extraName = Console.ReadLine();
+            Console.WriteLine("What will be the price for this extra?");
+                    decimal extraPrice = decimal.Parse(Console.ReadLine());
+
+            Console.WriteLine("Is this extra mandatory?");
+
+            bool mandatory = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Is this extra mandatory?");
+
+
+                
+            ExtraModel extra = new(extraName, extraPrice,mandatory);
+
+            Extras.Add(extra);
+
+           
+            
+        }
+ 
+
+        
+
+
         List<string> options = new List<string>
         {
             "Single showing",
@@ -157,7 +188,7 @@ public static class Showings
         switch (userChoice)
         {
             case 1:
-                BookShowings(date, room, moviesLogic, movieId, special);
+                BookShowings(date, room, moviesLogic, movieId,special,Extras);
                 break;
             case 2:
                 pattern = "daily";
@@ -181,7 +212,7 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i), room, moviesLogic, movieId, special);
+                BookShowings(date.AddDays(i), room, moviesLogic, movieId, special,Extras);
             }
         } 
         else if (pattern == "weekly")
@@ -195,14 +226,14 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, special);
+                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, special,Extras);
             }
         }
 
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
 
-    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, string special)
+    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, string special, List<ExtraModel> extras)
     {
         if (!_showingsLogic.IsRoomFree(date, room, moviesLogic.GetMovieById(movieId).Duration, moviesLogic))
         {
@@ -214,7 +245,7 @@ public static class Showings
         }
 
 
-        _showingsLogic.AddShowing(movieId, date, room, special);
+        _showingsLogic.AddShowing(movieId, date, room,special,extras);
         Console.ForegroundColor = ConsoleColor.Green;
         System.Console.WriteLine($"Showing has been successfully added on {date.ToString("dd-MM-yyyy HH:mm:ss")} with special: {special}");
         Console.ResetColor();
@@ -247,4 +278,6 @@ public static class Showings
         string output = $"{dateInput.Trim()} {timeInput.Trim()}";
         return DateTime.ParseExact(output, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
     }
+
+   
 }
