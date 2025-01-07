@@ -12,6 +12,8 @@ public static class Reservation
     private static readonly MoviesLogic _moviesLogic = new ();
     private static readonly AccountsLogic _accountsLogic = new();
 
+ 
+
     private const double BASE_TICKET_PRICE = 10.00;
 
     // Prijzen voor eten en drinken
@@ -155,6 +157,36 @@ public static class Reservation
             }
         }
 
+        List<ExtraModel> selectedExtras = new List<ExtraModel>();
+        double extrasPrice = 0.0;
+
+        Console.WriteLine($"There are {showing.Extras.Count} extras available.");     
+        foreach (var extra in showing.Extras)
+        {
+            // System.Console.WriteLine(extra.Name);
+            // MenuHelper.WaitForKey();
+            if (extra.IsMandatory)
+            {
+                extrasPrice += (double)extra.Price;
+                selectedExtras.Add(extra);
+            }
+
+            else
+            {
+                bool addExtra = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Would you like to add {extra.Name} for {extra.Price:C}?");
+                    if (addExtra)
+                    {
+                        selectedExtras.Add(extra);
+                        extrasPrice += (double)extra.Price;
+                    }
+            }
+
+        }
+
+
+
+
+
         double basePrice = 10.00; 
         double specialPrice = 0.00; 
 
@@ -168,7 +200,7 @@ public static class Reservation
         }
   
        
-        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count + totalFoodPrice + totalDrinkPrice;
+        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count + totalFoodPrice + totalDrinkPrice + extrasPrice;
 
        
         ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
@@ -186,7 +218,7 @@ public static class Reservation
         }
 
         FakeProcessingPayment(5000);
-        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice);
+        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice,selectedExtras);
 
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
@@ -353,7 +385,7 @@ public static class Reservation
 
             _reservationsLogic.RemoveReservation(oldReservation);
             ShowingModel newShowing = upcomingShowings[AccountsLogic.ParseInt(userChoice) - 1];
-            _reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true, oldReservation.Price + 5);
+            _reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true, oldReservation.Price + 5,oldReservation.SelectedExtras);
             Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString(DATEFORMAT)}");
         }
 
