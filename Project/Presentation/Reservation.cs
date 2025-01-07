@@ -1,5 +1,4 @@
 using System.Globalization;
-using Microsoft.VisualBasic;
 using Project.Helpers;
 using Project.Logic.Account;
 using Project.Presentation;
@@ -9,19 +8,25 @@ public static class Reservation
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
     private const string EXTENDEDDATEFORMAT = "dddd d MMMM yyyy";
     private static readonly ReservationsLogic _reservationsLogic = new();
-
     private static readonly ShowingsLogic _showingsLogic = new ();
-
     private static readonly MoviesLogic _moviesLogic = new ();
-
     private static readonly AccountsLogic _accountsLogic = new();
+
+    private const double BASE_TICKET_PRICE = 10.00;
+
+    // Prijzen voor eten en drinken
+    private const double BURGER_PRICE = 18.50;
+    private const double PIZZA_PRICE = 15.95;
+    private const double CHEESE_PRICE = 12.50;
+    private const double WINE_PRICE = 7.50;
+    private const double VITAMIN_WATER_PRICE = 4.95;
+    private const double WATER_PRICE = 3.95;
+    private const double JUICE_PRICE = 3.95;
 
     public static void Make(ShowingModel showing)
     {
         Console.Clear();
-        AccountantLogic accountantLogic = new ();
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
-        
         while (AccountsLogic.CurrentAccount == null)
         {
             System.Console.WriteLine("Please login to continue making your reservation.");
@@ -29,7 +34,6 @@ public static class Reservation
             Thread.Sleep(2000);
             Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
         }
-
         if (!_accountsLogic.IsOldEnough(movie.MinimumAge))
         {
             System.Console.WriteLine("You are not old enough to watch this movie.");
@@ -63,108 +67,93 @@ public static class Reservation
             );
         } while(!confirmSeats);
 
-        int billID = accountantLogic.FindFirstAvailableID();
-        if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to order extra's?")) 
+        List<string> selectedFoods = new List<string>();
+        List<string> selectedDrinks = new List<string>();
+        double totalFoodPrice = 0;
+        double totalDrinkPrice = 0;
+
+       
+        if (MenuHelper.NewMenu(new List<string> { "Yes", "No" }, new List<bool> { true, false }, subtext: "Would you like to order food?"))
         {
-            Console.WriteLine("These are the food choices:");
-            Console.WriteLine("1. Gourmet Truffle Cheeseburger");
-            Console.WriteLine("2. Italian Style Pizza");
-            Console.WriteLine("3. Cheeseboard");
-          
-            Console.WriteLine("Please enter the number of your choice (1-3):");
-            string foodChoice = Console.ReadLine();
-           
-            switch (foodChoice)
+            while (true)
             {
-                case "1":
-                    Console.WriteLine("You have selected Gourmet Truffle Cheeseburger.");
-                    break;
-                case "2":
-                    Console.WriteLine("You have selected Italian Style Pizza.");
-                    break;
-                case "3":
-                    Console.WriteLine("You have selected Cheeseboard.");
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice, please choose a number between 1 and 3.");
-                    return;  
+                Console.WriteLine("=== Food Menu ===");
+                Console.WriteLine($"1. Burger:{BURGER_PRICE}");
+                Console.WriteLine($"2. Pizza: {PIZZA_PRICE}");
+                Console.WriteLine($"3. Cheeseboard: {CHEESE_PRICE}");
+                Console.WriteLine($"4. Done");
+              
+                Console.Write("Please select your food (1-4): ");
+                string foodChoice = Console.ReadLine();
+                switch (foodChoice)
+                {
+                    case "1":
+                        selectedFoods.Add($"Gourmet Truffle Cheeseburger: {BURGER_PRICE}");
+                        totalFoodPrice += BURGER_PRICE;
+                        break;
+                    case "2":
+                        selectedFoods.Add($"Italian Style Pizza: {PIZZA_PRICE}");
+                        totalFoodPrice += PIZZA_PRICE;
+                        break;
+                    case "3":
+                        selectedFoods.Add($"Cheeseboard: {CHEESE_PRICE}");
+                        totalFoodPrice += CHEESE_PRICE;
+                        break;
+                    case "4":
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice, please choose a valid option.");
+                        continue;
+                }
+                if (foodChoice == "4") break; 
             }
-
-            Console.WriteLine("Would you like anything to drink?");
-            Console.WriteLine("These are the drink choices:");
-            Console.WriteLine("1. Red Wine");
-            Console.WriteLine("2. White Wine");
-            Console.WriteLine("3. Vitamin Water");
-            Console.WriteLine("4. Sparkling Water");
-            Console.WriteLine("5. Orange Juice");
-   
-            Console.WriteLine("Please enter the number of your drink choice (1-5):");
-            string drinkChoice = Console.ReadLine();
-            string name;
-            switch (drinkChoice)
-            {
-                case "1":
-                    Console.WriteLine("You have selected Red Wine.");
-                    name = "Red Wine";
-                    break;
-                case "2":
-                    Console.WriteLine("You have selected White Wine.");
-                    name = "White Wine";
-                    break;
-                case "3":
-                    Console.WriteLine("You have selected Vitamin Water.");
-                    name = "Vitamin Water";
-                    break;
-
-                case "4":
-                    Console.WriteLine("You have selected Sparkling Water.");
-                    name = "Sparkling Water";
-                    break;
-
-                case "5":
-                    Console.WriteLine("You have selected Orange Juice.");
-                    name = "Orange Juice";
-
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice, please choose a number between 1 and 5.");
-                    return;  // Exit if invalid drink choice
-            }
-
-            Console.WriteLine("Thank you for your order! Your food and drink will be prepared.");
-
-            double prijsvanStoelen = selectedSeats.Count * 10;
-            List<Item> items = new();
-            Item item = new(name,2.50);
-            Item ticket = new("Ticket",prijsvanStoelen);
-            items.Add(item);
-            items.Add(ticket);
-
-            
-
-          
-            double total = 0;
-            items.ForEach(i => total += i.Price);
-
-            BillModel bill = new(billID,false, items, total,DateTime.Now);
-
-            accountantLogic.AddBill(bill);
-
         }
-        else
-        {
-            Console.WriteLine("No extras ordered. Thank you for your response.");
-        }
+
         
-        string payment = "X";
-        while (payment != "")
+        if (MenuHelper.NewMenu(new List<string> { "Yes", "No" }, new List<bool> { true, false }, subtext: "Would you like to order drinks?"))
         {
-            Console.Clear();
-            Console.WriteLine("Please enter your bank details:");
-            payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine()!);
-            Console.WriteLine(payment);
+            while (true)
+            {
+                Console.WriteLine("=== Drinks Menu ===");
+                Console.WriteLine($"1. Red Wine: {WINE_PRICE}");
+                Console.WriteLine($"2. White Wine: {WINE_PRICE}");
+                Console.WriteLine($"3. Vitamin Water: {VITAMIN_WATER_PRICE}");
+                Console.WriteLine($"4. Sparkling Water: {WATER_PRICE}");
+                Console.WriteLine($"5. Orange Juice: {JUICE_PRICE}");
+                Console.WriteLine($"6. Done");
+                string drinkChoice = Console.ReadLine();
+                switch (drinkChoice)
+                {
+                    case "1":
+                        selectedDrinks.Add("Red Wine price");
+                        totalDrinkPrice += WINE_PRICE;
+                        break;
+                    case "2":
+                        selectedDrinks.Add("White Wine");
+                        totalDrinkPrice += WINE_PRICE;
+                        break;
+                    case "3":
+                        selectedDrinks.Add("Vitamin Water");
+                        totalDrinkPrice += VITAMIN_WATER_PRICE;
+                        break;
+                    case "4":
+                        selectedDrinks.Add("Sparkling Water");
+                        totalDrinkPrice += WATER_PRICE;
+                        break;
+                    case "5":
+                        selectedDrinks.Add("Orange Juice");
+                        totalDrinkPrice += JUICE_PRICE;
+                        break;
+                    case "6":
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice, please choose a valid option.");
+                        continue;
+                }
+                if (drinkChoice == "6") break; 
+            }
         }
-    
+
         double basePrice = 10.00; 
         double specialPrice = 0.00; 
 
@@ -172,12 +161,28 @@ public static class Reservation
         {
             specialPrice += 5.00;
         }
-        else if (showing.Special == "Dolby")
+        if (showing.Special == "Dolby")
         {
             specialPrice += 3.50;
         }
   
-        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count;
+       
+        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count + totalFoodPrice + totalDrinkPrice;
+
+       
+        ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
+        
+        
+        string payment = "";        
+        while (string.IsNullOrEmpty(payment))
+        {
+            Console.Clear();
+            ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
+            Console.WriteLine("Please enter your bank details: (example NL91ABNA0417164300)");
+            Console.Write("IBAN: ");
+            payment = Console.ReadLine(); 
+            Console.WriteLine(payment);
+        }
 
         FakeProcessingPayment(5000);
         ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, billID);
@@ -189,11 +194,44 @@ public static class Reservation
         Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
+    private static void ShowBill(List<string> selectedFoods, List<string> selectedDrinks, int numberOfTickets, double totalPrice)
+    {
+        Console.Clear();
+
+        Console.WriteLine("===== Order Summary =====\n");
+
+     
+        Console.WriteLine($"Tickets: {numberOfTickets} x €{BASE_TICKET_PRICE:F2}");
+
+      
+        if (selectedFoods.Count > 0)
+        {
+            Console.WriteLine("\nFood:");
+            foreach (var food in selectedFoods)
+            {
+                Console.WriteLine($"  - {food}");
+            }
+        }
+
+       
+        if (selectedDrinks.Count > 0)
+        {
+            Console.WriteLine("\nDrinks:");
+            foreach (var drink in selectedDrinks)
+            {
+                Console.WriteLine($"  - {drink}");
+            }
+        }
+
+      
+        Console.WriteLine($"\nTotal to pay: €{totalPrice:F2}");
+        Console.WriteLine("\n=========================");
+    }
 
     public static void ChooseShowing(MovieModel movie)
     {
         Console.Clear();
-        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).ToList<object>();
+        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).ToList<object>();
         if (showings.Count() == 0)
         {
             System.Console.WriteLine("There are no upcoming showings for this movie");
@@ -203,9 +241,9 @@ public static class Reservation
         }
         List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(DATEFORMAT)).ToList();
         options.Add("Return");
-        showings.Add(Menus.LoggedInMenu);
+        showings.Add(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
 
-        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress:");
+        var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress");
         ShowingModel selectedShowing = (ShowingModel)show;
         Make(selectedShowing);
     }
@@ -284,7 +322,7 @@ public static class Reservation
     // CHANGE SEAT IMPLEMENTATION AFTER YOURI IS DONE
     private static void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
     {
-        List<ShowingModel> upcomingShowings = _showingsLogic.GetUpcomingShowingsOfMovie(movieTitle);
+        List<ShowingModel> upcomingShowings = _showingsLogic.GetUpcomingShowingsOfMovie(movieTitle, CinemaLogic.CurrentCinema.Id);
         if (upcomingShowings.Count == 1)
         {
             Console.WriteLine("There are no available shows planned, please cancel your reservation if you are unavailable at that time.");
@@ -323,6 +361,13 @@ public static class Reservation
 
     public static void SelectDate()
     {
+        if (CinemaLogic.CurrentCinema == null)
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please select a cinema before browsing movies.");
+            Menus.ChooseCinema(SelectDate);
+            return;
+        }
         // print less than 2 weeks of showings if it doesn't fit
         int howManyDatesFitOnScreen = Console.WindowHeight - 4;
         int actualAmountOfDatesShown = Math.Min(howManyDatesFitOnScreen, 14);
@@ -365,7 +410,7 @@ public static class Reservation
 
     private static void SelectShowingOnDate(MovieModel movie, DateTime date)
     {
-        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).Where(s => s.Date.Date == date.Date).ToList();
+        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).Where(s => s.Date.Date == date.Date).ToList();
         List<string> showingOptions = showings.Select(s => $"Room {s.Room}: {s.Date.ToString("HH:mm")}").ToList();
 
         Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(EXTENDEDDATEFORMAT)}"));

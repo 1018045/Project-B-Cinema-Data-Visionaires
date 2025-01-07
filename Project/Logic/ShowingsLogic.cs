@@ -1,39 +1,13 @@
-using System.Globalization;
-
 public class ShowingsLogic
 {
-    private const int CLEANUP_TIME_BETWEEN_SHOWINGS = 30;
-    
     public List<ShowingModel> Showings {get; private set;}
+    
+    private const int CLEANUP_TIME_BETWEEN_SHOWINGS = 30;
 
 
     public ShowingsLogic()
     {
         Showings = ShowingsAccess.LoadAll();
-    }
-
-    // Returns all showings a particular user has reserved
-    public List<ShowingModel> FindReservationByUserID(int id)
-    {
-        List<ShowingModel> output = new();
-        foreach (ShowingModel showing in Showings)
-        {
-            if (showing.Id == id)
-                output.Add(showing);
-        }
-        return output;
-    }
-
-    public string FindShowingById(int id)
-    {
-        foreach (ShowingModel showing in Showings)
-        {
-            if (showing.Id == id)
-            {
-                return ToString(showing);
-            }
-        }
-        return "Showing not found!";
     }
 
     public List<ShowingModel> FindShowingsByMovieId(int id)
@@ -42,6 +16,19 @@ public class ShowingsLogic
         foreach (ShowingModel showing in Showings)
         {
             if (showing.MovieId == id && showing.Date > DateTime.Now)
+            {
+                showings.Add(showing);
+            }
+        }
+        return showings.OrderBy(s => s.Date).ToList();
+    }
+
+    public List<ShowingModel> FindShowingsByMovieId(int id, int cinemaId)
+    {
+        List<ShowingModel> showings = new();
+        foreach (ShowingModel showing in Showings)
+        {
+            if (showing.MovieId == id && showing.Date > DateTime.Now && showing.CinemaId == cinemaId)
             {
                 showings.Add(showing);
             }
@@ -80,32 +67,7 @@ public class ShowingsLogic
         return output;
     }
 
-    public string ShowUpcoming(bool showId = false) 
-    {
-        string output = "";
-        foreach (ShowingModel showing in Showings)
-        {
-            if (showing.Date > DateTime.Now)
-            {
-                output += showId ? $"{showing.Id}. " : "";
-                output += ToString(showing) + "\n";
-            }
-        }
-        return output;
-    }
-
-    public string ShowUpcoming(DateTime date) 
-    {
-        string output = "";
-        foreach (ShowingModel showing in Showings)
-        {
-            if (showing.Date.Date == date.Date)
-                output += ToString(showing);
-        }
-        return output;
-    }
-
-    public List<ShowingModel> GetUpcomingShowingsOfMovie(string movieName)
+    public List<ShowingModel> GetUpcomingShowingsOfMovie(string movieName, int cinemaId)
     {
         MoviesLogic log = new();
         List<ShowingModel> showings = new();
@@ -117,10 +79,10 @@ public class ShowingsLogic
         return showings;
     }
 
-    public void AddShowing(int movieId, DateTime date, int room, string special)
+    public void AddShowing(int movieId, DateTime date, int room, int cinemaId, string special)
     {
         int newId = FindNextAvailableId();
-        var showing = new ShowingModel(newId, movieId, date, room, special);
+        var showing = new ShowingModel(newId, movieId, date, room, cinemaId, special);
         Showings.Add(showing);
         ShowingsAccess.WriteAll(Showings);
     }
@@ -162,19 +124,18 @@ public class ShowingsLogic
         return pointer;
     }
 
-    public bool IsRoomFree(DateTime newDate, int room, int showingDuration, MoviesLogic log)
+    public bool IsRoomFree(DateTime newDate, int room, int showingDuration, int chosenCinemaId)
     {
         foreach (ShowingModel showing in Showings)
         {
-            if (showing.Room == room)
+            if (showing.Room == room && showing.CinemaId == chosenCinemaId)
             {   // de showings overlappen:
-                // alleen als het BEGIN van showing 2 EERDER is dan het begin van showing 1, en het EINDE van showing 2 LATER is dan het begin van showing 1
+                // alleen als het BEGIN van showing 2 EERDER is dan het begin van showing 1, en het EINDE van showing 2 LATER is dan het begin van showing 1 (of andersom)
                 if ((newDate <= showing.Date && newDate.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= showing.Date) ||
                     (showing.Date <= newDate && showing.Date.AddMinutes(CLEANUP_TIME_BETWEEN_SHOWINGS + showingDuration) >= newDate))
                 {
                     return false;
-                }
-                
+                }             
             }
         }
         return true;

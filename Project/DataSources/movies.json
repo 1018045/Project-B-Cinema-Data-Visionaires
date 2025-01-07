@@ -5,8 +5,13 @@
     "duration": 94,
     "minimumAge": 18,
     "summary": "A darkly comedic crime drama that intertwines multiple storylines involving gangsters, hitmen, and an enigmatic briefcase.",
-    "actors": ["John Travolta", "Uma Thurman", "Samuel L. Jackson"],
-    "director": "Quentin Tarantino"
+    "actors": [
+      "John Travolta",
+      "Uma Thurman",
+      "Samuel L. Jackson"
+    ],
+    "director": "Quentin Tarantino",
+    "isPromoted": true
   },
   {
     "id": 4,
@@ -14,8 +19,13 @@
     "duration": 94,
     "minimumAge": 17,
     "summary": "A heartfelt story of an extraordinary man who witnesses and influences some of the defining moments of the 20th century.",
-    "actors": ["Tom Hanks", "Robin Wright", "Gary Sinise"],
-    "director": "Robert Zemeckis"
+    "actors": [
+      "Tom Hanks",
+      "Robin Wright",
+      "Gary Sinise"
+    ],
+    "director": "Robert Zemeckis",
+    "isPromoted": false
   },
   {
     "id": 5,
@@ -23,8 +33,13 @@
     "duration": 95,
     "minimumAge": 13,
     "summary": "A mind-bending thriller about a thief who infiltrates dreams to steal secrets, but faces challenges in his quest for redemption.",
-    "actors": ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Elliot Page"],
-    "director": "Christopher Nolan"
+    "actors": [
+      "Leonardo DiCaprio",
+      "Joseph Gordon-Levitt",
+      "Elliot Page"
+    ],
+    "director": "Christopher Nolan",
+    "isPromoted": true
   },
   {
     "id": 6,
@@ -32,8 +47,13 @@
     "duration": 96,
     "minimumAge": 14,
     "summary": "A provocative drama about an insomniac and a soap salesman who form an underground fight club that evolves into something dangerous.",
-    "actors": ["Brad Pitt", "Edward Norton", "Helena Bonham Carter"],
-    "director": "David Fincher"
+    "actors": [
+      "Brad Pitt",
+      "Edward Norton",
+      "Helena Bonham Carter"
+    ],
+    "director": "David Fincher",
+    "isPromoted": false
   },
   {
     "id": 0,
@@ -41,8 +61,13 @@
     "duration": 136,
     "minimumAge": 16,
     "summary": "A hacker discovers the world is a simulated reality and joins a rebellion to free humanity from its digital confines.",
-    "actors": ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"],
-    "director": "The Wachowskis"
+    "actors": [
+      "Keanu Reeves",
+      "Laurence Fishburne",
+      "Carrie-Anne Moss"
+    ],
+    "director": "The Wachowskis",
+    "isPromoted": false
   },
   {
     "id": 1,
@@ -50,8 +75,13 @@
     "duration": 91,
     "minimumAge": 14,
     "summary": "An epic tale of a powerful mafia family and the struggles of its reluctant heir to carry on its legacy.",
-    "actors": ["Marlon Brando", "Al Pacino", "James Caan"],
-    "director": "Francis Ford Coppola"
+    "actors": [
+      "Marlon Brando",
+      "Al Pacino",
+      "James Caan"
+    ],
+    "director": "Francis Ford Coppola",
+    "isPromoted": false
   },
   {
     "id": 14,
@@ -59,17 +89,27 @@
     "duration": 113,
     "minimumAge": 15,
     "summary": "An animated coming-of-age story about a lion prince who must reclaim his throne after tragedy and betrayal.",
-    "actors": ["Matthew Broderick", "James Earl Jones", "Jeremy Irons"],
-    "director": "Roger Allers and Rob Minkoff"
+    "actors": [
+      "Matthew Broderick",
+      "James Earl Jones",
+      "Jeremy Irons"
+    ],
+    "director": "Roger Allers and Rob Minkoff",
+    "isPromoted": false
   },
   {
     "id": 2,
     "title": "The Dark Knight",
     "duration": 92,
     "minimumAge": 15,
-    "summary": "A gritty superhero film about Batman's battle against the anarchic Joker, testing his morality and resolve.",
-    "actors": ["Christian Bale", "Heath Ledger", "Aaron Eckhart"],
-    "director": "Christopher Nolan"
+    "summary": "A gritty superhero film about Batman\u0027s battle against the anarchic Joker, testing his morality and resolve.",
+    "actors": [
+      "Christian Bale",
+      "Heath Ledger",
+      "Aaron Eckhart"
+    ],
+    "director": "Christopher Nolan",
+    "isPromoted": false
   },
   {
     "id": 7,
@@ -77,7 +117,12 @@
     "duration": 97,
     "minimumAge": 15,
     "summary": "The first chapter of a grand fantasy epic, where a fellowship sets out to destroy a powerful ring and save Middle-earth.",
-    "actors": ["Elijah Wood", "Ian McKellen", "Viggo Mortensen"],
-    "director": "Peter Jackson"
+    "actors": [
+      "Elijah Wood",
+      "Ian McKellen",
+      "Viggo Mortensen"
+    ],
+    "director": "Peter Jackson",
+    "isPromoted": false
   }
 ]
