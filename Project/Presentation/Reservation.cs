@@ -126,23 +126,23 @@ public static class Reservation
                 switch (drinkChoice)
                 {
                     case "1":
-                        selectedDrinks.Add("Red Wine price");
+                        selectedDrinks.Add($"Red Wine price {WINE_PRICE}");
                         totalDrinkPrice += WINE_PRICE;
                         break;
                     case "2":
-                        selectedDrinks.Add("White Wine");
+                        selectedDrinks.Add($"White Wine price {WINE_PRICE}");
                         totalDrinkPrice += WINE_PRICE;
                         break;
                     case "3":
-                        selectedDrinks.Add("Vitamin Water");
+                        selectedDrinks.Add($"Vitamin Water price {VITAMIN_WATER_PRICE}");
                         totalDrinkPrice += VITAMIN_WATER_PRICE;
                         break;
                     case "4":
-                        selectedDrinks.Add("Sparkling Water");
+                        selectedDrinks.Add($"Sparkling Water price {WATER_PRICE}");
                         totalDrinkPrice += WATER_PRICE;
                         break;
                     case "5":
-                        selectedDrinks.Add("Orange Juice");
+                        selectedDrinks.Add($"Orange Juice price {JUICE_PRICE}");
                         totalDrinkPrice += JUICE_PRICE;
                         break;
                     case "6":
