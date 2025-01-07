@@ -1,5 +1,4 @@
 using System.Globalization;
-using Microsoft.VisualBasic;
 using Project.Helpers;
 using Project.Logic.Account;
 using Project.Presentation;
@@ -9,11 +8,8 @@ public static class Reservation
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
     private const string EXTENDEDDATEFORMAT = "dddd d MMMM yyyy";
     private static readonly ReservationsLogic _reservationsLogic = new();
-
     private static readonly ShowingsLogic _showingsLogic = new ();
-
     private static readonly MoviesLogic _moviesLogic = new ();
-
     private static readonly AccountsLogic _accountsLogic = new();
 
     private const double BASE_TICKET_PRICE = 10.00;
@@ -30,8 +26,8 @@ public static class Reservation
     public static void Make(ShowingModel showing)
     {
         Console.Clear();
+
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
-        
         while (AccountsLogic.CurrentAccount == null)
         {
             System.Console.WriteLine("Please login to continue making your reservation.");
@@ -39,7 +35,6 @@ public static class Reservation
             Thread.Sleep(2000);
             Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
         }
-
         if (!_accountsLogic.IsOldEnough(movie.MinimumAge))
         {
             System.Console.WriteLine("You are not old enough to watch this movie.");
@@ -237,7 +232,7 @@ public static class Reservation
     public static void ChooseShowing(MovieModel movie)
     {
         Console.Clear();
-        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).ToList<object>();
+        List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).ToList<object>();
         if (showings.Count() == 0)
         {
             System.Console.WriteLine("There are no upcoming showings for this movie");
@@ -328,7 +323,7 @@ public static class Reservation
     // CHANGE SEAT IMPLEMENTATION AFTER YOURI IS DONE
     private static void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
     {
-        List<ShowingModel> upcomingShowings = _showingsLogic.GetUpcomingShowingsOfMovie(movieTitle);
+        List<ShowingModel> upcomingShowings = _showingsLogic.GetUpcomingShowingsOfMovie(movieTitle, CinemaLogic.CurrentCinema.Id);
         if (upcomingShowings.Count == 1)
         {
             Console.WriteLine("There are no available shows planned, please cancel your reservation if you are unavailable at that time.");
@@ -367,6 +362,13 @@ public static class Reservation
 
     public static void SelectDate()
     {
+        if (CinemaLogic.CurrentCinema == null)
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please select a cinema before browsing movies.");
+            Menus.ChooseCinema(SelectDate);
+            return;
+        }
         // print less than 2 weeks of showings if it doesn't fit
         int howManyDatesFitOnScreen = Console.WindowHeight - 4;
         int actualAmountOfDatesShown = Math.Min(howManyDatesFitOnScreen, 14);
@@ -409,7 +411,7 @@ public static class Reservation
 
     private static void SelectShowingOnDate(MovieModel movie, DateTime date)
     {
-        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id).Where(s => s.Date.Date == date.Date).ToList();
+        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).Where(s => s.Date.Date == date.Date).ToList();
         List<string> showingOptions = showings.Select(s => $"Room {s.Room}: {s.Date.ToString("HH:mm")}").ToList();
 
         Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(EXTENDEDDATEFORMAT)}"));

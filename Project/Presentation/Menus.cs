@@ -4,11 +4,29 @@ using Project.Presentation;
 
 static class Menus
 {
+    static public void ChooseCinema(Action originMenu)
+    {
+        CinemaLogic cinemaLogic = new();
+        List<string> options = cinemaLogic.Cinemas.Select(c => c.Name).ToList();
+        List<Action> actions = new();
+        foreach (CinemaModel cinema in cinemaLogic.Cinemas)
+        {
+            actions.Add(() => {
+                cinemaLogic.ChangeCinema(cinema);
+                originMenu.Invoke();
+            });
+        }
+        options.Add("Cancel");
+        actions.Add(originMenu);
+        MenuHelper.NewMenu(options, actions, "Please select a cinema location");
+    }
+
     static public void GuestMenu()
     {
         MoviesLogic _moviesLogic = new();
         List<string> options = new List<string>
         {
+            "Select a cinema location",
             "Browse movies",
             "Select a date",
             "Login",
@@ -19,6 +37,7 @@ static class Menus
         };
         List<Action> actions = new List<Action>
         {
+            () => ChooseCinema(GuestMenu),
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Login(),
@@ -27,7 +46,7 @@ static class Menus
             AboutContact,
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies, showMenu: true);
+        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
     }
 
     static public void AboutContact()
@@ -66,6 +85,7 @@ static class Menus
 
         List<string> options = new List<string>
         {
+            "Select a cinema location",
             "Browse movies",
             "Select a date",
             "Your reservations",
@@ -76,6 +96,7 @@ static class Menus
         };
         List<Action> actions = new List<Action>
         {
+            () => ChooseCinema(LoggedInMenu),
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
             () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
@@ -175,7 +196,7 @@ static class Menus
         {
             "Manage movies",
             "Manage showings",
-            "Movie promotions",
+            "Manage movie promotions",
             "View all users",
             "Remove a user",
             "Add an Employee",
@@ -183,6 +204,7 @@ static class Menus
             "Remove job vacancy",
             "View all vacancies",
             "Show accountant options",
+            "Manage cinema locations",
             "Logout"
         };
         List<Action> actions = new List<Action>
@@ -197,6 +219,7 @@ static class Menus
             RemoveJobVacancy,
             ViewAllVacancies,
             AccountantMenu,
+            CinemaLocations.ChooseCinemaLocationToManage,
             GuestMenu
         };
         MenuHelper.NewMenu(options, actions, "Admin menu");
@@ -348,8 +371,6 @@ static class Menus
         Console.WriteLine(accountantLogic.CalculateCosts());
     }    
    
-
-
     private static void AddJobVacancy()
     {
         Console.Clear();
