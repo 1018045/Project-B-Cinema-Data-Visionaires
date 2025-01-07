@@ -5,7 +5,8 @@
     "date": "19-12-2024 18:00:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 1,
@@ -13,7 +14,8 @@
     "date": "20-12-2024 18:00:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 2,
@@ -21,7 +23,8 @@
     "date": "18-12-2024 19:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 3,
@@ -29,7 +32,8 @@
     "date": "25-12-2024 19:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": null
   },
   {
     "id": 4,
@@ -37,7 +41,8 @@
     "date": "01-01-2025 19:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 5,
@@ -45,7 +50,8 @@
     "date": "08-01-2025 19:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 6,
@@ -53,7 +59,8 @@
     "date": "15-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 7,
@@ -61,7 +68,8 @@
     "date": "16-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": null
   },
   {
     "id": 8,
@@ -69,7 +77,8 @@
     "date": "17-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 9,
@@ -77,7 +86,8 @@
     "date": "18-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 10,
@@ -85,7 +95,8 @@
     "date": "19-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 11,
@@ -93,7 +104,8 @@
     "date": "20-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 12,
@@ -101,7 +113,8 @@
     "date": "21-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 13,
@@ -109,7 +122,8 @@
     "date": "22-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 14,
@@ -117,7 +131,8 @@
     "date": "23-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 15,
@@ -125,7 +140,8 @@
     "date": "24-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 16,
@@ -133,7 +149,8 @@
     "date": "25-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 17,
@@ -141,7 +158,8 @@
     "date": "26-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 18,
@@ -149,7 +167,8 @@
     "date": "27-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 19,
@@ -157,7 +176,8 @@
     "date": "28-01-2025 18:30:00",
     "room": 1,
     "special": "",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 20,
@@ -165,7 +185,8 @@
     "date": "11-10-2025 02:00:00",
     "room": 1,
     "special": "Premier",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 21,
@@ -173,7 +194,8 @@
     "date": "01-02-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 22,
@@ -181,7 +203,8 @@
     "date": "08-02-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 23,
@@ -189,7 +212,8 @@
     "date": "15-02-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 24,
@@ -197,7 +221,8 @@
     "date": "22-02-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 25,
@@ -205,7 +230,8 @@
     "date": "01-03-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 26,
@@ -213,7 +239,8 @@
     "date": "08-03-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 27,
@@ -221,7 +248,8 @@
     "date": "15-03-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 28,
@@ -229,7 +257,8 @@
     "date": "22-03-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 29,
@@ -237,7 +266,8 @@
     "date": "29-03-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 30,
@@ -245,7 +275,8 @@
     "date": "05-04-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 31,
@@ -253,7 +284,8 @@
     "date": "12-04-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
   },
   {
     "id": 32,
@@ -261,6 +293,22 @@
     "date": "19-04-2025 19:30:00",
     "room": 2,
     "special": "Dolby",
-    "cinema_id": 0
+    "cinema_id": 0,
+    "Extras": []
+  },
+  {
+    "id": 33,
+    "movieId": 0,
+    "date": "10-10-2025 18:00:00",
+    "room": 1,
+    "special": "Premier",
+    "cinema_id": 0,
+    "Extras": [
+      {
+        "Name": "Sentinel Costumes",
+        "Price": 25,
+        "IsMandatory": false
+      }
+    ]
   }
 ]

@@ -217,7 +217,18 @@ public static class Reservation
         }
 
         FakeProcessingPayment(5000);
-        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice,selectedExtras);
+        AccountantLogic accountantLogic = new();
+        BillModel bill = new BillModel(
+            accountantLogic.FindFirstAvailableID(),
+            AccountsLogic.CurrentAccount.Id,
+            true,
+            totalPrice,
+            DateTime.Now
+        );
+        accountantLogic.AddBill(bill);
+        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice, selectedExtras);
+        reservation.SetBillId(bill.ID);
+        _reservationsLogic.UpdateReservation(reservation);
 
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;

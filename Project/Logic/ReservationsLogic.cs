@@ -50,13 +50,7 @@ public class ReservationsLogic
     // Returns all reservations of a particular user
     public List<ReservationModel> FindReservationByUserID(int userId)
     {
-        List<ReservationModel> output = new();
-        foreach (ReservationModel reservation in Reservations)
-        {
-            if (reservation.UserId == userId)
-                output.Add(reservation);
-        }
-        return output;
+        return Reservations.Where(r => r.UserId == userId).ToList();
     }
 
     // returns the first int ID that is not already used in another reservation
@@ -101,5 +95,13 @@ public class ReservationsLogic
         ReservationsAccess.WriteAll(Reservations);
     }
 
-    
+    public void UpdateReservation(ReservationModel reservation)
+    {
+        var index = Reservations.FindIndex(r => r.Id == reservation.Id);
+        if (index != -1)
+        {
+            Reservations[index] = reservation;
+            ReservationsAccess.WriteAll(Reservations);
+        }
+    }
 }

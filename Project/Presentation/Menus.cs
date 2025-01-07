@@ -88,10 +88,9 @@ static class Menus
             "Select a cinema location",
             "Browse movies",
             "Select a date",
-            "Your reservations",
+            "View Reservations and Bills",
             "Manage your account",
             "about/contact",
-           
             "Log out"
         };
         List<Action> actions = new List<Action>
@@ -99,10 +98,9 @@ static class Menus
             () => ChooseCinema(LoggedInMenu),
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
-            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
+            BillPresentation.ViewUserBillsAndReservations,
             AccountPresentation.Menu,
             AboutContact,
-         
             () => 
             {
                 AccountsLogic.LogOut();
