@@ -179,8 +179,8 @@ public static class Reservation
         ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
         
         
-        string payment = "X";        
-        while (payment != "")
+        string payment = "";        
+        while (string.IsNullOrEmpty(payment))
         {
             Console.Clear();
             Console.WriteLine($"Total to pay: €{totalPrice:F2}"); 
