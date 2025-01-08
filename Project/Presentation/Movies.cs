@@ -209,12 +209,18 @@ public static class Movies
         if (CinemaLogic.CurrentCinema == null)
         {
             Console.Clear();
-            System.Console.WriteLine("Please select a cinema before browsing movies.");
-            Menus.ChooseCinema(() => MoviesBrowser(0, customerId), () => 
+            if (customerId != -1)
             {
-                if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
-                else Menus.LoggedInMenu();
-            });
+                Menus.ChooseCinema(() => MoviesBrowser(0, customerId), Menus.StaffMenu);
+            }
+            else
+            {
+                Menus.ChooseCinema(() => MoviesBrowser(0, customerId), () => 
+                {
+                    if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
+                    else Menus.LoggedInMenu();
+                });
+            }
             return;
         }
         // Window needs to have a height of at least 17 to show all movie info
