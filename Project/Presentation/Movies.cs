@@ -252,6 +252,11 @@ public static class Movies
         do
         {
             Console.Clear();
+            while (Console.WindowWidth < 149)
+            {
+                System.Console.WriteLine("Please increase the width of your window to continue...");
+                Thread.Sleep(1000);
+            }
             if (currentIndex != 0 && currentIndex != movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 17)}Right -->");
             else if (currentIndex == 0) Console.Write($"{new String(' ', Console.WindowWidth - 9)}Right -->");
             else if (currentIndex == movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 8)}");
