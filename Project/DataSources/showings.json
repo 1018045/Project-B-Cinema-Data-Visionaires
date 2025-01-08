@@ -171,7 +171,7 @@
     "id": 21,
     "movieId": 1,
     "date": "01-02-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -179,7 +179,7 @@
     "id": 22,
     "movieId": 1,
     "date": "08-02-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -187,7 +187,7 @@
     "id": 23,
     "movieId": 1,
     "date": "15-02-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -195,7 +195,7 @@
     "id": 24,
     "movieId": 1,
     "date": "22-02-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -203,7 +203,7 @@
     "id": 25,
     "movieId": 1,
     "date": "01-03-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -211,7 +211,7 @@
     "id": 26,
     "movieId": 1,
     "date": "08-03-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -219,7 +219,7 @@
     "id": 27,
     "movieId": 1,
     "date": "15-03-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -227,7 +227,7 @@
     "id": 28,
     "movieId": 1,
     "date": "22-03-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -235,7 +235,7 @@
     "id": 29,
     "movieId": 1,
     "date": "29-03-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -243,7 +243,7 @@
     "id": 30,
     "movieId": 1,
     "date": "05-04-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -251,7 +251,7 @@
     "id": 31,
     "movieId": 1,
     "date": "12-04-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   },
@@ -259,7 +259,7 @@
     "id": 32,
     "movieId": 1,
     "date": "19-04-2025 19:30:00",
-    "room": 2,
+    "room": 1,
     "special": "Dolby",
     "cinema_id": 0
   }

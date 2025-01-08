@@ -1,4 +1,5 @@
-﻿using static Project.Logic.SeatSelection.GridNavigator;
+﻿using Project.Logic.SeatSelection;
+using static Project.Logic.SeatSelection.GridNavigator;
 
 namespace Project.Helpers;
 
@@ -106,42 +107,6 @@ public static class SeatSelectionHelpers
         }
 
         return false;
-    }
-
-    public static Dictionary<int, List<int>> GenerateRowSeatMap(RoomModel room)
-    {
-        var rowSeatMap = new Dictionary<int, List<int>>();
-
-        AddSeatsToMap(room.SeatCategories.High, rowSeatMap);
-        AddSeatsToMap(room.SeatCategories.Medium, rowSeatMap);
-        AddSeatsToMap(room.SeatCategories.Low, rowSeatMap);
-
-        return rowSeatMap;
-    }
-
-    private static void AddSeatsToMap(SeatCategory category, Dictionary<int, List<int>> rowSeatMap)
-    {
-        foreach (var row in category.Rows)
-        {
-            if (!rowSeatMap.ContainsKey(row.RowNumber))
-            {
-                rowSeatMap[row.RowNumber] = new List<int>();
-            }
-
-            rowSeatMap[row.RowNumber].AddRange(row.Seats);
-        }
-    }
-
-    public static void AddSeats(SeatCategory category, ref Dictionary<Position, ConsoleColor> dictionary)
-    {
-        var color = StringToConsoleColor(category.Color);
-        foreach (var row in category.Rows)
-        {
-            foreach (var seat in row.Seats)
-            {
-                dictionary[new Position(seat, row.RowNumber)] = color;
-            }
-        }
     }
 
     public static ConsoleColor StringToConsoleColor(string colorName)

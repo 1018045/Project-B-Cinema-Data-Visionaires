@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Project.Presentation;
 using static Project.Helpers.SeatSelectionHelpers;
 using static Project.Logic.SeatSelection.GridNavigator;
@@ -29,7 +30,7 @@ public class LayoutGenerator
     /*private void BuildSeatingString(out StringBuilder sb)
     {
         sb = new StringBuilder();
-        
+
         var rows = _room.Rows;
         var seatDepth = _room.SeatDepth;
         var textWidth = 3 + (seatDepth * 3) + (seatDepth - 9);
@@ -63,7 +64,7 @@ public class LayoutGenerator
         sb.AppendLine(separator);
     }*/
 
-    public void BuildSeatingLayoutV2()
+    /*public void BuildSeatingLayoutV2()
     {
         var high = _room.SeatCategories.High;
         var medium = _room.SeatCategories.Medium;
@@ -121,6 +122,44 @@ public class LayoutGenerator
             }
             colors.Add(ConsoleColor.Black); //add redundant for newline entry
             SeatingPresentation.PrintInColor(sb + "\n", colors);
+        }
+    }*/
+
+    //todo add the layout to the param so that the isreserver and selected can be changed properly and pass as a ref
+    public void BuildSeatingLayoutV3(List<List<Seat>> layout)
+    {
+        foreach (var row in layout)
+        {
+            List<ConsoleColor> colors = [];
+            var sb = new StringBuilder();
+
+            //add row num
+            /*sb.Append("");
+            colors.AddRange([ConsoleColor.White, ConsoleColor.White]);*/
+
+            foreach (var seat in row)
+            {
+                if (seat.Position.Equals(_navigator.Cursor))
+                    seat.IsSelected = true;
+
+                var color = seat switch
+                {
+                    { IsSelected: true } => ConsoleColor.Cyan,
+                    { IsDecoy: true } => ConsoleColor.Black,
+                    { IsTaken: true} => ConsoleColor.DarkGray,
+                    { IsReserved: true } => ConsoleColor.Magenta,
+                    _ => seat.Color
+                };
+
+                sb.Append(" \u25a0 "); //3
+                colors.AddRange([ConsoleColor.White, color, ConsoleColor.White]); //3
+
+                seat.IsSelected = false;
+            }
+            sb.Append('\n'); //1
+            colors.Add(ConsoleColor.White); //1
+
+            SeatingPresentation.PrintInColor(sb.ToString(), colors);
         }
     }
 }

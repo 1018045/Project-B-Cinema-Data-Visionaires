@@ -13,7 +13,7 @@ public class SeatingPresentation
             Console.WriteLine("How many seats would you like to book?");
             var seatAmountInput = Console.ReadLine() ?? "";
             resolved = int.TryParse(seatAmountInput, out seatCount)
-                       && CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), GenerateRowSeatMap(GetRoomByShowing(showingId)));
+                       /*&& CanFitAdjacentSeats(seatCount, GetTakenSeats(showingId), GenerateRowSeatMap(GetRoomByShowing(showingId)))*/;
         }
 
         if (seatCount == -1)
@@ -24,7 +24,7 @@ public class SeatingPresentation
     }
 
     //used to constantly refresh the seating
-    public static void UpdateSeatingPresentation(Action generatePresentation, int seatsLeft)
+    public static void UpdateSeatingPresentation(Action<List<List<Seat>>> generatePresentation, List<List<Seat>> layout, int seatsLeft)
     {
         Console.Clear();
 
@@ -33,7 +33,7 @@ public class SeatingPresentation
         Console.WriteLine($"You need to select {seatsLeft} more seat(s)");
         Console.WriteLine();
 
-        generatePresentation.Invoke();
+        generatePresentation.Invoke(layout);
     }
 
     public static bool SuccessfulSelection(string seatDisplay)
