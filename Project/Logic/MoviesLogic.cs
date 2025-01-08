@@ -14,6 +14,10 @@ public class MoviesLogic
         {
             PromotedMovies = new List<MovieModel> {PromotedMovies[0], PromotedMovies[1], PromotedMovies[2]};
         }
+        while (PromotedMovies.Count < 3)
+        {
+            PromotedMovies.Add(null);
+        }
     }
 
     public void AddMovie(string title, int duration, int minimumAge, string summary, List<string> actors, string director)

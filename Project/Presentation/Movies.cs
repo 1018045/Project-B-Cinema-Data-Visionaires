@@ -460,6 +460,7 @@ public static class Movies
 
     public static void SelectPromotionSlot()
     {
+        System.Console.WriteLine();
         MenuHelper.NewMenu(new List<string> {   $"1: currently promoted: {(_moviesLogic.PromotedMovies[0] != null ? _moviesLogic.PromotedMovies[0].Title : "Empty")}",
                                                 $"2: currently promoted: {(_moviesLogic.PromotedMovies[1] != null ? _moviesLogic.PromotedMovies[1].Title : "Empty")}",
                                                 $"3: currently promoted: {(_moviesLogic.PromotedMovies[2] != null ? _moviesLogic.PromotedMovies[2].Title : "Empty")}",
