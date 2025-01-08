@@ -24,5 +24,40 @@
 			"xxbbbbbbbbxx",
 			"xxbbbbbbbbxx"
 		]
+	},
+	{
+		"id": 2,
+		"name": "Auditorium 2",
+		"layout": [
+			"xbbbbbbbbbbbbbbbbx",
+
+			"xbbbbboooooobbbbbx",
+
+			"xbbbboooooooobbbbx",
+			"xbbbboooooooobbbbx",
+
+			"xbbboooooooooobbbx",
+			"xbbboooorroooobbbx",
+
+			"bbboooorrrroooobbb",
+			"bbbooorrrrrrooobbb",
+
+			"bboooorrrrrroooobb",
+			"bboooorrrrrroooobb",
+			"bboooorrrrrroooobb",
+
+			"xbboooorrrroooobbx",
+
+			"xbbboooorroooobbbx",
+			"xbbbboooooooobbbbx",
+
+			"xxbbbboooooobbbbxx",
+			"xxbbbboooooobbbbxx",
+
+			"xxbbbbbbbbbbbbbbxx",
+
+			"xxxbbbbbbbbbbbbxxx",
+			"xxxbbbbbbbbbbbbxxx"
+		]
 	}
 ]
