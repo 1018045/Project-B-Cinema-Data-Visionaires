@@ -28,11 +28,6 @@ public static class Reservation
     public static void Make(ShowingModel showing)
     {
         Console.Clear();
-        System.Console.WriteLine(showing.Extras);
-        Console.WriteLine($"There are {showing.Extras.Count} extras available.");
-        MenuHelper.WaitForKey();
-
-        Console.Clear();
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
         System.Console.WriteLine(movie.Title);
         MenuHelper.WaitForKey();
@@ -174,10 +169,17 @@ public static class Reservation
         List<ExtraModel> selectedExtras = new List<ExtraModel>();
         double extrasPrice = 0.0;
 
-        Console.Clear();
-        System.Console.WriteLine(showing.Extras);
-        Console.WriteLine($"There are {showing.Extras.Count} extras available.");
-        MenuHelper.WaitForKey();
+        if (showing.Is3D)
+        {
+            if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"This showing of {movie.Title} is in 3D. Would you like to add {selectedSeats.Count + 1} 3D glasses ($7.50 each) to your order? (You can also bring your own)"))
+            {
+                for (int i = 0; i < selectedSeats.Count; i++)
+                {
+                    selectedExtras.Add(new ExtraModel("3D glasses", (decimal)7.50, false));
+                    extrasPrice += 7.50;
+                }
+            }
+        }
 
         foreach (var extra in showing.Extras)
         {
@@ -186,15 +188,13 @@ public static class Reservation
                 extrasPrice += (double)extra.Price;
                 selectedExtras.Add(extra);
             }
-
             else
             {
-                bool addExtra = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Would you like to add {extra.Name} for {extra.Price:C}?");
-                    if (addExtra)
-                    {
-                        selectedExtras.Add(extra);
-                        extrasPrice += (double)extra.Price;
-                    }
+                if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Would you like to add {extra.Name} for {extra.Price:C}?"))
+                {
+                    selectedExtras.Add(extra);
+                    extrasPrice += (double)extra.Price;
+                }
             }
         }
 
@@ -214,14 +214,14 @@ public static class Reservation
         double totalPrice = (basePrice + specialPrice) * selectedSeats.Count + totalFoodPrice + totalDrinkPrice + extrasPrice;
 
        
-        ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
+        ShowBill(selectedFoods, selectedDrinks, selectedExtras, selectedSeats.Count, totalPrice);
         
         
         string payment;        
         do
         {
             Console.Clear();
-            ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
+            ShowBill(selectedFoods, selectedDrinks, selectedExtras, selectedSeats.Count, totalPrice);
             Console.WriteLine("Please enter your bank details: (example NL91ABNA0417164300)");
             Console.Write("IBAN: ");
             payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine());
@@ -249,7 +249,7 @@ public static class Reservation
         Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
         MenuHelper.WaitForKey(Menus.LoggedInMenu);
     }
-    private static void ShowBill(List<string> selectedFoods, List<string> selectedDrinks, int numberOfTickets, double totalPrice)
+    private static void ShowBill(List<string> selectedFoods, List<string> selectedDrinks, List<ExtraModel> selectedExtras, int numberOfTickets, double totalPrice)
     {
         Console.Clear();
 
@@ -272,6 +272,15 @@ public static class Reservation
             foreach (var drink in selectedDrinks)
             {
                 Console.WriteLine($"  - {drink}");
+            }
+        }
+
+        if (selectedExtras.Count > 0)
+        {
+            Console.WriteLine("\nExtras:");
+            foreach (ExtraModel extra in selectedExtras)
+            {
+                Console.WriteLine($"  - {extra.Name}: {extra.Price}");
             }
         }
 
