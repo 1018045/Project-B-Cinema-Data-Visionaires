@@ -11,16 +11,14 @@ public static class AccountPresentation
         List<string> options = new List<string>
         {
             "Update account details",
-            "Remove account (DANGER)",
-            
+            "Remove account (DANGER)",   
             "Return"
         };
 
         List<Action> actions = new List<Action>
         {
             () => UpdateAccountDetails(_accountManageLogic),
-            () => DeleteAccount(_accountManageLogic),
-            
+            () => DeleteAccount(_accountManageLogic),           
             Menus.LoggedInMenu
         };
 
@@ -45,8 +43,6 @@ public static class AccountPresentation
 
         MenuHelper.NewMenu(options, actions, "Update account");
     }
-
-    
 
     private static void ChangeEmail(AccountManageLogic logic)
     {
@@ -112,7 +108,6 @@ public static class AccountPresentation
 
     private static void DeleteAccount(AccountManageLogic logic)
     {
-
         bool confirmed = MenuHelper.NewMenu(new List<string>(){ "Yes", "No"},
                                             new List<bool>() { true, false },
                                             "Are your sure you want to delete your account?");

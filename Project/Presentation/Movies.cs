@@ -210,7 +210,11 @@ public static class Movies
         {
             Console.Clear();
             System.Console.WriteLine("Please select a cinema before browsing movies.");
-            Menus.ChooseCinema(() => MoviesBrowser(0, customerId));
+            Menus.ChooseCinema(() => MoviesBrowser(0, customerId), () => 
+            {
+                if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
+                else Menus.LoggedInMenu();
+            });
             return;
         }
         // Window needs to have a height of at least 17 to show all movie info
@@ -286,7 +290,10 @@ public static class Movies
         {
             if (_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count != 0)
             {
-                Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]], customerId);
+                // make a reservation of the showinngidices'th item in the list of showings of the movie in currentIndex
+                ShowingModel showing = _showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id)[showingIndices[currentIndex]];
+                Reservation.Make(showing);
+                // Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
             }
             else
             {
@@ -404,7 +411,8 @@ public static class Movies
         for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
         {
             if (i < showings.Count())
-                outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))} {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
+                if (showings[i].Is3D) outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))} in 3D        {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
+                else outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))}              {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
             else
                 outputList.Add("");
         }

@@ -17,13 +17,17 @@ public class CinemaModel
     [JsonPropertyName("postal_code")]
     public string PostalCode { get; set; }
 
+    [JsonPropertyName("phone_number")]
+    public string PhoneNumber { get; set; }
 
-   public CinemaModel(int id, string name, string city, string address, string postalCode)
+
+   public CinemaModel(int id, string name, string city, string address, string postalCode, string phoneNumber)
     {
         Id = id;
         Name = name;
         City = city;
         Address = address;
-        PostalCode = postalCode;        
+        PostalCode = postalCode;      
+        PhoneNumber = phoneNumber;  
     }
 }

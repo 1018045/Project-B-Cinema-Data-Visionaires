@@ -5,6 +5,8 @@ public static class Showings
     static private ShowingsLogic _showingsLogic = new ShowingsLogic();
     private static CinemaLogic _cinemaLogic = new CinemaLogic();
 
+    public static List<ExtraModel> Extras = new List<ExtraModel>();
+
     public static void ShowAll()
     {
         Console.WriteLine(_showingsLogic.ShowAll());
@@ -148,6 +150,8 @@ public static class Showings
             correct = int.TryParse(Console.ReadLine(), out room) && room > 0 && room < 4;          
         } while (!correct);
 
+        bool is3d = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, "Will this showing be in 3D?");
+
         Console.WriteLine("Select a special for this showing:");
         Console.WriteLine("1. Premier");
         Console.WriteLine("2. Dolby");
@@ -159,6 +163,49 @@ public static class Showings
             "2" => "Dolby",
             _ => "none"
         };
+
+
+ 
+
+        bool answer = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to add extra's?");
+
+        if (answer)
+        {
+          
+            Console.WriteLine("How many extras would you like to add?");
+            int extraCount = int.Parse(Console.ReadLine());
+
+         
+            for (int i = 0; i < extraCount; i++)
+            {
+                Console.WriteLine($"Adding extra {i + 1} of {extraCount}:");
+
+            
+                Console.WriteLine("What will be the name for this extra?");
+                string extraName = Console.ReadLine();
+
+              
+                Console.WriteLine("What will be the price for this extra?");
+                decimal extraPrice = decimal.Parse(Console.ReadLine());
+
+            
+                Console.WriteLine("Is this extra mandatory?");
+                bool mandatory = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Is this extra mandatory?");
+
+              
+                ExtraModel extra = new(extraName, extraPrice, mandatory);
+
+             
+                Extras.Add(extra);
+            }
+
+            Console.WriteLine($"{extraCount} extra(s) have been successfully added!");
+        }
+
+ 
+
+        
+
 
         List<string> options = new List<string>
         {
@@ -174,7 +221,7 @@ public static class Showings
         switch (userChoice)
         {
             case 1:
-                BookShowings(date, room, moviesLogic, movieId, cinemaId, special);
+                BookShowings(date, room, moviesLogic, movieId, cinemaId, is3d,special,Extras);
                 break;
             case 2:
                 pattern = "daily";
@@ -199,7 +246,7 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i), room, moviesLogic, movieId, cinemaId, special);
+                BookShowings(date.AddDays(i), room, moviesLogic, movieId, cinemaId, is3d, special,Extras);
             }
         } 
         else if (pattern == "weekly")
@@ -214,14 +261,14 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, cinemaId, special);
+                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, cinemaId, is3d, special,Extras);
             }
         }
 
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
 
-    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, int chosenCinemaId, string special)
+    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, int chosenCinemaId, bool is3d, string special, List<ExtraModel> extras)
     {
         if (!_showingsLogic.IsRoomFree(date, room, moviesLogic.GetMovieById(movieId).Duration, chosenCinemaId))
         {
@@ -232,7 +279,7 @@ public static class Showings
             return;
         }
 
-        _showingsLogic.AddShowing(movieId, date, room, chosenCinemaId, special);
+        _showingsLogic.AddShowing(movieId, date, room, chosenCinemaId, is3d,special,extras);
         Console.ForegroundColor = ConsoleColor.Green;
         System.Console.WriteLine($"Showing has been successfully added on {date.ToString("dd-MM-yyyy HH:mm:ss")} with special: {special}");
         Console.ResetColor();
@@ -266,4 +313,6 @@ public static class Showings
         string output = $"{dateInput.Trim()} {timeInput.Trim()}";
         return DateTime.ParseExact(output, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
     }
+
+   
 }
