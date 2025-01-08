@@ -269,5 +269,62 @@
       }
     ],
     "billId": 10
+  },
+  {
+    "id": 26,
+    "userId": -1,
+    "showingId": 34,
+    "seats": "2;1,2;2,2;3",
+    "paymentComplete": true,
+    "price": 111.9,
+    "selectedExtras": [
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      },
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      },
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      }
+    ],
+    "billId": 11
+  },
+  {
+    "id": 27,
+    "userId": -1,
+    "showingId": 34,
+    "seats": "3;1",
+    "paymentComplete": true,
+    "price": 23.5,
+    "selectedExtras": [
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      },
+      {
+        "name": "Blanket",
+        "price": 8.50,
+        "is_mandatory": false
+      }
+    ],
+    "billId": 12
+  },
+  {
+    "id": 28,
+    "userId": -1,
+    "showingId": 34,
+    "seats": "5;1,5;2",
+    "paymentComplete": true,
+    "price": 20,
+    "selectedExtras": [],
+    "billId": 13
   }
 ]
