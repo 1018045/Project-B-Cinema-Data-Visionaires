@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Project.DataModels;
 
 static class AccountsAccess
 {
@@ -24,6 +25,9 @@ static class AccountsAccess
                     break;
                 case "accountant":
                     output.Add(acc.Deserialize<AccountantModel>());
+                    break;
+                case "staff":
+                    output.Add(acc.Deserialize<StaffModel>());
                     break;
                 default:
                     System.Console.WriteLine($@"Error: Please check user {acc["id"]} in accounts database");

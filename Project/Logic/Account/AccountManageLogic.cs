@@ -1,7 +1,16 @@
+using Project.DataModels;
+
 namespace Project.Logic.Account;
 
 public class AccountManageLogic : AccountsLogic
 {
+    public void CreateStaffAccount(string password, string email)
+    {
+        var accounts = AccountsAccess.LoadAll();
+        accounts.Add(new StaffModel(accounts[^1].Id + 1, email, password!));
+        AccountsAccess.WriteAll(accounts);
+    }
+
     public void ChangeEmail(string newEmail)
     {
         if (CurrentAccount == null)

@@ -1,4 +1,6 @@
+using System.Net;
 using System.Security;
+using Project.DataModels;
 using Project.Logic.Account;
 using Project.Presentation;
 
@@ -121,13 +123,13 @@ static class Menus
         do
         {
             Console.Clear();
-            System.Console.WriteLine($"You have {loginAttempts} login attempts left!");
+            Console.WriteLine($"You have {loginAttempts} login attempts left!");
             Console.WriteLine("Please enter your email address");
             string email = Console.ReadLine();
 
             Console.WriteLine("Please enter your password");
             SecureString pass = AccountsLogic.MaskInputstring();
-            string Password = new System.Net.NetworkCredential(string.Empty, pass).Password;
+            string Password = new NetworkCredential(string.Empty, pass).Password;
 
             acc = AccountsLogic.Logic.CheckLogin(email, Password);
             loginAttempts--;
@@ -145,7 +147,7 @@ static class Menus
 
         if (acceptOnlyCustomerLogin && acc is not UserModel)
         {
-            System.Console.WriteLine("Error: You can only login with a user account on this screen");
+            Console.WriteLine("Error: You can only login with a user account on this screen");
             Thread.Sleep(2500);
             MenuHelper.WaitForKey();
             return;
@@ -169,9 +171,14 @@ static class Menus
         }
         else if (acc is AccountantModel accountant)
         {
-            System.Console.WriteLine("Welcome back " + accountant.EmailAddress);
+            Console.WriteLine("Welcome back " + accountant.EmailAddress);
             AccountantMenu();
-        }  
+        }
+        else if (acc is StaffModel staff)
+        {
+            Console.WriteLine("Welcome back " + staff.EmailAddress);
+            StaffMenu();
+        }
         else 
         {
             GuestMenu();
@@ -183,7 +190,7 @@ static class Menus
         for (;timer > 0; timer--)
         {
             Console.Clear();
-            System.Console.WriteLine($"Please wait {timer} seconds before you can try again.");
+            Console.WriteLine($"Please wait {timer} seconds before you can try again.");
             Thread.Sleep(1000);
         }
     }
@@ -205,6 +212,7 @@ static class Menus
             "View all vacancies",
             "Show accountant options",
             "Manage cinema locations",
+            "Add staff account",
             "Logout"
         };
         List<Action> actions = new List<Action>
@@ -220,9 +228,41 @@ static class Menus
             ViewAllVacancies,
             AccountantMenu,
             CinemaLocations.ChooseCinemaLocationToManage,
+            AddStaffAccount,
             GuestMenu
         };
         MenuHelper.NewMenu(options, actions, "Admin menu");
+    }
+
+    public static void StaffMenu()
+    {
+        List<string> options = new List<string>
+        {
+            "Make reservation for customer",
+            "Logout"
+        };
+        List<Action> actions =
+        [
+            MakeCustomerReservation,
+            GuestMenu
+        ];
+        MenuHelper.NewMenu(options, actions, "Staff menu");
+    }
+
+    private static void MakeCustomerReservation()
+    {
+        AccountModel? customer = null;
+        while (customer == null)
+        {
+            Console.Clear();
+            Console.WriteLine("Please enter the email of the customer: ");
+            var email = Console.ReadLine()!;
+
+            var accounts = AccountsAccess.LoadAll();
+            customer = accounts.Find(a => a.EmailAddress.ToLower().Equals(email.ToLower()));
+        }
+
+        Movies.MoviesBrowser(customerId: customer.Id);
     }
 
     private static void RemoveUser()
@@ -244,6 +284,33 @@ static class Menus
         }
         Thread.Sleep(2000);
         MenuHelper.WaitForKey(AdminMenu);
+    }
+
+    private static void AddStaffAccount()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter staff email:");
+        var email = Console.ReadLine()!;
+
+        string password = "";
+        for (bool match = false; !match;)
+        {
+            Console.Clear();
+            Console.WriteLine("Enter staff password");
+            password = Console.ReadLine();
+            Console.WriteLine("Re-enter password");
+            match = Console.ReadLine()!.Equals(password);
+        }
+
+        new AccountManageLogic().CreateStaffAccount(password, email);
+
+        Console.Clear();
+        Console.WriteLine("Staff account created successfully");
+        Console.WriteLine("Press any key to continue");
+
+        Console.ReadKey();
+
+        AdminMenu();
     }
 
     private static void ViewUsers()
@@ -273,13 +340,13 @@ static class Menus
 
         Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
         SecureString pass = AccountsLogic.MaskInputstring();
-        string Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+        string Password = new NetworkCredential(string.Empty, pass).Password;
    
         while (AccountsLogic.VerifyPassword(Password) == false)
         {
             Console.WriteLine("Password was not valid. Try again.");
             pass = AccountsLogic.MaskInputstring();
-            Password = new System.Net.NetworkCredential(string.Empty, pass).Password; 
+            Password = new NetworkCredential(string.Empty, pass).Password;
         }
         Console.WriteLine("Confirm your password");
         
@@ -289,7 +356,7 @@ static class Menus
         while (!passwordsMatch)
         {
             SecureString confirmPass = AccountsLogic.MaskInputstring();
-            confirmPassword = new System.Net.NetworkCredential(string.Empty, confirmPass).Password;
+            confirmPassword = new NetworkCredential(string.Empty, confirmPass).Password;
 
             if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
             {

@@ -23,19 +23,19 @@ public static class Reservation
     private const double WATER_PRICE = 3.95;
     private const double JUICE_PRICE = 3.95;
 
-    public static void Make(ShowingModel showing)
+    public static void Make(ShowingModel showing, int customerId = -1)
     {
         Console.Clear();
 
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
-        while (AccountsLogic.CurrentAccount == null)
+        while (AccountsLogic.CurrentAccount == null && customerId == -1)
         {
             System.Console.WriteLine("Please login to continue making your reservation.");
             System.Console.WriteLine("You are being redirected to the login screen.");
             Thread.Sleep(2000);
             Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
         }
-        if (!_accountsLogic.IsOldEnough(movie.MinimumAge))
+        if (!_accountsLogic.IsOldEnough(movie.MinimumAge) && customerId == -1)
         {
             System.Console.WriteLine("You are not old enough to watch this movie.");
             System.Console.WriteLine("You are being redirected to the menu.");
@@ -45,12 +45,16 @@ public static class Reservation
         }
         else
         {
-            if (!MenuHelper.NewMenu(new List<string>() {"Yes", "No"}, new List<bool>() {true, false}, subtext: $"Is everyone in your party at the age of {movie.MinimumAge} or above?"))
+            if (customerId == -1)
             {
-                System.Console.WriteLine("You are being redirected to the menu.");
-                Thread.Sleep(2000);
-                MenuHelper.WaitForKey(Menus.LoggedInMenu);
-                return;
+                if (!MenuHelper.NewMenu(new List<string>() { "Yes", "No" }, new List<bool>() { true, false },
+                        subtext: $"Is everyone in your party at the age of {movie.MinimumAge} or above?"))
+                {
+                    System.Console.WriteLine("You are being redirected to the menu.");
+                    Thread.Sleep(2000);
+                    MenuHelper.WaitForKey(Menus.LoggedInMenu);
+                    return;
+                }
             }
         }
         Console.Clear();
@@ -186,14 +190,15 @@ public static class Reservation
         }
 
         FakeProcessingPayment(5000);
-        ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice);
+        int userId = customerId == -1 ? AccountsLogic.CurrentAccount.Id : customerId;
+        ReservationModel reservation = _reservationsLogic.AddReservation(userId, showing.Id, string.Join(",", selectedSeats), true, totalPrice);
 
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("You have successfully booked your ticket(s)!\n");
         Console.ResetColor();
         Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
-        MenuHelper.WaitForKey(Menus.LoggedInMenu);
+        MenuHelper.WaitForKey(customerId == -1 ? Menus.LoggedInMenu : Menus.StaffMenu);
     }
     private static void ShowBill(List<string> selectedFoods, List<string> selectedDrinks, int numberOfTickets, double totalPrice)
     {
