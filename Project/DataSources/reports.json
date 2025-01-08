@@ -1,3 +1,51 @@
 [
-   
+  {
+    "id": 0,
+    "paymentCompleted": false,
+    "totalAmount": 2.5,
+    "paymentDate": "2024-12-18T14:19:19.9183242+01:00",
+    "userId": 0
+  },
+  {
+    "id": 1,
+    "paymentCompleted": true,
+    "totalAmount": 36,
+    "paymentDate": "2025-01-07T23:38:50.5781153+01:00",
+    "userId": 4
+  },
+  {
+    "id": 2,
+    "paymentCompleted": true,
+    "totalAmount": 36,
+    "paymentDate": "2025-01-07T23:49:06.8013922+01:00",
+    "userId": 4
+  },
+  {
+    "id": 3,
+    "paymentCompleted": true,
+    "totalAmount": 36,
+    "paymentDate": "2025-01-07T23:53:57.4185971+01:00",
+    "userId": 4
+  },
+  {
+    "id": 4,
+    "paymentCompleted": true,
+    "totalAmount": 33.45,
+    "paymentDate": "2025-01-07T23:58:01.192016+01:00",
+    "userId": 4
+  },
+  {
+    "id": 5,
+    "paymentCompleted": true,
+    "totalAmount": 36,
+    "paymentDate": "2025-01-08T00:05:43.7026843+01:00",
+    "userId": 4
+  },
+  {
+    "id": 6,
+    "paymentCompleted": true,
+    "totalAmount": 28.5,
+    "paymentDate": "2025-01-08T01:31:41.251601+01:00",
+    "userId": 1
+  }
 ]

@@ -121,6 +121,13 @@ public class AccountantLogic: IReportable
 
     }
 
+    public List<BillModel> GetUserBills(int userId)
+    {
+        return Bills.Where(b => b.UserId == userId)
+                    .OrderByDescending(b => b.Paymentdate)
+                    .ToList();
+    }
+
 
 
    

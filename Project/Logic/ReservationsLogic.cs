@@ -12,9 +12,9 @@ public class ReservationsLogic
         Reservations = ReservationsAccess.LoadAll();
     }
 
-    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price)
+    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price,List<ExtraModel> selectedExtras)
     {
-        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price);
+        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price,selectedExtras);
         Reservations.Add(reservation);
         ReservationsAccess.WriteAll(Reservations);
         return reservation;
@@ -50,13 +50,7 @@ public class ReservationsLogic
     // Returns all reservations of a particular user
     public List<ReservationModel> FindReservationByUserID(int userId)
     {
-        List<ReservationModel> output = new();
-        foreach (ReservationModel reservation in Reservations)
-        {
-            if (reservation.UserId == userId)
-                output.Add(reservation);
-        }
-        return output;
+        return Reservations.Where(r => r.UserId == userId).ToList();
     }
 
     // returns the first int ID that is not already used in another reservation
@@ -101,13 +95,13 @@ public class ReservationsLogic
         ReservationsAccess.WriteAll(Reservations);
     }
 
-    public double GetTotalRevenue()
+    public void UpdateReservation(ReservationModel reservation)
     {
-        double totaal = 0;
-        foreach (var reservering in Reservations)
+        var index = Reservations.FindIndex(r => r.Id == reservation.Id);
+        if (index != -1)
         {
-            totaal += reservering.Price;
+            Reservations[index] = reservation;
+            ReservationsAccess.WriteAll(Reservations);
         }
-        return totaal;
     }
 }

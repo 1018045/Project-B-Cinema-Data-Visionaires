@@ -21,11 +21,14 @@ public class ShowingModel
     [JsonPropertyName("cinema_id")]
     public int CinemaId { get; set; }
 
+    [JsonPropertyName("extras")]
+    public List<ExtraModel> Extras { get; set; }
+
     [JsonPropertyName("is_3d")]
     public bool Is3D { get; set; }
 
 
-    public ShowingModel(int id, int movieId, DateTime date, int room, int cinemaId, bool is3D, string special = "")
+    public ShowingModel(int id, int movieId, DateTime date, int room, int cinemaId, List<ExtraModel> extras, bool is3D, string special = "")
     {
         Id = id;
         MovieId = movieId;
@@ -33,6 +36,7 @@ public class ShowingModel
         Room = room;
         Special = special;
         CinemaId = cinemaId;
+        Extras = extras; 
         Is3D = is3D;
     }
 }

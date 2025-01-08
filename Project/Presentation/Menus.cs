@@ -88,7 +88,7 @@ static class Menus
         {
             "Browse movies",
             "Select a date",
-            "Your reservations",
+            "View Reservations and Bills",
             "Select a cinema location",
             "Manage your account",
             "about/contact",
@@ -98,7 +98,7 @@ static class Menus
         {
             () => Movies.MoviesBrowser(),
             Reservation.SelectDate,
-            () => Reservation.Adjust(AccountsLogic.CurrentAccount.Id),
+            BillPresentation.ViewUserBillsAndReservations,
             () => ChooseCinema(LoggedInMenu, LoggedInMenu),
             AccountPresentation.Menu,
             () => AboutContact(LoggedInMenu),   
