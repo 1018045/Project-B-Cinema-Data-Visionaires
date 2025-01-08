@@ -82,7 +82,7 @@ public class ShowingsLogic
     public void AddShowing(int movieId, DateTime date, int room, int cinemaId, bool is3d, string special, List<ExtraModel> extras)
     {
         int newId = FindNextAvailableId();
-        var showing = new ShowingModel(newId, movieId, date, room, cinemaId, is3d, extras,special);
+        var showing = new ShowingModel(newId, movieId, date, room, cinemaId, extras, is3d, special);
         Showings.Add(showing);
         ShowingsAccess.WriteAll(Showings);
     }

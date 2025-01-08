@@ -34,6 +34,8 @@ public static class Reservation
 
         Console.Clear();
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
+        System.Console.WriteLine(movie.Title);
+        MenuHelper.WaitForKey();
         while (AccountsLogic.CurrentAccount == null)
         {
             System.Console.WriteLine("Please login to continue making your reservation.");
