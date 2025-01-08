@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 using Project.Helpers;
 using Project.Logic.Account;
 using Project.Presentation;
@@ -12,7 +13,6 @@ public static class Reservation
     private static readonly MoviesLogic _moviesLogic = new ();
     private static readonly AccountsLogic _accountsLogic = new();
 
- 
 
     private const double BASE_TICKET_PRICE = 10.00;
 
@@ -27,6 +27,11 @@ public static class Reservation
 
     public static void Make(ShowingModel showing)
     {
+        Console.Clear();
+        System.Console.WriteLine(showing.Extras);
+        Console.WriteLine($"There are {showing.Extras.Count} extras available.");
+        MenuHelper.WaitForKey();
+
         Console.Clear();
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
         while (AccountsLogic.CurrentAccount == null)
@@ -159,11 +164,13 @@ public static class Reservation
         List<ExtraModel> selectedExtras = new List<ExtraModel>();
         double extrasPrice = 0.0;
 
-        Console.WriteLine($"There are {showing.Extras.Count} extras available.");     
+        Console.Clear();
+        System.Console.WriteLine(showing.Extras);
+        Console.WriteLine($"There are {showing.Extras.Count} extras available.");
+        MenuHelper.WaitForKey();
+
         foreach (var extra in showing.Extras)
         {
-            // System.Console.WriteLine(extra.Name);
-            // MenuHelper.WaitForKey();
             if (extra.IsMandatory)
             {
                 extrasPrice += (double)extra.Price;
@@ -179,12 +186,7 @@ public static class Reservation
                         extrasPrice += (double)extra.Price;
                     }
             }
-
         }
-
-
-
-
 
         double basePrice = 10.00; 
         double specialPrice = 0.00; 

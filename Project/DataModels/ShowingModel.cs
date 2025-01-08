@@ -21,7 +21,7 @@ public class ShowingModel
     [JsonPropertyName("cinema_id")]
     public int CinemaId { get; set; }
 
-     [JsonPropertyName("Extras")]
+    [JsonPropertyName("extras")]
     public List<ExtraModel> Extras { get; set; }
 
 
@@ -34,6 +34,5 @@ public class ShowingModel
         Special = special;
         CinemaId = cinemaId;
         Extras = extras; 
-        
     }
 }

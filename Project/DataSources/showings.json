@@ -6,7 +6,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 1,
@@ -15,7 +15,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 2,
@@ -24,7 +24,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 3,
@@ -33,7 +33,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": null
+    "extras": null
   },
   {
     "id": 4,
@@ -42,7 +42,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 5,
@@ -51,7 +51,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 6,
@@ -60,7 +60,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 7,
@@ -69,7 +69,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": null
+    "extras": null
   },
   {
     "id": 8,
@@ -78,7 +78,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 9,
@@ -87,7 +87,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 10,
@@ -96,7 +96,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 11,
@@ -105,7 +105,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 12,
@@ -114,7 +114,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 13,
@@ -123,7 +123,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 14,
@@ -132,7 +132,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 15,
@@ -141,7 +141,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 16,
@@ -150,7 +150,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 17,
@@ -159,7 +159,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 18,
@@ -168,7 +168,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 19,
@@ -177,7 +177,7 @@
     "room": 1,
     "special": "",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 20,
@@ -186,7 +186,7 @@
     "room": 1,
     "special": "Premier",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 21,
@@ -195,7 +195,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 22,
@@ -204,7 +204,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 23,
@@ -213,7 +213,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 24,
@@ -222,7 +222,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 25,
@@ -231,7 +231,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 26,
@@ -240,7 +240,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 27,
@@ -249,7 +249,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 28,
@@ -258,7 +258,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 29,
@@ -267,7 +267,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 30,
@@ -276,7 +276,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 31,
@@ -285,7 +285,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 32,
@@ -294,7 +294,7 @@
     "room": 2,
     "special": "Dolby",
     "cinema_id": 0,
-    "Extras": []
+    "extras": []
   },
   {
     "id": 33,
@@ -303,11 +303,31 @@
     "room": 1,
     "special": "Premier",
     "cinema_id": 0,
-    "Extras": [
+    "extras": [
       {
-        "Name": "Sentinel Costumes",
-        "Price": 25,
-        "IsMandatory": false
+        "name": "Sentinel Costumes",
+        "price": 25.00,
+        "is_mandatory": false
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "movieId": 4,
+    "date": "12-02-2025 19:00:00",
+    "room": 3,
+    "special": "none",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      },
+      {
+        "name": "Blanket",
+        "price": 8.50,
+        "is_mandatory": false
       }
     ]
   }
