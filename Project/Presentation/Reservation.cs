@@ -68,6 +68,14 @@ public static class Reservation
             );
         } while(!confirmSeats);
 
+        if (showing.Is3D)
+        {
+            if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "This movie will be shown in 3D. Would you like to order 3D-glasses? (You are also allowed to bring your own)"))
+            {
+                // add 3d glasses to extra's here
+            }
+        }
+
         List<string> selectedFoods = new List<string>();
         List<string> selectedDrinks = new List<string>();
         double totalFoodPrice = 0;
@@ -174,16 +182,16 @@ public static class Reservation
         ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
         
         
-        string payment = "";        
-        while (string.IsNullOrEmpty(payment))
+        string payment;        
+        do
         {
             Console.Clear();
             ShowBill(selectedFoods, selectedDrinks, selectedSeats.Count, totalPrice);
             Console.WriteLine("Please enter your bank details: (example NL91ABNA0417164300)");
             Console.Write("IBAN: ");
-            payment = Console.ReadLine(); 
+            payment = _reservationsLogic.ValidateBankDetails(Console.ReadLine());
             Console.WriteLine(payment);
-        }
+        }while (payment != "");
 
         FakeProcessingPayment(5000);
         ReservationModel reservation = _reservationsLogic.AddReservation(AccountsLogic.CurrentAccount.Id, showing.Id, string.Join(",", selectedSeats), true, totalPrice);
@@ -200,11 +208,9 @@ public static class Reservation
         Console.Clear();
 
         Console.WriteLine("===== Order Summary =====\n");
-
-     
+    
         Console.WriteLine($"Tickets: {numberOfTickets} x €{BASE_TICKET_PRICE:F2}");
-
-      
+     
         if (selectedFoods.Count > 0)
         {
             Console.WriteLine("\nFood:");
@@ -213,8 +219,7 @@ public static class Reservation
                 Console.WriteLine($"  - {food}");
             }
         }
-
-       
+      
         if (selectedDrinks.Count > 0)
         {
             Console.WriteLine("\nDrinks:");
@@ -224,7 +229,6 @@ public static class Reservation
             }
         }
 
-      
         Console.WriteLine($"\nTotal to pay: €{totalPrice:F2}");
         Console.WriteLine("\n=========================");
     }
@@ -244,6 +248,7 @@ public static class Reservation
             });
             return;
         }
+        
         List<object> showings = _showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).ToList<object>();
         if (showings.Count() == 0)
         {
@@ -252,7 +257,15 @@ public static class Reservation
             MenuHelper.WaitForKey(() => Movies.MoviesBrowser());
             return;
         }
-        List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(DATEFORMAT)).ToList();
+        List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(EXTENDEDDATEFORMAT)).ToList();
+        
+        // adding 3D to text
+        for (int i = 0; i < options.Count; i++)
+        {
+            ShowingModel s = (ShowingModel)showings[i];
+            if (s.Is3D) options[i] += " in 3D";
+        }
+        
         options.Add("Return");
         showings.Add(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
 

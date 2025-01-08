@@ -408,7 +408,8 @@ public static class Movies
         for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
         {
             if (i < showings.Count())
-                outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))} {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
+                if (showings[i].Is3D) outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))} in 3D        {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
+                else outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))}              {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
             else
                 outputList.Add("");
         }
