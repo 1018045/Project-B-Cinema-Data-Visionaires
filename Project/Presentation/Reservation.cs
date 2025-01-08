@@ -49,7 +49,7 @@ public static class Reservation
             }
         }
         Console.Clear();
-        if (!_accountsLogic.IsOldEnough(movie.MinimumAge) && AccountsLogic.CurrentAccount != null)
+        if (!_accountsLogic.IsOldEnough(movie.MinimumAge) && AccountsLogic.CurrentAccount != null && customerId != -1)
         {
             System.Console.WriteLine("You are not old enough to watch this movie.");
             System.Console.WriteLine("You are being redirected to the menu.");
@@ -85,14 +85,6 @@ public static class Reservation
                 $"{SeatSelectionHelpers.PositionsToRowSeatString(SeatSelectionHelpers.StringToPositions(selectedSeats))}"
             );
         } while(!confirmSeats);
-
-        if (showing.Is3D)
-        {
-            if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "This movie will be shown in 3D. Would you like to order 3D-glasses? (You are also allowed to bring your own)"))
-            {
-                // add 3d glasses to extra's here
-            }
-        }
 
         List<string> selectedFoods = new List<string>();
         List<string> selectedDrinks = new List<string>();
@@ -269,12 +261,10 @@ public static class Reservation
             );
         }
         accountantLogic.AddBill(bill);
-        int userId = customerId == -1 ? AccountsLogic.CurrentAccount.Id : customerId;
+        int userId = customerId == -1 ? AccountsLogic.CurrentAccount != null ? AccountsLogic.CurrentAccount.Id : -1 : customerId;
         ReservationModel reservation;
-        if (AccountsLogic.CurrentAccount != null)
-            reservation = _reservationsLogic.AddReservation(userId, showing.Id, string.Join(",", selectedSeats), true, totalPrice, selectedExtras);
-        else
-            reservation = _reservationsLogic.AddReservation(-1, showing.Id, string.Join(",", selectedSeats), true, totalPrice, selectedExtras);
+
+        reservation = _reservationsLogic.AddReservation(userId, showing.Id, string.Join(",", selectedSeats), true, totalPrice, selectedExtras);
         
         reservation.SetBillId(bill.ID);
         _reservationsLogic.UpdateReservation(reservation);
@@ -292,7 +282,7 @@ public static class Reservation
         }
         Console.ResetColor();
         Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
-        MenuHelper.WaitForKey(customerId == -1 ? Menus.LoggedInMenu : Menus.StaffMenu);
+        MenuHelper.WaitForKey(customerId == -1 ? AccountsLogic.CurrentAccount != null ? Menus.LoggedInMenu : Menus.GuestMenu : Menus.StaffMenu);
     }
     private static void ShowBill(ShowingModel showing, List<string> selectedFoods, List<string> selectedDrinks, List<ExtraModel> selectedExtras, int numberOfTickets, double totalPrice, bool clear = true)
     {

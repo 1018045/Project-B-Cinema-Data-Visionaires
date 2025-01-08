@@ -292,7 +292,7 @@ public static class Movies
             {
                 // make a reservation of the showinngidices'th item in the list of showings of the movie in currentIndex
                 ShowingModel showing = _showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id)[showingIndices[currentIndex]];
-                Reservation.Make(showing);
+                Reservation.Make(showing, customerId);
                 // Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
             }
             else
