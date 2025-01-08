@@ -204,13 +204,13 @@ public static class Movies
         return MenuHelper.NewMenu(options, indices, header: "Movies");
     }
 
-    public static void MoviesBrowser(int startingIndex = 0)
+    public static void MoviesBrowser(int startingIndex = 0, int customerId = -1)
     {
         if (CinemaLogic.CurrentCinema == null)
         {
             Console.Clear();
             System.Console.WriteLine("Please select a cinema before browsing movies.");
-            Menus.ChooseCinema(() => MoviesBrowser());
+            Menus.ChooseCinema(() => MoviesBrowser(0, customerId));
             return;
         }
         // Window needs to have a height of at least 17 to show all movie info
@@ -286,11 +286,11 @@ public static class Movies
         {
             if (_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count != 0)
             {
-                Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
+                Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]], customerId);
             }
             else
             {
-                MoviesBrowser(startingIndex: currentIndex);
+                MoviesBrowser(startingIndex: currentIndex, customerId);
             }
         }
         else 

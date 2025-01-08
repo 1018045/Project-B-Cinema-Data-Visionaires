@@ -4,73 +4,104 @@
     "role": "user",
     "emailAddress": "mr47@gmail.com",
     "password": "Kl@rashond3nbist4",
-    "birthDate": "2001-01-12"
+    "totalSpent": 0
   },
   {
     "id": 1,
     "role": "user",
     "emailAddress": "t@b.c",
     "password": "xyz",
-    "birthDate": "2001-01-12"
+    "totalSpent": 0
   },
   {
     "id": 2,
     "role": "user",
     "emailAddress": "xxx@x.com",
     "password": "xxxxxxxx",
-    "birthDate": "2001-01-12"
+    "totalSpent": 0
   },
   {
     "id": 3,
     "role": "user",
     "emailAddress": "hoi@doei.nl",
     "password": "K@mala Harr1s",
-    "birthDate": "2001-01-12"
+    "totalSpent": 0
   },
   {
     "id": 4,
     "role": "user",
     "emailAddress": "JoeBiden@gmail.nl",
     "password": "1@mSleepy",
-    "birthDate": "2001-01-12"
+    "totalSpent": 0
   },
   {
     "id": 5,
     "role": "admin",
     "emailAddress": "admin@admin",
-    "password": "admin"
+    "password": "admin",
+    "totalSpent": 0
   },
   {
     "id": 6,
     "role": "admin",
     "emailAddress": "ethanmeulens@gmail.com",
-    "password": "L3tsgof@m"
+    "password": "L3tsgof@m",
+    "totalSpent": 0
   },
   {
     "id": 7,
     "role": "accountant",
     "emailAddress": "accountant@accountant",
-    "password": "accountant"
+    "password": "accountant",
+    "totalSpent": 0
   },
   {
     "id": 8,
     "role": "user",
     "emailAddress": "user@user",
     "password": "user",
-    "birthDate": "2016-01-12"
+    "totalSpent": 0
   },
   {
     "id": 9,
     "role": "user",
     "emailAddress": "frisoboot@gmail.com",
     "password": "@Vlaardingen123",
-    "birthDate": "2001-01-12"
+    "totalSpent": 0
   },
   {
     "id": 10,
     "role": "user",
     "emailAddress": "marleen@hotmail.com",
     "password": "AAAA2222@",
-    "birthDate": "2001-01-12"
+    "totalSpent": 0
+  },
+  {
+    "id": 11,
+    "role": "staff",
+    "emailAddress": "staff@staff",
+    "password": "staff",
+    "totalSpent": 0
+  },
+  {
+    "id": 12,
+    "role": "user",
+    "emailAddress": "a@a",
+    "password": "a",
+    "totalSpent": 0
+  },
+  {
+    "id": 13,
+    "role": "staff",
+    "emailAddress": "psek@psek",
+    "password": "",
+    "totalSpent": 0
+  },
+  {
+    "id": 14,
+    "role": "staff",
+    "emailAddress": "psek@psek",
+    "password": "psek",
+    "totalSpent": 0
   }
 ]
