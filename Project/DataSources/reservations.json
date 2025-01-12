@@ -151,34 +151,19 @@
   },
   {
     "id": 14,
-    "userId": -1,
-    "showingId": 34,
-    "seats": "8;6,8;7",
+    "userId": 4,
+    "showingId": 33,
+    "seats": "1;7",
     "paymentComplete": true,
-    "price": 47,
+    "price": 66,
     "selectedExtras": [
       {
-        "name": "Pillow",
-        "price": 5.00,
-        "is_mandatory": false
-      },
-      {
-        "name": "Pillow",
-        "price": 5.00,
-        "is_mandatory": false
-      },
-      {
-        "name": "Blanket",
-        "price": 8.50,
-        "is_mandatory": false
-      },
-      {
-        "name": "Blanket",
-        "price": 8.50,
+        "name": "Sentinel Costumes",
+        "price": 25.00,
         "is_mandatory": false
       }
     ],
-    "billId": 14
+    "billId": 15
   },
   {
     "id": 14,
@@ -220,6 +205,22 @@
       }
     ],
     "billId": 14
+  },
+  {
+    "id": 14,
+    "userId": 4,
+    "showingId": 33,
+    "seats": "1;7",
+    "paymentComplete": true,
+    "price": 66,
+    "selectedExtras": [
+      {
+        "name": "Sentinel Costumes",
+        "price": 25.00,
+        "is_mandatory": false
+      }
+    ],
+    "billId": 15
   },
   {
     "id": 15,

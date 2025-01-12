@@ -24,12 +24,14 @@ public static class BillPresentation
         List<string> options = new List<string>
         {
             "View Past Reservations",
+            "View Future Reservations",
             "Return to Menu"
         };
 
         List<Action> actions = new List<Action>
         {
             ShowPastReservations,
+            ShowFutureReservations,
             Menus.LoggedInMenu
         };
 
@@ -43,17 +45,27 @@ public static class BillPresentation
             .OrderByDescending(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
             .ToList();
 
-        DisplayReservations(userReservations);
+        DisplayReservations(userReservations, true);
     }
 
-    private static void DisplayReservations(List<ReservationModel> reservations)
+    private static void ShowFutureReservations()
+    {
+        var userReservations = _reservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
+            .Where(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date > DateTime.Now.Date)
+            .OrderBy(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
+            .ToList();
+
+        DisplayReservations(userReservations, false);
+    }
+
+    private static void DisplayReservations(List<ReservationModel> reservations, bool isPastReservations = true)
     {
         Console.Clear();
-        Console.WriteLine("=== Your Past Reservations ===\n");
+        Console.WriteLine($"=== Your {(isPastReservations ? "Past" : "Future")} Reservations ===\n");
 
         if (reservations.Count == 0)
         {
-            Console.WriteLine("You have no past reservations.");
+            Console.WriteLine($"You have no {(isPastReservations ? "past" : "future")} reservations.");
         }
         else
         {
