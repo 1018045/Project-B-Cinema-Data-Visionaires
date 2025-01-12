@@ -237,31 +237,41 @@ static class Menus
     {
         List<string> options = new List<string>
         {
-            "Make reservation for customer",
+            "Make reservation for registered customer",
+            "Make reservation for guest customer",
             "Logout"
         };
         List<Action> actions =
         [
-            MakeCustomerReservation,
+            () => MakeCustomerReservation(false),
+            () => MakeCustomerReservation(true),
             GuestMenu
         ];
         MenuHelper.NewMenu(options, actions, "Staff menu");
     }
 
-    private static void MakeCustomerReservation()
+    private static void MakeCustomerReservation(bool makeForGuest)
     {
         AccountModel? customer = null;
-        while (customer == null)
+
+        if (!makeForGuest)
         {
-            Console.Clear();
-            Console.WriteLine("Please enter the email of the customer: ");
-            var email = Console.ReadLine()!;
+            while (customer == null)
+            {
+                Console.Clear();
+                Console.WriteLine("Please enter the email of the customer: ");
+                var email = Console.ReadLine()!;
 
-            var accounts = AccountsAccess.LoadAll();
-            customer = accounts.Find(a => a.EmailAddress.ToLower().Equals(email.ToLower()));
+                var accounts = AccountsAccess.LoadAll();
+                customer = accounts.Find(a => a.EmailAddress.ToLower().Equals(email.ToLower()));
+            }
+            Movies.MoviesBrowser(makeForGuest, customerId: customer.Id);
         }
-
-        Movies.MoviesBrowser(customerId: customer.Id);
+        else
+        {
+            Movies.MoviesBrowser(makeForGuest);
+        }
+        
     }
 
     private static void RemoveUser()

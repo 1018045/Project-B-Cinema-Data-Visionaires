@@ -25,7 +25,7 @@ public static class Reservation
     private const double WATER_PRICE = 3.95;
     private const double JUICE_PRICE = 3.95;
 
-    public static void Make(ShowingModel showing, int customerId = -1)
+    public static void Make(ShowingModel showing, bool makeForGuest, int customerId = -1)
     {
         Console.Clear();
         MovieModel movie = _moviesLogic.GetMovieById(showing.MovieId);
@@ -37,19 +37,19 @@ public static class Reservation
             {
                 System.Console.WriteLine("You are being redirected to the login screen.");
                 Thread.Sleep(1500);
-                Menus.Login(() => Make(showing), acceptOnlyCustomerLogin: true);
+                Menus.Login(() => Make(showing, makeForGuest), acceptOnlyCustomerLogin: true);
                 return;
             }
             else if (choice == 2)
             {
                 System.Console.WriteLine("You are being redirected to the login screen.");
                 Thread.Sleep(1500);
-                Menus.CreateAccount(() => Make(showing));
+                Menus.CreateAccount(() => Make(showing, makeForGuest));
                 return;
             }
         }
         Console.Clear();
-        if (!_accountsLogic.IsOldEnough(movie.MinimumAge) && AccountsLogic.CurrentAccount != null && customerId == -1)
+        if (!_accountsLogic.IsOldEnough(movie.MinimumAge) && AccountsLogic.CurrentAccount != null && customerId == -1 && !makeForGuest)
         {
             System.Console.WriteLine("You are not old enough to watch this movie.");
             System.Console.WriteLine("You are being redirected to the menu.");
@@ -66,7 +66,7 @@ public static class Reservation
                 {
                     System.Console.WriteLine("You are being redirected to the menu.");
                     Thread.Sleep(2000);
-                    MenuHelper.WaitForKey(Menus.LoggedInMenu);
+                    MenuHelper.WaitForKey(customerId != -1 || makeForGuest ? Menus.StaffMenu : AccountsLogic.CurrentAccount != null ? Menus.LoggedInMenu : Menus.GuestMenu);
                     return;
                 }
             }
@@ -238,6 +238,7 @@ public static class Reservation
         } while (payment != "");
 
         FakeProcessingPayment(5000);
+
         AccountantLogic accountantLogic = new();
         BillModel bill;
         if (AccountsLogic.CurrentAccount != null)
@@ -261,7 +262,43 @@ public static class Reservation
             );
         }
         accountantLogic.AddBill(bill);
-        int userId = customerId == -1 ? AccountsLogic.CurrentAccount != null ? AccountsLogic.CurrentAccount.Id : -1 : customerId;
+        // ID == -1 ? guest user... ID == -1 && makeForGuest ? guest staff
+        int userId;
+        Action returnMenu;
+        if (customerId != -1)
+        {
+            // staff makes reservation for existing account
+            userId = customerId;
+            returnMenu = Menus.StaffMenu;
+        }
+        else if (AccountsLogic.CurrentAccount == null)
+        {
+            // user makes reservation as guest
+            userId = -1;
+            returnMenu = Menus.GuestMenu;
+        }
+        else if (makeForGuest)
+        {
+            // staff makes reservation for guest
+            userId = -1;
+            returnMenu = Menus.StaffMenu;
+        }
+        else if (AccountsLogic.CurrentAccount != null)
+        {
+            // logged in user makes reservation
+            userId = AccountsLogic.CurrentAccount.Id;
+            returnMenu = Menus.LoggedInMenu;
+        }
+        else
+        {
+            // you shouldn't end up here but alas
+            Console.Clear();
+            System.Console.WriteLine("How did you get here?");
+            Thread.Sleep(1000);
+            userId = -1;
+            returnMenu = Menus.GuestMenu;
+        }
+        userId = customerId == -1 ? (AccountsLogic.CurrentAccount != null ? AccountsLogic.CurrentAccount.Id : -1): customerId;
         ReservationModel reservation;
 
         reservation = _reservationsLogic.AddReservation(userId, showing.Id, string.Join(",", selectedSeats), true, totalPrice, selectedExtras);
@@ -273,7 +310,7 @@ public static class Reservation
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("You have successfully booked your ticket(s)!\n");
         Console.WriteLine($"Your unique reservation code is {reservation.Id}.\n");
-        if (AccountsLogic.CurrentAccount == null)
+        if (AccountsLogic.CurrentAccount == null || makeForGuest)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             System.Console.WriteLine("IMPORTANT: Remember this unique reservation code and print your bill! Since you booked as a guest these are your only proof of reservation!\n");
@@ -282,7 +319,8 @@ public static class Reservation
         }
         Console.ResetColor();
         Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
-        MenuHelper.WaitForKey(customerId == -1 ? AccountsLogic.CurrentAccount != null ? Menus.LoggedInMenu : Menus.GuestMenu : Menus.StaffMenu);
+
+        MenuHelper.WaitForKey(returnMenu);
     }
     private static void ShowBill(ShowingModel showing, List<string> selectedFoods, List<string> selectedDrinks, List<ExtraModel> selectedExtras, int numberOfTickets, double totalPrice, bool clear = true)
     {
@@ -361,7 +399,7 @@ public static class Reservation
 
         var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress");
         ShowingModel selectedShowing = (ShowingModel)show;
-        Make(selectedShowing);
+        Make(selectedShowing, false);
     }
 
     private static void FakeProcessingPayment(int lengthInMilliSeconds)
@@ -533,7 +571,7 @@ public static class Reservation
         List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).Where(s => s.Date.Date == date.Date).ToList();
         List<string> showingOptions = showings.Select(s => $"Room {s.Room}: {s.Date.ToString("HH:mm")}").ToList();
 
-        Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(EXTENDEDDATEFORMAT)}"));
+        Make(MenuHelper.NewMenu(showingOptions, showings, $"Showings of {movie.Title} on {date.ToString(EXTENDEDDATEFORMAT)}"), false);
     }
 
     private static List<DateTime> GetDateTimeList(int amount)

@@ -204,18 +204,18 @@ public static class Movies
         return MenuHelper.NewMenu(options, indices, header: "Movies");
     }
 
-    public static void MoviesBrowser(int startingIndex = 0, int customerId = -1)
+    public static void MoviesBrowser(bool makeForGuest = false, int startingIndex = 0, int customerId = -1)
     {
         if (CinemaLogic.CurrentCinema == null)
         {
             Console.Clear();
             if (customerId != -1)
             {
-                Menus.ChooseCinema(() => MoviesBrowser(0, customerId), Menus.StaffMenu);
+                Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), Menus.StaffMenu);
             }
             else
             {
-                Menus.ChooseCinema(() => MoviesBrowser(0, customerId), () => 
+                Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), () => 
                 {
                     if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
                     else Menus.LoggedInMenu();
@@ -254,9 +254,11 @@ public static class Movies
             Console.Clear();
             while (Console.WindowWidth < 149)
             {
+                Console.Clear();
                 Console.WriteLine("Please increase the width of your window to continue...");
                 Thread.Sleep(1000);
             }
+
             if (currentIndex != 0 && currentIndex != movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 17)}Right -->");
             else if (currentIndex == 0) Console.Write($"{new String(' ', Console.WindowWidth - 9)}Right -->");
             else if (currentIndex == movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 8)}");
@@ -303,12 +305,12 @@ public static class Movies
             {
                 // make a reservation of the showinngidices'th item in the list of showings of the movie in currentIndex
                 ShowingModel showing = _showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id)[showingIndices[currentIndex]];
-                Reservation.Make(showing, customerId);
+                Reservation.Make(showing, makeForGuest, customerId);
                 // Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
             }
             else
             {
-                MoviesBrowser(startingIndex: currentIndex, customerId);
+                MoviesBrowser(makeForGuest, startingIndex: currentIndex, customerId);
             }
         }
         else 
