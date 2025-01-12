@@ -1,5 +1,5 @@
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using Project.Helpers;
 using Project.Logic.Account;
 
 public static class Movies
@@ -46,7 +46,7 @@ public static class Movies
     {
         if (_moviesLogic.ArchivedMovies.Count == 0)
         {
-            System.Console.WriteLine("There are 0 movies in the archive");
+            Console.WriteLine("There are 0 movies in the archive");
             Thread.Sleep(1000);
             MenuHelper.WaitForKey(Menus.AdminMenu);
             return;
@@ -82,14 +82,14 @@ public static class Movies
         Console.WriteLine("Enter the minimum age (11-18):");
         int minimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
 
-        System.Console.WriteLine("Enter a summary of the movie:");
+        Console.WriteLine("Enter a summary of the movie:");
         string summary = Console.ReadLine();
 
-        System.Console.WriteLine("Enter the main cast seperated by comma's");
+        Console.WriteLine("Enter the main cast seperated by comma's");
         List<string> actors = Console.ReadLine().Split(",").ToList();
         actors.ForEach(a => a.Trim());
 
-        System.Console.WriteLine("Enter the movie's director:");
+        Console.WriteLine("Enter the movie's director:");
         string director = Console.ReadLine();
 
         _moviesLogic.AddMovie(title, duration, minimumAge, summary, actors, director);
@@ -111,7 +111,7 @@ public static class Movies
         ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
 
         Console.Clear();
-        System.Console.WriteLine($"Moved {movie.Title} from archive into active movies");
+        Console.WriteLine($"Moved {movie.Title} from archive into active movies");
         Thread.Sleep(1000);
         MenuHelper.WaitForKey(ManageArchivedMovies);
     }
@@ -122,8 +122,8 @@ public static class Movies
 
         if (_moviesLogic.HasUpcomingShowings(_showingsLogic, movie))
         {
-            System.Console.WriteLine($"Error: {movie.Title} still has upcoming showings");
-            System.Console.WriteLine("Please remove these showings and try again");
+            Console.WriteLine($"Error: {movie.Title} still has upcoming showings");
+            Console.WriteLine("Please remove these showings and try again");
             Thread.Sleep(1000);
             MenuHelper.WaitForKey(ManageMovies);
             return;
@@ -135,7 +135,7 @@ public static class Movies
         ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
 
         Console.Clear();
-        System.Console.WriteLine($"Moved {movie.Title} into the archive");
+        Console.WriteLine($"Moved {movie.Title} into the archive");
         Thread.Sleep(1000);
         MenuHelper.WaitForKey(ManageMovies);
     }
@@ -227,7 +227,7 @@ public static class Movies
         if (Console.WindowHeight < 19)
         {
             Console.Clear();
-            System.Console.WriteLine("Your console is not tall enough!\nPlease expand your console window to browse movies.");
+            Console.WriteLine("Your console is not tall enough!\nPlease expand your console window to browse movies.");
             Thread.Sleep(2000);
             MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
             return;
@@ -237,7 +237,7 @@ public static class Movies
         if (movies.Count == 0)
         {
             Console.Clear();
-            System.Console.WriteLine("It seems there aren't any movies...\nPlease be patient while we resolve this issue.");
+            Console.WriteLine("It seems there aren't any movies...\nPlease be patient while we resolve this issue.");
             Thread.Sleep(2000);
             MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
             return;
@@ -254,13 +254,13 @@ public static class Movies
             Console.Clear();
             while (Console.WindowWidth < 149)
             {
-                System.Console.WriteLine("Please increase the width of your window to continue...");
+                Console.WriteLine("Please increase the width of your window to continue...");
                 Thread.Sleep(1000);
             }
             if (currentIndex != 0 && currentIndex != movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 17)}Right -->");
             else if (currentIndex == 0) Console.Write($"{new String(' ', Console.WindowWidth - 9)}Right -->");
             else if (currentIndex == movies.Count - 1) Console.Write($"<-- Left{new String(' ', Console.WindowWidth - 8)}");
-            System.Console.WriteLine(new string('-', Console.WindowWidth));
+            Console.WriteLine(new string('-', Console.WindowWidth));
 
             List<MovieModel> moviesOnScreen;
             if (currentIndex == 0) moviesOnScreen = movies.Slice(currentIndex, 3);
@@ -283,7 +283,7 @@ public static class Movies
                     blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth));
             }
 
-            System.Console.WriteLine(CombineBlocks(blocks[0], blocks[1], blocks[2], blockWidth));
+            Console.WriteLine(CombineBlocks(blocks[0], blocks[1], blocks[2], blockWidth));
 
             var keyInfo = Console.ReadKey(intercept: true);
             key = keyInfo.Key;
@@ -422,8 +422,8 @@ public static class Movies
         for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
         {
             if (i < showings.Count())
-                if (showings[i].Is3D) outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))} in 3D        {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
-                else outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))}              {Project.Helpers.SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
+                if (showings[i].Is3D) outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))} in 3D        {SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
+                else outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))}              {SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
             else
                 outputList.Add("");
         }
@@ -443,7 +443,7 @@ public static class Movies
         actions.Add(() => _moviesLogic.RemovePromotion(slot));
         actions.Add(SelectPromotionSlot);
 
-        System.Console.WriteLine($"options: {options.Count}, actions: {actions.Count}");
+        Console.WriteLine($"options: {options.Count}, actions: {actions.Count}");
 
         var movieToPromote = MenuHelper.NewMenu(options, actions, $"Which movie do you want to promote in slot {slot + 1}");
 
@@ -451,12 +451,12 @@ public static class Movies
         if (movieToPromote is MovieModel movie) 
         {
             _moviesLogic.PromoteMovie(movie, slot);
-            System.Console.WriteLine($"Succesfully changed the movie in promotionslot {slot + 1} to {movie.Title}");
+            Console.WriteLine($"Succesfully changed the movie in promotionslot {slot + 1} to {movie.Title}");
         }
         if (movieToPromote is null) 
         {
             _moviesLogic.PromoteMovie(null, slot);
-            System.Console.WriteLine($"Succesfully emptied promotionslot {slot + 1}");
+            Console.WriteLine($"Succesfully emptied promotionslot {slot + 1}");
         }
 
         Thread.Sleep(1000);
@@ -465,12 +465,12 @@ public static class Movies
 
     public static void SelectPromotionSlot()
     {
-        System.Console.WriteLine();
+        Console.WriteLine();
         MenuHelper.NewMenu(new List<string> {   $"1: currently promoted: {(_moviesLogic.PromotedMovies[0] != null ? _moviesLogic.PromotedMovies[0].Title : "Empty")}",
                                                 $"2: currently promoted: {(_moviesLogic.PromotedMovies[1] != null ? _moviesLogic.PromotedMovies[1].Title : "Empty")}",
-                                                $"3: currently promoted: {(_moviesLogic.PromotedMovies[2] != null ? _moviesLogic.PromotedMovies[2].Title : "Empty")}",
+
                                                 "return"}, 
-            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), () => PromoteMovies(2), Menus.AdminMenu},
+            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), Menus.AdminMenu},
             "Which slot do you want to change?");
     }
 }

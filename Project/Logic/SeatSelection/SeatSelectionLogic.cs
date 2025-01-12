@@ -20,7 +20,7 @@ public class SeatSelectionLogic
         var room = GetRoomByShowing(showingId);
         _seatCount = seatCount;
         _takenSeats = GetTakenSeats(showingId);
-        GridGenerator = new GridNavigator(); //todo change
+        GridGenerator = new GridNavigator();
         LayoutGenerator = new LayoutGenerator(room.Id,  showingId, GridGenerator, ref _selectedSeats);
     }
 
@@ -39,6 +39,19 @@ public class SeatSelectionLogic
             UpdateSeatingPresentation(LayoutGenerator.BuildSeatingLayoutV3, layout, _seatCount - _selectedSeats.Count);
         GridGenerator.ConfirmationAction = nav =>
         {
+            var curPos = nav.Cursor;
+            if (_selectedSeats.Contains(curPos) || _takenSeats.Contains(curPos))
+            {
+                NotAdjacentResult();
+                return false;
+            }
+
+            if (!IsAdjacentOnSameRow(curPos, _selectedSeats) && _selectedSeats.Count != 0)
+            {
+                AlreadyTakenResult();
+                return false;
+            }
+
             var seat = layout.SelectMany(row => row).FirstOrDefault(seat => seat.Position.Equals(nav.Cursor));
             if (seat == null)
                 return false;
@@ -71,12 +84,6 @@ public class SeatSelectionLogic
     private Func<bool> ActionMethod(GridNavigator navigator)
     {
         var curPos = navigator.Cursor;
-        if (_selectedSeats.Contains(curPos) || _takenSeats.Contains(curPos))
-            return AlreadyTakenResult;
-
-        if (!IsAdjacentOnSameRow(curPos, _selectedSeats) && _selectedSeats.Count != 0)
-            return NotAdjacentResult;
-
         _selectedSeats.Add(curPos with {}); //deep copy
 
         if (_selectedSeats.Count < _seatCount)

@@ -20,11 +20,11 @@ public static class CinemaLayoutParser
             {
                 var color = c switch
                 {
-                    'x' => ConsoleColor.White,
-                    'b' => ConsoleColor.Blue,
+                    'x' => ConsoleColor.Black,
+                    'b' => ConsoleColor.DarkBlue,
                     'o' => ConsoleColor.DarkYellow,
                     'r' => ConsoleColor.Red,
-                    _   => ConsoleColor.Yellow //signifies error
+                    _   => ConsoleColor.Black //signifies error
                 };
 
                 var isDecoy = 'x' == c;

@@ -144,10 +144,11 @@ public class LayoutGenerator
 
                 var color = seat switch
                 {
-                    { IsSelected: true } => ConsoleColor.Cyan,
+                    { IsSelected: true } => ConsoleColor.White,
                     { IsDecoy: true } => ConsoleColor.Black,
-                    { IsTaken: true} => ConsoleColor.DarkGray,
-                    { IsReserved: true } => ConsoleColor.Magenta,
+                    { IsTaken: true} => ConsoleColor.Gray,
+                    { IsReserved: true } => ConsoleColor.Cyan
+                    ,
                     _ => seat.Color
                 };
 
