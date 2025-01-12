@@ -51,7 +51,7 @@ public static class BillPresentation
     private static void ShowFutureReservations()
     {
         var userReservations = _reservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
-            .Where(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date > DateTime.Now.Date)
+            .Where(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date > DateTime.Now)
             .OrderBy(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
             .ToList();
 
