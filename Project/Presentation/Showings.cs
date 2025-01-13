@@ -1,19 +1,22 @@
 using System.Globalization;
 
-public static class Showings
+public class Showings
 {
     private LogicManager _logicManager;
-    static private ShowingsLogic _showingsLogic = new ShowingsLogic();
-    private static CinemaLogic _cinemaLogic = new CinemaLogic();
+    private MenuManager _menuManager;
 
-    public static List<ExtraModel> Extras = new List<ExtraModel>();
-
-    public static void ShowAll()
+    public Showings(LogicManager logicManager, MenuManager menuManager)
     {
-        Console.WriteLine(_showingsLogic.ShowAll());
+        _logicManager = logicManager;
+        _menuManager = menuManager;
     }
 
-    public static int SelectMovie(MoviesLogic moviesLogic)
+    public void ShowAll()
+    {
+        Console.WriteLine(_logicManager.ShowingsLogic.ShowAll());
+    }
+
+    public int SelectMovie(MoviesLogic moviesLogic)
     {
         Console.Clear();
 
@@ -27,11 +30,11 @@ public static class Showings
         return MenuHelper.NewMenu(movies, moviesIndices, "Which movie do you want to manage?");
     }
 
-    public static int SelectShowing(int movieId)
+    public int SelectShowing(int movieId)
     {
         Console.Clear();
 
-        List<ShowingModel> showings = _showingsLogic.Showings.Where(s => s.MovieId == movieId).ToList();
+        List<ShowingModel> showings = _logicManager.ShowingsLogic.Showings.Where(s => s.MovieId == movieId).ToList();
         List<string> showingsStrings = showings.Select(showing => showing.Date.ToString("dd-MM-yyyy HH:mm:ss")).ToList();
         showingsStrings.Add("Cancel");
 
@@ -41,7 +44,7 @@ public static class Showings
         return MenuHelper.NewMenu(showingsStrings, showingsIndices, "Which showing do you want to manage?");
     }
 
-    public static void ManageShowings()
+    public void ManageShowings()
     {
         MoviesLogic moviesLogic = new();
         int chosenId = SelectMovie(moviesLogic); 
@@ -59,17 +62,17 @@ public static class Showings
                 () => ShowShowings(chosenId, moviesLogic),
                 () => AddShowing(chosenId, moviesLogic),
                 () => RemoveShowing(chosenId, moviesLogic),
-                Menus.AdminMenu
+                _menuManager.Menus.AdminMenu
             };
             MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
-            Menus.AdminMenu();
+            _menuManager.Menus.AdminMenu();
         }
     }
 
-    public static void ManageShowings(int chosenId, MoviesLogic moviesLogic)
+    public void ManageShowings(int chosenId, MoviesLogic moviesLogic)
     {
         if (chosenId != -1)
         {
@@ -85,19 +88,19 @@ public static class Showings
                 () => ShowShowings(chosenId, moviesLogic),
                 () => AddShowing(chosenId, moviesLogic),
                 () => RemoveShowing(chosenId, moviesLogic),
-                Menus.AdminMenu
+                _menuManager.Menus.AdminMenu
             };
             MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
-            Menus.AdminMenu();
+            _menuManager.Menus.AdminMenu();
         }
     }
 
-    private static void ListShowings(int movieId, MoviesLogic moviesLogic)
+    private void ListShowings(int movieId, MoviesLogic moviesLogic)
     {
-        List<ShowingModel> showings = _showingsLogic.FindShowingsByMovieId(movieId);
+        List<ShowingModel> showings = _logicManager.ShowingsLogic.FindShowingsByMovieId(movieId);
         if (showings.Count == 0)
         {
             Console.Clear();
@@ -115,24 +118,25 @@ public static class Showings
         }
     }
 
-    private static void ShowShowings(int movieId, MoviesLogic moviesLogic)
+    private void ShowShowings(int movieId, MoviesLogic moviesLogic)
     {
         ListShowings(movieId, moviesLogic);
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
 
-    private static void AddShowing(int movieId, MoviesLogic moviesLogic)
+    private void AddShowing(int movieId, MoviesLogic moviesLogic)
     {
+        CinemaLogic cinemaLogic = _logicManager.CinemaLogic;
         Console.Clear();
-        List<string> cinemaOptions = _cinemaLogic.Cinemas.Select(c => c.Name).ToList();
-        List<int> cinemaIndices = _cinemaLogic.Cinemas.Select(c => c.Id).ToList();
+        List<string> cinemaOptions = cinemaLogic.Cinemas.Select(c => c.Name).ToList();
+        List<int> cinemaIndices = cinemaLogic.Cinemas.Select(c => c.Id).ToList();
 
         cinemaOptions.Add("Cancel");
         cinemaIndices.Add(-1);
         int cinemaId = MenuHelper.NewMenu(cinemaOptions, cinemaIndices, "Which cinema do you want to add showings to?");
         if (cinemaId == -1)
         {
-            Menus.AdminMenu();
+            _menuManager.Menus.AdminMenu();
             return;
         }
 
@@ -165,48 +169,32 @@ public static class Showings
             _ => "none"
         };
 
-
- 
-
         bool answer = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to add extra's?");
-
+        List<ExtraModel> extras = new();
         if (answer)
-        {
-          
+        {       
             Console.WriteLine("How many extras would you like to add?");
             int extraCount = int.Parse(Console.ReadLine());
-
-         
+   
             for (int i = 0; i < extraCount; i++)
             {
                 Console.WriteLine($"Adding extra {i + 1} of {extraCount}:");
 
-            
                 Console.WriteLine("What will be the name for this extra?");
                 string extraName = Console.ReadLine();
-
-              
+       
                 Console.WriteLine("What will be the price for this extra?");
                 decimal extraPrice = decimal.Parse(Console.ReadLine());
-
             
                 Console.WriteLine("Is this extra mandatory?");
                 bool mandatory = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Is this extra mandatory?");
-
               
                 ExtraModel extra = new(extraName, extraPrice, mandatory);
-
              
-                Extras.Add(extra);
+                extras.Add(extra);
             }
-
             Console.WriteLine($"{extraCount} extra(s) have been successfully added!");
         }
-
- 
-
-        
-
 
         List<string> options = new List<string>
         {
@@ -222,7 +210,7 @@ public static class Showings
         switch (userChoice)
         {
             case 1:
-                BookShowings(date, room, moviesLogic, movieId, cinemaId, is3d,special,Extras);
+                BookShowings(date, room, moviesLogic, movieId, cinemaId, is3d,special,extras);
                 break;
             case 2:
                 pattern = "daily";
@@ -247,7 +235,7 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i), room, moviesLogic, movieId, cinemaId, is3d, special,Extras);
+                BookShowings(date.AddDays(i), room, moviesLogic, movieId, cinemaId, is3d, special, extras);
             }
         } 
         else if (pattern == "weekly")
@@ -262,16 +250,18 @@ public static class Showings
             } while (!int.TryParse(input, out res));
             for (int i = 0; i < res; i++)
             {
-                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, cinemaId, is3d, special,Extras);
+                BookShowings(date.AddDays(i * 7), room, moviesLogic, movieId, cinemaId, is3d, special, extras);
             }
         }
+
 
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
 
-    private static void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, int chosenCinemaId, bool is3d, string special, List<ExtraModel> extras)
+    private void BookShowings(DateTime date, int room, MoviesLogic moviesLogic, int movieId, int chosenCinemaId, bool is3d, string special, List<ExtraModel> extras)
     {
-        if (!_showingsLogic.IsRoomFree(date, room, moviesLogic.GetMovieById(movieId).Duration, chosenCinemaId))
+        ShowingsLogic showingsLogic = _logicManager.ShowingsLogic;
+        if (!showingsLogic.IsRoomFree(date, room, moviesLogic.GetMovieById(movieId).Duration, chosenCinemaId))
         {
             Console.ForegroundColor = ConsoleColor.Red;
             System.Console.WriteLine($"Room {room} is not available on {date.ToString("dd-MM-yyyy HH:mm:ss")}");
@@ -280,21 +270,21 @@ public static class Showings
             return;
         }
 
-        _showingsLogic.AddShowing(movieId, date, room, chosenCinemaId, is3d,special,extras);
+        showingsLogic.AddShowing(movieId, date, room, chosenCinemaId, is3d,special,extras);
         Console.ForegroundColor = ConsoleColor.Green;
         System.Console.WriteLine($"Showing has been successfully added on {date.ToString("dd-MM-yyyy HH:mm:ss")} with special: {special}");
         Console.ResetColor();
         Thread.Sleep(500);
     }
 
-    private static void RemoveShowing(int movieId, MoviesLogic moviesLogic)
+    private void RemoveShowing(int movieId, MoviesLogic moviesLogic)
     {
         int chosenShowing = SelectShowing(movieId);
-        if (chosenShowing != -1) _showingsLogic.RemoveShowing(chosenShowing);
+        if (chosenShowing != -1) _logicManager.ShowingsLogic.RemoveShowing(chosenShowing);
         MenuHelper.WaitForKey(() => ManageShowings(movieId, moviesLogic));
     }
 
-    private static DateTime AskAndParseDateAndTime()
+    private DateTime AskAndParseDateAndTime()
     {  
         string dateInput;
         string timeInput;
@@ -314,6 +304,4 @@ public static class Showings
         string output = $"{dateInput.Trim()} {timeInput.Trim()}";
         return DateTime.ParseExact(output, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
     }
-
-   
 }

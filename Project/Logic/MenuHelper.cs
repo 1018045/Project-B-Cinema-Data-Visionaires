@@ -1,5 +1,13 @@
 static class MenuHelper
 {
+    private static MenuManager _menuManager;
+
+    public static void setMenuManager(MenuManager menuManager)
+    {
+        _menuManager = menuManager;
+    }
+
+
     public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, List<MovieModel> promotedMovies = null, bool showMenu = false, bool showCurrentLocation = false)
     {
         if (options.Count != actions.Count)
@@ -26,7 +34,7 @@ static class MenuHelper
                 if (movie != null)
                 {
                     options.Insert(count, $"{movie.Title}\n    featuring {String.Join(", ", movie.Actors)}\n");
-                    actions.Insert(count++, (T)(Object)new Action(() => Reservation.ChooseShowing(movie)));
+                    actions.Insert(count++, (T)(Object)new Action(() => _menuManager.Reservation.ChooseShowing(movie)));
                     currentIndex++;
                 } 
             }

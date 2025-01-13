@@ -5,7 +5,7 @@ using Project.DataModels;
 using Project.Logic.Account;
 using Project.Presentation;
 
-class Menus
+public class Menus
 {
     private LogicManager _logicManager;
     private MenuManager _menuManager;
@@ -50,12 +50,12 @@ class Menus
         };
         List<Action> actions = new List<Action>
         {
-            () => Movies.MoviesBrowser(),
-            Reservation.SelectDate,
+            () => _menuManager.Movies.MoviesBrowser(),
+            _menuManager.Reservation.SelectDate,
             () => Login(),
             () => CreateAccount(LoggedInMenu),
             () => ChooseCinema(GuestMenu, GuestMenu),
-            ApplyForJob.ShowJobMenu,
+            _menuManager.ApplyForJob.ShowJobMenu,
             () => AboutContact(GuestMenu),
             () => Environment.Exit(0)
         };
@@ -107,11 +107,11 @@ class Menus
         };
         List<Action> actions = new List<Action>
         {
-            () => Movies.MoviesBrowser(),
-            Reservation.SelectDate,
-            BillPresentation.ViewUserBillsAndReservations,
+            () => _menuManager.Movies.MoviesBrowser(),
+            _menuManager.Reservation.SelectDate,
+            _menuManager.BillPresentation.ViewUserBillsAndReservations,
             () => ChooseCinema(LoggedInMenu, LoggedInMenu),
-            AccountPresentation.Menu,
+            _menuManager.AccountPresentation.Menu,
             () => AboutContact(LoggedInMenu),   
             () => 
             {
@@ -225,9 +225,9 @@ class Menus
         };
         List<Action> actions = new List<Action>
         {
-            Movies.Start,
-            Showings.ManageShowings,
-            Movies.SelectPromotionSlot,
+            _menuManager.Movies.Start,
+            _menuManager.Showings.ManageShowings,
+            _menuManager.Movies.SelectPromotionSlot,
             ViewUsers,
             RemoveUser,
             AddEmployee,
@@ -235,7 +235,7 @@ class Menus
             RemoveJobVacancy,
             ViewAllVacancies,
             AccountantMenu,
-            CinemaLocations.ChooseCinemaLocationToManage,
+            _menuManager.CinemaLocations.ChooseCinemaLocationToManage,
             AddStaffAccount,
             GuestMenu
         };
@@ -274,11 +274,11 @@ class Menus
                 var accounts = AccountsAccess.LoadAll();
                 customer = accounts.Find(a => a.EmailAddress.ToLower().Equals(email.ToLower()));
             }
-            Movies.MoviesBrowser(makeForGuest, customerId: customer.Id);
+            _menuManager.Movies.MoviesBrowser(makeForGuest, customerId: customer.Id);
         }
         else
         {
-            Movies.MoviesBrowser(makeForGuest);
+            _menuManager.Movies.MoviesBrowser(makeForGuest);
         }
         
     }
@@ -393,7 +393,7 @@ class Menus
         DateTime userBirthDate;
 
         Console.WriteLine("Your BirthDay");
-        userBirthDate = Reservation.AskAndParsePastDate();
+        userBirthDate = _menuManager.Reservation.AskAndParsePastDate();
 
         accountsLogic.UpdateList(userEmail, Password, fullName, userBirthDate.Date);
 

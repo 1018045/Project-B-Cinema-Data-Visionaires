@@ -1,1 +1,1 @@
-﻿MenuManager program = new();
+﻿MenuHelper.setMenuManager(new MenuManager());

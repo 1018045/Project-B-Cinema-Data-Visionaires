@@ -531,5 +531,46 @@
       }
     ],
     "billId": 17
+  },
+  {
+    "id": 42,
+    "userId": -1,
+    "showingId": 34,
+    "seats": "16;4,16;5,16;6",
+    "paymentComplete": true,
+    "price": 131.3,
+    "selectedExtras": [
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      },
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      },
+      {
+        "name": "Pillow",
+        "price": 5.00,
+        "is_mandatory": false
+      },
+      {
+        "name": "Blanket",
+        "price": 8.50,
+        "is_mandatory": false
+      },
+      {
+        "name": "Blanket",
+        "price": 8.50,
+        "is_mandatory": false
+      },
+      {
+        "name": "Blanket",
+        "price": 8.50,
+        "is_mandatory": false
+      }
+    ],
+    "billId": 18
   }
 ]
