@@ -1,7 +1,7 @@
 public class EmployeeLogic
 {
     
-    private List<EmployeeModel> ListOfEmployees;
+    public List<EmployeeModel> ListOfEmployees {get;set;}
      public EmployeeLogic()
     {
         ListOfEmployees = EmployeesAccess.LoadAll();
