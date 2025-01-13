@@ -161,6 +161,42 @@
     "billId": 15
   },
   {
+    "id": 14,
+    "userId": 4,
+    "showingId": 33,
+    "seats": "1;7",
+    "paymentComplete": true,
+    "price": 66,
+    "selectedExtras": [
+      {
+        "name": "Sentinel Costumes",
+        "price": 25.00,
+        "is_mandatory": false
+      }
+    ],
+    "billId": 15
+  },
+  {
+    "id": 14,
+    "userId": 4,
+    "showingId": 35,
+    "seats": "1;6",
+    "paymentComplete": true,
+    "price": 13.5,
+    "selectedExtras": [],
+    "billId": 16
+  },
+  {
+    "id": 14,
+    "userId": 4,
+    "showingId": 36,
+    "seats": "1;6",
+    "paymentComplete": true,
+    "price": 13.5,
+    "selectedExtras": [],
+    "billId": 17
+  },
+  {
     "id": 15,
     "userId": 1,
     "showingId": 19,

@@ -326,8 +326,8 @@
     "room": 1,
     "special": "Dolby",
     "cinema_id": 0,
-    "is_3d": true,
-    "extras": []
+    "extras": [],
+    "is_3d": true
   },
   {
     "id": 33,
@@ -342,7 +342,8 @@
         "price": 25.00,
         "is_mandatory": false
       }
-    ]
+    ],
+    "is_3d": false
   },
   {
     "id": 34,
@@ -362,6 +363,27 @@
         "price": 8.50,
         "is_mandatory": false
       }
-    ]
+    ],
+    "is_3d": false
+  },
+  {
+    "id": 35,
+    "movieId": 3,
+    "date": "12-01-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 36,
+    "movieId": 4,
+    "date": "12-01-2025 14:20:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
   }
 ]

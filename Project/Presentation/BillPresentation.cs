@@ -28,6 +28,7 @@ public class BillPresentation
         List<string> options = new List<string>
         {
             "View Past Reservations",
+            "View Future Reservations",
             "Return to Menu"
         };
 
@@ -35,29 +36,41 @@ public class BillPresentation
         {
             ShowPastReservations,
             _menuManager.MainMenus.LoggedInMenu
+            ShowFutureReservations,
+            Menus.LoggedInMenu
         };
 
         MenuHelper.NewMenu(options, actions, "Your Reservations and Bills");
     }
 
-    private void ShowPastReservations()
+    private static void ShowPastReservations()
     {
-        var userReservations = _logicManager.ReservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
-            .Where(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date < DateTime.Now)
-            .OrderByDescending(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
+        var userReservations = _reservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
+            .Where(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date < DateTime.Now)
+            .OrderByDescending(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
             .ToList();
 
-        DisplayReservations(userReservations);
+        DisplayReservations(userReservations, true);
     }
 
-    private void DisplayReservations(List<ReservationModel> reservations)
+    private static void ShowFutureReservations()
+    {
+        var userReservations = _reservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
+            .Where(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date > DateTime.Now)
+            .OrderBy(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
+            .ToList();
+
+        DisplayReservations(userReservations, false);
+    }
+
+    private static void DisplayReservations(List<ReservationModel> reservations, bool isPastReservations = true)
     {
         Console.Clear();
-        Console.WriteLine("=== Your Past Reservations ===\n");
+        Console.WriteLine($"=== Your {(isPastReservations ? "Past" : "Future")} Reservations ===\n");
 
         if (reservations.Count == 0)
         {
-            Console.WriteLine("You have no past reservations.");
+            Console.WriteLine($"You have no {(isPastReservations ? "past" : "future")} reservations.");
         }
         else
         {
