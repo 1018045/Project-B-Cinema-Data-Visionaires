@@ -5,9 +5,6 @@ static class MenuHelper
     public static void setMenuManager(MenuManager menuManager)
     {
         _menuManager = menuManager;
-        System.Console.WriteLine(menuManager);
-        System.Console.WriteLine(_menuManager);
-        Thread.Sleep(3000);
     }
 
     public static T NewMenu<T>(List<string> options, List<T> actions, string header = null, string subtext = null, List<MovieModel> promotedMovies = null, bool showMenu = false, bool showCurrentLocation = false)

@@ -485,9 +485,9 @@ public class Movies
         Console.WriteLine();
         MenuHelper.NewMenu(new List<string> {   $"1: currently promoted: {(moviesLogic.PromotedMovies[0] != null ? moviesLogic.PromotedMovies[0].Title : "Empty")}",
                                                 $"2: currently promoted: {(moviesLogic.PromotedMovies[1] != null ? moviesLogic.PromotedMovies[1].Title : "Empty")}",
-
+                                                $"3: currently promoted: {(moviesLogic.PromotedMovies[2] != null ? moviesLogic.PromotedMovies[2].Title : "Empty")}",
                                                 "return"}, 
-            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), _menuManager.MainMenus.AdminMenu},
+            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), () => PromoteMovies(2), _menuManager.MainMenus.AdminMenu},
             "Which slot do you want to change?");
     }
 }
