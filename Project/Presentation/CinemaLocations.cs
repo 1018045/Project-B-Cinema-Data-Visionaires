@@ -30,6 +30,7 @@ public class CinemaLocations
     public void AboutContact(Action returnMenu)
     {
         Console.Clear();
+
         if (CinemaLogic.CurrentCinema == null)
         {
             System.Console.WriteLine("Please first select a cinema!");

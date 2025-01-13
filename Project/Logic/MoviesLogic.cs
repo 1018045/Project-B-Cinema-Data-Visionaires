@@ -35,8 +35,6 @@ public class MoviesLogic
         MoviesAccess.WriteAll(Movies);
     }
 
-
-
     public MovieModel GetMovieById(int id)
     {
         foreach (MovieModel movie in Movies)
@@ -54,7 +52,6 @@ public class MoviesLogic
                 return movie;
             }
         }
-
         return null;
     }
 

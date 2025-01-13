@@ -33,6 +33,10 @@ public class CinemaLogic
     
     public void EditCinemaAddress(CinemaModel cinema, string newCity, string newAddress, string newPostal)
     {
+        if (newCity == null || newCity == "" || newAddress == null || newAddress == "" || newPostal == null || newPostal == "")
+        {
+            return;
+        }
         cinema.City = newCity;
         cinema.Address = newAddress;
         cinema.PostalCode = newPostal;

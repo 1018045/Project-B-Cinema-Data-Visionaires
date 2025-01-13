@@ -8,9 +8,9 @@ public class TestReservationLogic
     [TestMethod]
     public void TestAddReservation()
     {
-        ReservationsLogic res = new();
+        ReservationsLogic res = new(new LogicManager());
         int expected = res.Reservations.Count + 1;
-        res.AddReservation(13, 13, "1-2", true);
+        res.AddReservation(13, 13, "1-2", true, 10.00, null);
         int actual = res.Reservations.Count;
         Assert.AreEqual(expected, actual);
     }
@@ -19,9 +19,9 @@ public class TestReservationLogic
     public void TestFindReservationByUserID()
     {
         int userId = 10;
-        ReservationModel expected = new(10, userId, 10, "1-2", true);
-        ReservationsLogic res = new();
-        res.AddReservation(expected);
+        ReservationModel expected = new(10, userId, 10, "1-2", true, 10.00, null);
+        ReservationsLogic res = new(new LogicManager());
+        res.AddReservation(userId, 10, "1-2", true, 10.00, null);
         List<ReservationModel> actualList = res.FindReservationByUserID(userId);
         Assert.IsTrue(actualList.Contains(expected));
     }
@@ -40,8 +40,8 @@ public class TestReservationLogic
     [DataRow (" NL0099990000000000 ", false)]     
     public void TestValidateBankDetails(string bankDetails, bool expected)
     {
-        ReservationsLogic reservations = new();
-        bool actual = reservations.ValidateBankDetails(bankDetails);
-        Assert.AreEqual(expected, actual);
+        ReservationsLogic reservations = new(new LogicManager());
+        string actual = reservations.ValidateBankDetails(bankDetails);
+        Assert.AreEqual(expected, actual.Length == 0);
     }
 }
