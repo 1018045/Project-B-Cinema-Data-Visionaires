@@ -4,13 +4,15 @@
     "name": "Zidane",
     "city": "Rotterdam",
     "address": "Wijnhaven 99-107",
-    "postal_code": "3011WN"
+    "postal_code": "3011WN",
+    "phone_number": "010-1375835"
   },
   {
     "id": 1,
     "name": "oniK",
     "city": "Rotterdam",
     "address": "Gouvernestraat 129-133",
-    "postal_code": "3014PM"
+    "postal_code": "3014PM",
+    "phone_number": "010-2987588"
   }
 ]

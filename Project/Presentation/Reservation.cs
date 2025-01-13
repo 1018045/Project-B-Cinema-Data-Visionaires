@@ -324,7 +324,6 @@ public class Reservation
             ShowBill(showing, selectedFoods, selectedDrinks, selectedExtras, selectedSeats.Count, totalPrice, clear: false);
         }
         Console.ResetColor();
-        Console.WriteLine($"Your unique reservation code is {reservation.Id}.");
 
         MenuHelper.WaitForKey(returnMenu);
     }
