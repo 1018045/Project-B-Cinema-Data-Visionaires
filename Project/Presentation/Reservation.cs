@@ -183,7 +183,7 @@ public class Reservation
 
         if (showing.Is3D)
         {
-            if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"This showing of {movie.Title} is in 3D. Would you like to add {selectedSeats.Count + 1} 3D glasses ($7.50 each) to your order? (You can also bring your own)"))
+            if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"This showing of {movie.Title} is in 3D. Would you like to add {selectedSeats.Count} 3D glasses ($7.50 each) to your order? (You can also bring your own)"))
             {
                 for (int i = 0; i < selectedSeats.Count; i++)
                 {
@@ -410,6 +410,7 @@ public class Reservation
         }
         
         List<object> showings = showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id).ToList<object>();
+
         if (showings.Count() == 0)
         {
             System.Console.WriteLine("There are no upcoming showings for this movie");
@@ -417,6 +418,7 @@ public class Reservation
             MenuHelper.WaitForKey(() => _menuManager.Movies.MoviesBrowser());
             return;
         }
+        
         List<string> options = showings.Cast<ShowingModel>().Select(s => s.Date.ToString(EXTENDEDDATEFORMAT)).ToList();
         
         // adding 3D to text

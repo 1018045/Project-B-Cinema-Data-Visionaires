@@ -17,7 +17,7 @@ public class ShowingsLogic
     {
         return Showings.Where(s => s.MovieId == movieId).OrderBy(s => s.Date).ToList();
     }
-    
+
 
     public List<ShowingModel> FindShowingsByMovieId(int id, int cinemaId)
     {

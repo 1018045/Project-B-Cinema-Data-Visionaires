@@ -21,20 +21,6 @@
     "totalSpent": 0
   },
   {
-    "id": 3,
-    "role": "user",
-    "emailAddress": "hoi@doei.nl",
-    "password": "K@mala Harr1s",
-    "totalSpent": 0
-  },
-  {
-    "id": 4,
-    "role": "user",
-    "emailAddress": "JoeBiden@gmail.nl",
-    "password": "1@mSleepy",
-    "totalSpent": 0
-  },
-  {
     "id": 5,
     "role": "admin",
     "emailAddress": "admin@admin",
@@ -56,13 +42,6 @@
     "totalSpent": 0
   },
   {
-    "id": 8,
-    "role": "user",
-    "emailAddress": "user@user",
-    "password": "user",
-    "totalSpent": 0
-  },
-  {
     "id": 9,
     "role": "user",
     "emailAddress": "frisoboot@gmail.com",
@@ -70,38 +49,10 @@
     "totalSpent": 0
   },
   {
-    "id": 10,
-    "role": "user",
-    "emailAddress": "marleen@hotmail.com",
-    "password": "AAAA2222@",
-    "totalSpent": 0
-  },
-  {
     "id": 11,
     "role": "staff",
     "emailAddress": "staff@staff",
     "password": "staff",
-    "totalSpent": 0
-  },
-  {
-    "id": 12,
-    "role": "user",
-    "emailAddress": "a@a",
-    "password": "a",
-    "totalSpent": 0
-  },
-  {
-    "id": 13,
-    "role": "staff",
-    "emailAddress": "psek@psek",
-    "password": "",
-    "totalSpent": 0
-  },
-  {
-    "id": 14,
-    "role": "staff",
-    "emailAddress": "psek@psek",
-    "password": "psek",
     "totalSpent": 0
   }
 ]

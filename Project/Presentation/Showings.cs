@@ -173,9 +173,15 @@ public class Showings
         bool answer = MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "Would you like to add extra's?");
         List<ExtraModel> extras = new();
         if (answer)
-        {       
-            Console.WriteLine("How many extras would you like to add?");
-            int extraCount = int.Parse(Console.ReadLine());
+        {  
+            int extraCount;
+            string extraCountTemp;
+            do  
+            {   
+                Console.Clear();
+                Console.WriteLine("How many extras would you like to add?");
+                extraCountTemp = Console.ReadLine();
+            } while(!int.TryParse(extraCountTemp, out extraCount));
    
             for (int i = 0; i < extraCount; i++)
             {

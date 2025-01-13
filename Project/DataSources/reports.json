@@ -124,5 +124,40 @@
     "totalAmount": 13.5,
     "paymentDate": "2025-01-12T14:18:30.5806194+01:00",
     "userId": 4
+  },
+  {
+    "id": 18,
+    "paymentCompleted": true,
+    "totalAmount": 103.5,
+    "paymentDate": "2025-01-13T13:25:11.588144+01:00",
+    "userId": -1
+  },
+  {
+    "id": 19,
+    "paymentCompleted": true,
+    "totalAmount": 27,
+    "paymentDate": "2025-01-13T13:26:06.444209+01:00",
+    "userId": -1
+  },
+  {
+    "id": 20,
+    "paymentCompleted": true,
+    "totalAmount": 103.5,
+    "paymentDate": "2025-01-13T13:26:43.300471+01:00",
+    "userId": 1
+  },
+  {
+    "id": 21,
+    "paymentCompleted": true,
+    "totalAmount": 81,
+    "paymentDate": "2025-01-13T13:27:15.606228+01:00",
+    "userId": 1
+  },
+  {
+    "id": 22,
+    "paymentCompleted": true,
+    "totalAmount": 40.5,
+    "paymentDate": "2025-01-13T13:29:54.448263+01:00",
+    "userId": 1
   }
 ]

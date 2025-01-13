@@ -385,5 +385,2005 @@
     "cinema_id": 0,
     "extras": [],
     "is_3d": false
+  },
+  {
+    "id": 37,
+    "movieId": 3,
+    "date": "29-01-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 38,
+    "movieId": 3,
+    "date": "30-01-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 39,
+    "movieId": 3,
+    "date": "31-01-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 40,
+    "movieId": 3,
+    "date": "02-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 41,
+    "movieId": 3,
+    "date": "03-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 42,
+    "movieId": 3,
+    "date": "04-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 43,
+    "movieId": 3,
+    "date": "05-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 44,
+    "movieId": 3,
+    "date": "06-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 45,
+    "movieId": 3,
+    "date": "07-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 46,
+    "movieId": 3,
+    "date": "09-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 47,
+    "movieId": 3,
+    "date": "10-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 48,
+    "movieId": 3,
+    "date": "11-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 49,
+    "movieId": 3,
+    "date": "12-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 50,
+    "movieId": 3,
+    "date": "13-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 51,
+    "movieId": 3,
+    "date": "14-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 52,
+    "movieId": 3,
+    "date": "16-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 53,
+    "movieId": 3,
+    "date": "17-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 54,
+    "movieId": 3,
+    "date": "18-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 55,
+    "movieId": 3,
+    "date": "19-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 56,
+    "movieId": 3,
+    "date": "20-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 57,
+    "movieId": 3,
+    "date": "21-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 58,
+    "movieId": 3,
+    "date": "23-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 59,
+    "movieId": 3,
+    "date": "24-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 60,
+    "movieId": 3,
+    "date": "25-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 61,
+    "movieId": 3,
+    "date": "26-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 62,
+    "movieId": 3,
+    "date": "27-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 63,
+    "movieId": 3,
+    "date": "28-02-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 64,
+    "movieId": 3,
+    "date": "02-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 65,
+    "movieId": 3,
+    "date": "03-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 66,
+    "movieId": 3,
+    "date": "04-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 67,
+    "movieId": 3,
+    "date": "05-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 68,
+    "movieId": 3,
+    "date": "06-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 69,
+    "movieId": 3,
+    "date": "07-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 70,
+    "movieId": 3,
+    "date": "09-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 71,
+    "movieId": 3,
+    "date": "10-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 72,
+    "movieId": 3,
+    "date": "11-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 73,
+    "movieId": 3,
+    "date": "12-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 74,
+    "movieId": 3,
+    "date": "13-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 75,
+    "movieId": 3,
+    "date": "14-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 76,
+    "movieId": 3,
+    "date": "16-03-2025 20:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [
+      {
+        "name": "Collectible mug",
+        "price": 13.50,
+        "is_mandatory": false
+      }
+    ],
+    "is_3d": true
+  },
+  {
+    "id": 77,
+    "movieId": 5,
+    "date": "29-01-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 78,
+    "movieId": 5,
+    "date": "30-01-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 79,
+    "movieId": 5,
+    "date": "31-01-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 80,
+    "movieId": 5,
+    "date": "01-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 81,
+    "movieId": 5,
+    "date": "02-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 82,
+    "movieId": 5,
+    "date": "03-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 83,
+    "movieId": 5,
+    "date": "04-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 84,
+    "movieId": 5,
+    "date": "05-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 85,
+    "movieId": 5,
+    "date": "06-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 86,
+    "movieId": 5,
+    "date": "07-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 87,
+    "movieId": 5,
+    "date": "08-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 88,
+    "movieId": 5,
+    "date": "09-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 89,
+    "movieId": 5,
+    "date": "10-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 90,
+    "movieId": 5,
+    "date": "11-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 91,
+    "movieId": 5,
+    "date": "12-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 92,
+    "movieId": 5,
+    "date": "13-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 93,
+    "movieId": 5,
+    "date": "14-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 94,
+    "movieId": 5,
+    "date": "15-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 95,
+    "movieId": 5,
+    "date": "16-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 96,
+    "movieId": 5,
+    "date": "17-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 97,
+    "movieId": 5,
+    "date": "18-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 98,
+    "movieId": 5,
+    "date": "19-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 99,
+    "movieId": 5,
+    "date": "20-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 100,
+    "movieId": 5,
+    "date": "21-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 101,
+    "movieId": 5,
+    "date": "22-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 102,
+    "movieId": 5,
+    "date": "23-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 103,
+    "movieId": 5,
+    "date": "24-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 104,
+    "movieId": 5,
+    "date": "25-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 105,
+    "movieId": 5,
+    "date": "26-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 106,
+    "movieId": 5,
+    "date": "27-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 107,
+    "movieId": 5,
+    "date": "28-02-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 108,
+    "movieId": 5,
+    "date": "01-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 109,
+    "movieId": 5,
+    "date": "02-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 110,
+    "movieId": 5,
+    "date": "03-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 111,
+    "movieId": 5,
+    "date": "04-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 112,
+    "movieId": 5,
+    "date": "05-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 113,
+    "movieId": 5,
+    "date": "06-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 114,
+    "movieId": 5,
+    "date": "07-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 115,
+    "movieId": 5,
+    "date": "08-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 116,
+    "movieId": 5,
+    "date": "09-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 117,
+    "movieId": 5,
+    "date": "10-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 118,
+    "movieId": 5,
+    "date": "11-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 119,
+    "movieId": 5,
+    "date": "12-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 120,
+    "movieId": 5,
+    "date": "13-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 121,
+    "movieId": 5,
+    "date": "14-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 122,
+    "movieId": 5,
+    "date": "15-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 123,
+    "movieId": 5,
+    "date": "16-03-2025 17:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 124,
+    "movieId": 5,
+    "date": "17-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 125,
+    "movieId": 5,
+    "date": "18-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 126,
+    "movieId": 5,
+    "date": "19-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 127,
+    "movieId": 5,
+    "date": "20-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 128,
+    "movieId": 5,
+    "date": "21-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 129,
+    "movieId": 5,
+    "date": "22-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 130,
+    "movieId": 5,
+    "date": "23-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 131,
+    "movieId": 5,
+    "date": "24-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 132,
+    "movieId": 5,
+    "date": "25-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 133,
+    "movieId": 5,
+    "date": "26-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 134,
+    "movieId": 5,
+    "date": "27-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 135,
+    "movieId": 5,
+    "date": "28-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 136,
+    "movieId": 5,
+    "date": "29-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 137,
+    "movieId": 5,
+    "date": "30-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 138,
+    "movieId": 5,
+    "date": "31-01-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 139,
+    "movieId": 5,
+    "date": "01-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 140,
+    "movieId": 5,
+    "date": "02-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 141,
+    "movieId": 5,
+    "date": "03-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 142,
+    "movieId": 5,
+    "date": "04-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 143,
+    "movieId": 5,
+    "date": "05-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 144,
+    "movieId": 5,
+    "date": "06-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 145,
+    "movieId": 5,
+    "date": "07-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 146,
+    "movieId": 5,
+    "date": "08-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 147,
+    "movieId": 5,
+    "date": "09-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 148,
+    "movieId": 5,
+    "date": "10-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 149,
+    "movieId": 5,
+    "date": "11-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 150,
+    "movieId": 5,
+    "date": "12-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 151,
+    "movieId": 5,
+    "date": "13-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 152,
+    "movieId": 5,
+    "date": "14-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 153,
+    "movieId": 5,
+    "date": "15-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 154,
+    "movieId": 5,
+    "date": "16-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 155,
+    "movieId": 5,
+    "date": "17-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 156,
+    "movieId": 5,
+    "date": "18-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 157,
+    "movieId": 5,
+    "date": "19-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 158,
+    "movieId": 5,
+    "date": "20-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 159,
+    "movieId": 5,
+    "date": "21-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 160,
+    "movieId": 5,
+    "date": "22-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 161,
+    "movieId": 5,
+    "date": "23-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 162,
+    "movieId": 5,
+    "date": "24-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 163,
+    "movieId": 5,
+    "date": "25-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 164,
+    "movieId": 5,
+    "date": "26-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 165,
+    "movieId": 5,
+    "date": "27-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 166,
+    "movieId": 5,
+    "date": "28-02-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 167,
+    "movieId": 5,
+    "date": "01-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 168,
+    "movieId": 5,
+    "date": "02-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 169,
+    "movieId": 5,
+    "date": "03-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 170,
+    "movieId": 5,
+    "date": "04-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 171,
+    "movieId": 5,
+    "date": "05-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 172,
+    "movieId": 5,
+    "date": "06-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 173,
+    "movieId": 5,
+    "date": "07-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 174,
+    "movieId": 5,
+    "date": "08-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 175,
+    "movieId": 5,
+    "date": "09-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 176,
+    "movieId": 5,
+    "date": "10-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 177,
+    "movieId": 5,
+    "date": "11-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 178,
+    "movieId": 5,
+    "date": "12-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 179,
+    "movieId": 5,
+    "date": "13-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 180,
+    "movieId": 5,
+    "date": "14-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 181,
+    "movieId": 5,
+    "date": "15-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 182,
+    "movieId": 5,
+    "date": "16-03-2025 19:00:00",
+    "room": 1,
+    "special": "Dolby",
+    "cinema_id": 1,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 183,
+    "movieId": 2,
+    "date": "16-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 184,
+    "movieId": 2,
+    "date": "17-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 185,
+    "movieId": 2,
+    "date": "18-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 186,
+    "movieId": 2,
+    "date": "19-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 187,
+    "movieId": 2,
+    "date": "20-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 188,
+    "movieId": 2,
+    "date": "21-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 189,
+    "movieId": 2,
+    "date": "22-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 190,
+    "movieId": 2,
+    "date": "23-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 191,
+    "movieId": 2,
+    "date": "24-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 192,
+    "movieId": 2,
+    "date": "25-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 193,
+    "movieId": 2,
+    "date": "26-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 194,
+    "movieId": 2,
+    "date": "27-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 195,
+    "movieId": 2,
+    "date": "28-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 196,
+    "movieId": 2,
+    "date": "29-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 197,
+    "movieId": 2,
+    "date": "30-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 198,
+    "movieId": 2,
+    "date": "31-01-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 199,
+    "movieId": 2,
+    "date": "01-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 200,
+    "movieId": 2,
+    "date": "02-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 201,
+    "movieId": 2,
+    "date": "03-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 202,
+    "movieId": 2,
+    "date": "04-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 203,
+    "movieId": 2,
+    "date": "05-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 204,
+    "movieId": 2,
+    "date": "06-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 205,
+    "movieId": 2,
+    "date": "07-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 206,
+    "movieId": 2,
+    "date": "08-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 207,
+    "movieId": 2,
+    "date": "09-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 208,
+    "movieId": 2,
+    "date": "10-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 209,
+    "movieId": 2,
+    "date": "11-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 210,
+    "movieId": 2,
+    "date": "13-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 211,
+    "movieId": 2,
+    "date": "14-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
+  },
+  {
+    "id": 212,
+    "movieId": 2,
+    "date": "15-02-2025 18:30:00",
+    "room": 2,
+    "special": "Dolby",
+    "cinema_id": 0,
+    "extras": [],
+    "is_3d": false
   }
 ]
