@@ -21,7 +21,8 @@ public class TestAccountLogic
     [DataRow("bibubibuta", true)]
     public void CheckVerifyPassword(string password, bool expected)
     {
-        bool actual = AccountsLogic.VerifyPassword(password);
+        AccountsLogic ac = new();
+        bool actual = ac.VerifyPassword(password);
         Assert.AreEqual(expected,actual);
         
     }
@@ -31,7 +32,8 @@ public class TestAccountLogic
     [DataRow("gaistabiel@gmail.com",true)]
     public void CheckVerifyEmail(string email, bool expected)
     {
-        bool actual = AccountsLogic.VerifyEmail(email);
+        AccountsLogic ac = new();
+        bool actual = ac.VerifyEmail(email);
         Assert.AreEqual(expected,actual);
     }
 
@@ -51,11 +53,7 @@ public class TestAccountLogic
     {
         int actual = AccountsLogic.ParseInt(input);
        
-       Assert.AreEqual(expected, actual);
-        
+        Assert.AreEqual(expected, actual);
+       
     }
-
-
-
-
 }
