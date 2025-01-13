@@ -4,9 +4,12 @@ public class ShowingsLogic
     
     private const int CLEANUP_TIME_BETWEEN_SHOWINGS = 30;
 
+    private LogicManager _logicManager;
 
-    public ShowingsLogic()
+
+    public ShowingsLogic(LogicManager logicManager)
     {
+        _logicManager = logicManager;
         Showings = ShowingsAccess.LoadAll();
     }
 
@@ -50,7 +53,7 @@ public class ShowingsLogic
 
     public string ToString(ShowingModel showing, bool showId = false) 
     {
-        MoviesLogic log = new();
+        MoviesLogic log = _logicManager.MoviesLogic;
         string output = $"{log.GetMovieById(showing.MovieId).Title}\n";
         output += $"    {showing.Date}\n";
         output += $"    Room: {showing.Room}; Aged {log.GetMovieById(showing.MovieId).MinimumAge} and above.\n";
@@ -69,7 +72,7 @@ public class ShowingsLogic
 
     public List<ShowingModel> GetUpcomingShowingsOfMovie(string movieName, int cinemaId)
     {
-        MoviesLogic log = new();
+        MoviesLogic log = _logicManager.MoviesLogic;
         List<ShowingModel> showings = new();
         foreach (ShowingModel showing in Showings)
         {
@@ -94,19 +97,7 @@ public class ShowingsLogic
         {
             Showings.Remove(showingToRemove);
             ShowingsAccess.WriteAll(Showings);
-            Console.WriteLine($"Showing with ID {id} has been removed.");
         }
-        else
-        {
-            Console.WriteLine($"No showing found with ID {id}.");
-        }
-    }
-
-    public void RemoveShowing(ShowingModel showing)
-    {
-        Showings.Remove(showing);
-        ShowingsAccess.WriteAll(Showings);
-        Console.WriteLine($"Showing at {showing.Date.ToString("dd-MM-yyyy HH:mm:ss")} has been removed.");
     }
 
     private int FindNextAvailableId()

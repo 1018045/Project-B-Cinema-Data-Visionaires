@@ -2,8 +2,11 @@ public class AccountantLogic: IReportable
 {
     public static List<BillModel> Bills = new();
 
-    public AccountantLogic()
+    private LogicManager _logicManager;
+
+    public AccountantLogic(LogicManager logicManager)
     {
+        _logicManager = logicManager;
         Bills = AccountantAccess.LoadAll();
     }
 
@@ -27,8 +30,6 @@ public class AccountantLogic: IReportable
         return pointer;
     }
 
-
-
     public double CalculateYearlyTurnover(int Year)
     {
         double YearTotal = 0; 
@@ -51,13 +52,10 @@ public class AccountantLogic: IReportable
 
     public double CalculateCosts()
     {
-        
-        EmployeeLogic employeeLogic = new();
+        EmployeeLogic employeeLogic = _logicManager.EmployeeLogic;
         double totalSalary = employeeLogic.GetTotalMonthlySalary();
 
         return totalSalary; 
-
-    
     }
 
     public List<BillModel> FindBy<T>(T WhatToFind)
@@ -104,7 +102,6 @@ public class AccountantLogic: IReportable
         return BillsToReturn;
     }
 
-
     public double GetIncomeByMonth(int month)
     {
     
@@ -127,10 +124,4 @@ public class AccountantLogic: IReportable
                     .OrderByDescending(b => b.Paymentdate)
                     .ToList();
     }
-
-
-
-   
-
-    
 }

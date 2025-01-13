@@ -130,7 +130,7 @@ public class Movies
         MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         MovieModel movie = moviesLogic.GetMovieById(id);
 
-        if (moviesLogic.HasUpcomingShowings(_logicManager.ShowingsLogic, movie))
+        if (moviesLogic.HasUpcomingShowings(movie))
         {
             Console.WriteLine($"Error: {movie.Title} still has upcoming showings");
             Console.WriteLine("Please remove these showings and try again");

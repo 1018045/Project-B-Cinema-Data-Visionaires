@@ -1,9 +1,4 @@
-using System.Runtime.CompilerServices;
-using System.Net;
-using System.Security;
-using Project.DataModels;
 using Project.Logic.Account;
-using Project.Presentation;
 
 public class MainMenus
 {
@@ -69,7 +64,7 @@ public class MainMenus
             () => _menuManager.CinemaLocations.AboutContact(LoggedInMenu),   
             () => 
             {
-                AccountsLogic.LogOut();
+                _logicManager.AccountsLogic.LogOut();
                 GuestMenu();
             }
         };
@@ -110,7 +105,11 @@ public class MainMenus
             AccountantMenu,
             _menuManager.CinemaLocations.ChooseCinemaLocationToManage,
             _menuManager.AccountPresentation.AddStaffAccount,
-            GuestMenu
+            () => 
+            {
+                _logicManager.AccountsLogic.LogOut();
+                GuestMenu();
+            }
         };
         MenuHelper.NewMenu(options, actions, "Admin menu");
     }
@@ -141,27 +140,28 @@ public class MainMenus
             "View current monthly expenses",
             // "View total tickets sold",
             "View employee salaries",
-            // "Log out"
+            "Log out"
         };
 
         List<Action> actions = new List<Action>
         {
-            // ViewAllRecords,
-        () => 
-        {
-            Console.Write("Enter the month number: ");
-            int month = Convert.ToInt32(Console.ReadLine());
-            _menuManager.AccountantPresentation.ViewIncomeByMonth(month); // Calling with the month entered by the user
-        },
-        () => 
-        {
-            _menuManager.AccountantPresentation.ViewMonthlyExpenses();
-        },
-            // ViewTotalTickets,
+            () => 
+            {
+                Console.Write("Enter the month number: ");
+                int month = Convert.ToInt32(Console.ReadLine());
+                _menuManager.AccountantPresentation.ViewIncomeByMonth(month);
+            },
+            () => 
+            {
+                _menuManager.AccountantPresentation.ViewMonthlyExpenses();
+            },
             _menuManager.AccountantPresentation.ViewEmployeeSalaries,   
-            // GuestMenu
+            () => 
+            {
+                _logicManager.AccountsLogic.LogOut();
+                GuestMenu();
+            }
         };
-
         MenuHelper.NewMenu(options, actions, "Accountant Menu"); 
     }
 
