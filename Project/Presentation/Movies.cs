@@ -21,7 +21,7 @@ public class Movies
     {
         MenuHelper.NewMenu(
             new List<string> {"Manage movies", "Manage archived movies", "Return"},
-            new List<Action> {ManageMovies, ManageArchivedMovies, _menuManager.Menus.AdminMenu}
+            new List<Action> {ManageMovies, ManageArchivedMovies, _menuManager.MainMenus.AdminMenu}
         );
     }
 
@@ -56,7 +56,7 @@ public class Movies
         {
             Console.WriteLine("There are 0 movies in the archive");
             Thread.Sleep(1000);
-            MenuHelper.WaitForKey(_menuManager.Menus.AdminMenu);
+            MenuHelper.WaitForKey(_menuManager.MainMenus.AdminMenu);
             return;
         }
 
@@ -224,14 +224,14 @@ public class Movies
             Console.Clear();
             if (customerId != -1)
             {
-                _menuManager.Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), _menuManager.Menus.StaffMenu);
+                _menuManager.CinemaLocations.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), _menuManager.MainMenus.StaffMenu);
             }
             else
             {
-                _menuManager.Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), () => 
+                _menuManager.CinemaLocations.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), () => 
                 {
-                    if (AccountsLogic.CurrentAccount == null) _menuManager.Menus.GuestMenu();
-                    else _menuManager.Menus.LoggedInMenu();
+                    if (AccountsLogic.CurrentAccount == null) _menuManager.MainMenus.GuestMenu();
+                    else _menuManager.MainMenus.LoggedInMenu();
                 });
             }
             return;
@@ -242,7 +242,7 @@ public class Movies
             Console.Clear();
             Console.WriteLine("Your console is not tall enough!\nPlease expand your console window to browse movies.");
             Thread.Sleep(2000);
-            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.Menus.GuestMenu : _menuManager.Menus.LoggedInMenu);
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.MainMenus.GuestMenu : _menuManager.MainMenus.LoggedInMenu);
             return;
         }
         List<MovieModel> movies = moviesLogic.Movies;
@@ -252,7 +252,7 @@ public class Movies
             Console.Clear();
             Console.WriteLine("It seems there aren't any movies...\nPlease be patient while we resolve this issue.");
             Thread.Sleep(2000);
-            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.Menus.GuestMenu : _menuManager.Menus.LoggedInMenu);
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.MainMenus.GuestMenu : _menuManager.MainMenus.LoggedInMenu);
             return;
         }
 
@@ -329,9 +329,9 @@ public class Movies
         else 
         {
             if (AccountsLogic.CurrentAccount == null)
-                _menuManager.Menus.GuestMenu();
+                _menuManager.MainMenus.GuestMenu();
             else
-                _menuManager.Menus.LoggedInMenu();
+                _menuManager.MainMenus.LoggedInMenu();
         }
     }
 
@@ -476,7 +476,7 @@ public class Movies
         }
 
         Thread.Sleep(1000);
-        MenuHelper.WaitForKey(_menuManager.Menus.AdminMenu);
+        MenuHelper.WaitForKey(_menuManager.MainMenus.AdminMenu);
     }
 
     public void SelectPromotionSlot()
@@ -487,7 +487,7 @@ public class Movies
                                                 $"2: currently promoted: {(moviesLogic.PromotedMovies[1] != null ? moviesLogic.PromotedMovies[1].Title : "Empty")}",
 
                                                 "return"}, 
-            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), _menuManager.Menus.AdminMenu},
+            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), _menuManager.MainMenus.AdminMenu},
             "Which slot do you want to change?");
     }
 }

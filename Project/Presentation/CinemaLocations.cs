@@ -10,7 +10,51 @@ public class CinemaLocations
         _menuManager = menuManager;
     }
     
+    public void ChooseCinema(Action originMenu, Action cancellationMenu)
+    {
+        CinemaLogic cinemaLogic = _logicManager.CinemaLogic;
+        List<string> options = cinemaLogic.Cinemas.Select(c => c.Name).ToList();
+        List<Action> actions = new();
+        foreach (CinemaModel cinema in cinemaLogic.Cinemas)
+        {
+            actions.Add(() => {
+                cinemaLogic.ChangeCinema(cinema);
+                originMenu.Invoke();
+            });
+        }
+        options.Add("Cancel");
+        actions.Add(cancellationMenu);
+        MenuHelper.NewMenu(options, actions, "Please select a cinema location");
+    }
     
+    public void AboutContact(Action returnMenu)
+    {
+        Console.Clear();
+        if (CinemaLogic.CurrentCinema == null)
+        {
+            System.Console.WriteLine("Please first select a cinema!");
+            Thread.Sleep(2000);
+            ChooseCinema(() => AboutContact(returnMenu), returnMenu);
+            return;
+        }
+        
+        Console.WriteLine($"=== About Cine&Dine {CinemaLogic.CurrentCinema.Name} ===\n");
+        Console.WriteLine($"Welcome to Cine&Dine {CinemaLogic.CurrentCinema.Name} - where film and culinary delight come together!");
+        Console.WriteLine("We offer a unique cinema experience where you can enjoy the latest movies");
+        Console.WriteLine("while being pampered with delicious dishes and drinks.\n");
+        
+        Console.WriteLine("=== Contact Information ===");
+        Console.WriteLine($"{CinemaLogic.CurrentCinema.Address}, {CinemaLogic.CurrentCinema.City} {CinemaLogic.CurrentCinema.PostalCode}");
+        
+        Console.WriteLine($"Phone: {CinemaLogic.CurrentCinema.PhoneNumber}");
+        Console.WriteLine($"Email: info-{CinemaLogic.CurrentCinema.Name}@cineanddine.nl\n");
+        
+        Console.WriteLine("=== Opening Hours ===");
+        Console.WriteLine("Monday through Sunday: 12:00 - 00:00\n");
+        
+        MenuHelper.WaitForKey(returnMenu);
+    }
+
     public void ChooseCinemaLocationToManage()
     {
         CinemaLogic cinemaLogic = _logicManager.CinemaLogic;
@@ -24,7 +68,7 @@ public class CinemaLocations
             actions.Add(() => ManageCinemaLocation(cinema));
         }
         actions.Add(() => AddCinemaLocation());
-        actions.Add(_menuManager.Menus.AdminMenu);
+        actions.Add(_menuManager.MainMenus.AdminMenu);
         MenuHelper.NewMenu(options, actions, subtext: "Which do you want to manage?");
     }
 

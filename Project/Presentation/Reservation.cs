@@ -43,14 +43,14 @@ public class Reservation
             {
                 System.Console.WriteLine("You are being redirected to the login screen.");
                 Thread.Sleep(1500);
-                _menuManager.Menus.Login(() => Make(showing, makeForGuest), acceptOnlyCustomerLogin: true);
+                _menuManager.AccountPresentation.Login(() => Make(showing, makeForGuest), acceptOnlyCustomerLogin: true);
                 return;
             }
             else if (choice == 2)
             {
                 System.Console.WriteLine("You are being redirected to the login screen.");
                 Thread.Sleep(1500);
-                _menuManager.Menus.CreateAccount(() => Make(showing, makeForGuest));
+                _menuManager.AccountPresentation.CreateAccount(() => Make(showing, makeForGuest));
                 return;
             }
         }
@@ -60,7 +60,7 @@ public class Reservation
             System.Console.WriteLine("You are not old enough to watch this movie.");
             System.Console.WriteLine("You are being redirected to the menu.");
             Thread.Sleep(2000);
-            MenuHelper.WaitForKey(_menuManager.Menus.LoggedInMenu);
+            MenuHelper.WaitForKey(_menuManager.MainMenus.LoggedInMenu);
             return;
         }
         else
@@ -72,7 +72,7 @@ public class Reservation
                 {
                     System.Console.WriteLine("You are being redirected to the menu.");
                     Thread.Sleep(2000);
-                    MenuHelper.WaitForKey(customerId != -1 || makeForGuest ? _menuManager.Menus.StaffMenu : AccountsLogic.CurrentAccount != null ? _menuManager.Menus.LoggedInMenu : _menuManager.Menus.GuestMenu);
+                    MenuHelper.WaitForKey(customerId != -1 || makeForGuest ? _menuManager.MainMenus.StaffMenu : AccountsLogic.CurrentAccount != null ? _menuManager.MainMenus.LoggedInMenu : _menuManager.MainMenus.GuestMenu);
                     return;
                 }
             }
@@ -275,25 +275,25 @@ public class Reservation
         {
             // staff makes reservation for existing account
             userId = customerId;
-            returnMenu = _menuManager.Menus.StaffMenu;
+            returnMenu = _menuManager.MainMenus.StaffMenu;
         }
         else if (AccountsLogic.CurrentAccount == null)
         {
             // user makes reservation as guest
             userId = -1;
-            returnMenu = _menuManager.Menus.GuestMenu;
+            returnMenu = _menuManager.MainMenus.GuestMenu;
         }
         else if (makeForGuest)
         {
             // staff makes reservation for guest
             userId = -1;
-            returnMenu = _menuManager.Menus.StaffMenu;
+            returnMenu = _menuManager.MainMenus.StaffMenu;
         }
         else if (AccountsLogic.CurrentAccount != null)
         {
             // logged in user makes reservation
             userId = AccountsLogic.CurrentAccount.Id;
-            returnMenu = _menuManager.Menus.LoggedInMenu;
+            returnMenu = _menuManager.MainMenus.LoggedInMenu;
         }
         else
         {
@@ -302,7 +302,7 @@ public class Reservation
             System.Console.WriteLine("How did you get here?");
             Thread.Sleep(1000);
             userId = -1;
-            returnMenu = _menuManager.Menus.GuestMenu;
+            returnMenu = _menuManager.MainMenus.GuestMenu;
         }
         
         userId = customerId == -1 ? (AccountsLogic.CurrentAccount != null ? AccountsLogic.CurrentAccount.Id : -1): customerId;
@@ -329,6 +329,31 @@ public class Reservation
 
         MenuHelper.WaitForKey(returnMenu);
     }
+
+    public void MakeCustomerReservation(bool makeForGuest)
+    {
+        AccountModel? customer = null;
+
+        if (!makeForGuest)
+        {
+            while (customer == null)
+            {
+                Console.Clear();
+                Console.WriteLine("Please enter the email of the customer: ");
+                var email = Console.ReadLine()!;
+
+                var accounts = AccountsAccess.LoadAll();
+                customer = accounts.Find(a => a.EmailAddress.ToLower().Equals(email.ToLower()));
+            }
+            _menuManager.Movies.MoviesBrowser(makeForGuest, customerId: customer.Id);
+        }
+        else
+        {
+            _menuManager.Movies.MoviesBrowser(makeForGuest);
+        }
+        
+    }
+
     private void ShowBill(ShowingModel showing, List<string> selectedFoods, List<string> selectedDrinks, List<ExtraModel> selectedExtras, int numberOfTickets, double totalPrice, bool clear = true)
     {
         MoviesLogic moviesLogic = _logicManager.MoviesLogic;
@@ -378,10 +403,10 @@ public class Reservation
             Console.Clear();
             System.Console.WriteLine("Please select a cinema before continuing.");
             Thread.Sleep(2000);
-            _menuManager.Menus.ChooseCinema(() => ChooseShowing(movie), () => 
+            _menuManager.CinemaLocations.ChooseCinema(() => ChooseShowing(movie), () => 
             {
-                if (AccountsLogic.CurrentAccount == null) _menuManager.Menus.GuestMenu();
-                else _menuManager.Menus.LoggedInMenu();
+                if (AccountsLogic.CurrentAccount == null) _menuManager.MainMenus.GuestMenu();
+                else _menuManager.MainMenus.LoggedInMenu();
             });
             return;
         }
@@ -404,7 +429,7 @@ public class Reservation
         }
         
         options.Add("Return");
-        showings.Add(AccountsLogic.CurrentAccount == null ? _menuManager.Menus.GuestMenu : _menuManager.Menus.LoggedInMenu);
+        showings.Add(AccountsLogic.CurrentAccount == null ? _menuManager.MainMenus.GuestMenu : _menuManager.MainMenus.LoggedInMenu);
 
         var show = MenuHelper.NewMenu(options, showings, movie.Title, "Select a showing to start the reservation progress");
         ShowingModel selectedShowing = (ShowingModel)show;
@@ -433,7 +458,7 @@ public class Reservation
             Console.Clear();
             Console.WriteLine("You have no reservations!");
             Thread.Sleep(1500);
-            MenuHelper.WaitForKey(_menuManager.Menus.LoggedInMenu);
+            MenuHelper.WaitForKey(_menuManager.MainMenus.LoggedInMenu);
             return;
         }
 
@@ -449,7 +474,7 @@ public class Reservation
         }
 
         reservationStrings.Add("Return");
-        actions.Add(_menuManager.Menus.LoggedInMenu);
+        actions.Add(_menuManager.MainMenus.LoggedInMenu);
 
         MenuHelper.NewMenu(reservationStrings, actions, "Your reservations");   
     }
@@ -533,10 +558,10 @@ public class Reservation
         {
             Console.Clear();
             System.Console.WriteLine("Please select a cinema before browsing movies.");
-            _menuManager.Menus.ChooseCinema(SelectDate, () => 
+            _menuManager.CinemaLocations.ChooseCinema(SelectDate, () => 
             {
-                if (AccountsLogic.CurrentAccount == null) _menuManager.Menus.GuestMenu();
-                else _menuManager.Menus.LoggedInMenu();
+                if (AccountsLogic.CurrentAccount == null) _menuManager.MainMenus.GuestMenu();
+                else _menuManager.MainMenus.LoggedInMenu();
             });
             return;
         }
@@ -553,7 +578,7 @@ public class Reservation
 
         dates.ForEach(d => actions.Add(() => SelectMovieOnDate(d)));
         actions.Add(() => SelectMovieOnDate(AskAndParseFutureDate()));
-        actions.Add(AccountsLogic.CurrentAccount == null ? _menuManager.Menus.GuestMenu : _menuManager.Menus.LoggedInMenu);
+        actions.Add(AccountsLogic.CurrentAccount == null ? _menuManager.MainMenus.GuestMenu : _menuManager.MainMenus.LoggedInMenu);
 
         MenuHelper.NewMenu(dateOptions, actions, "Select a date:");
     }
@@ -570,7 +595,7 @@ public class Reservation
         {
             Console.Clear();
             System.Console.WriteLine($"No movies found on {date.ToString(EXTENDEDDATEFORMAT)}");
-            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.Menus.GuestMenu : _menuManager.Menus.LoggedInMenu);
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.MainMenus.GuestMenu : _menuManager.MainMenus.LoggedInMenu);
             return;
         }
         

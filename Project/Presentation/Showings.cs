@@ -62,13 +62,13 @@ public class Showings
                 () => ShowShowings(chosenId, moviesLogic),
                 () => AddShowing(chosenId, moviesLogic),
                 () => RemoveShowing(chosenId, moviesLogic),
-                _menuManager.Menus.AdminMenu
+                _menuManager.MainMenus.AdminMenu
             };
             MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
-            _menuManager.Menus.AdminMenu();
+            _menuManager.MainMenus.AdminMenu();
         }
     }
 
@@ -88,13 +88,13 @@ public class Showings
                 () => ShowShowings(chosenId, moviesLogic),
                 () => AddShowing(chosenId, moviesLogic),
                 () => RemoveShowing(chosenId, moviesLogic),
-                _menuManager.Menus.AdminMenu
+                _menuManager.MainMenus.AdminMenu
             };
             MenuHelper.NewMenu(options, actions, $"What would you like to do with {moviesLogic.GetMovieById(chosenId).Title}?");
         }
         else
         {
-            _menuManager.Menus.AdminMenu();
+            _menuManager.MainMenus.AdminMenu();
         }
     }
 
@@ -136,7 +136,7 @@ public class Showings
         int cinemaId = MenuHelper.NewMenu(cinemaOptions, cinemaIndices, "Which cinema do you want to add showings to?");
         if (cinemaId == -1)
         {
-            _menuManager.Menus.AdminMenu();
+            _menuManager.MainMenus.AdminMenu();
             return;
         }
 

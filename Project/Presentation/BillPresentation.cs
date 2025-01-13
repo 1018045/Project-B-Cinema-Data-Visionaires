@@ -21,7 +21,7 @@ public class BillPresentation
         {
             Console.WriteLine("Please log in to view your bills.");
             Thread.Sleep(1500);
-            _menuManager.Menus.GuestMenu();
+            _menuManager.MainMenus.GuestMenu();
             return;
         }
 
@@ -34,7 +34,7 @@ public class BillPresentation
         List<Action> actions = new List<Action>
         {
             ShowPastReservations,
-            _menuManager.Menus.LoggedInMenu
+            _menuManager.MainMenus.LoggedInMenu
         };
 
         MenuHelper.NewMenu(options, actions, "Your Reservations and Bills");
