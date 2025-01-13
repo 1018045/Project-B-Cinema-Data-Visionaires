@@ -4,8 +4,11 @@ public class MoviesLogic
     public List<MovieModel> ArchivedMovies {get; private set;}
     public List<MovieModel> PromotedMovies {get; private set;}
 
-    public MoviesLogic()
+    private LogicManager _logicManager;
+
+    public MoviesLogic(LogicManager logicManager)
     {
+        _logicManager = logicManager;
         Movies = MoviesAccess.LoadAll();
         ArchivedMovies = ArchivedMoviesAccess.LoadAll();
         
@@ -99,15 +102,15 @@ public class MoviesLogic
         return pointer;
     }
 
-    public bool HasUpcomingShowings(ShowingsLogic showingsLogic, MovieModel movie)
+    public bool HasUpcomingShowings(MovieModel movie)
     {
-        IEnumerable<ShowingModel> showings = showingsLogic.Showings.Where(s => s.MovieId == movie.Id).Where(s => s.Date > DateTime.Now.Date);
+        IEnumerable<ShowingModel> showings = _logicManager.ShowingsLogic.Showings.Where(s => s.MovieId == movie.Id).Where(s => s.Date > DateTime.Now.Date);
         return showings.Count() > 0;
     }
 
-    public bool HasUpcomingShowingsOnDate(ShowingsLogic showingsLogic, MovieModel movie, DateTime date)
+    public bool HasUpcomingShowingsOnDate(MovieModel movie, DateTime date)
     {
-        IEnumerable<ShowingModel> showings = showingsLogic.Showings.Where(s => s.MovieId == movie.Id && s.Date.Date == date.Date);
+        IEnumerable<ShowingModel> showings = _logicManager.ShowingsLogic.Showings.Where(s => s.MovieId == movie.Id && s.Date.Date == date.Date);
         return showings.Count() > 0;
     }
 

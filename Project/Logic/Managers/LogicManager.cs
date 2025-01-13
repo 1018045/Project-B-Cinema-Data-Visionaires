@@ -14,13 +14,13 @@ public class LogicManager
 
     public LogicManager()
     {
-        AccountantLogic = new();
+        AccountantLogic = new(this);
         CinemaLogic = new();
         EmployeeLogic = new();
         JobVacancyLogic = new();
-        MoviesLogic = new();
+        MoviesLogic = new(this);
         ReservationsLogic = new();
-        ShowingsLogic = new();
+        ShowingsLogic = new(this);
         AccountsLogic = new();
         AccountManageLogic = new();
     }

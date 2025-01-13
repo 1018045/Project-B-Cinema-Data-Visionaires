@@ -117,7 +117,7 @@ public class AccountsLogic
         return pointer;
     }
 
-    public static void LogOut()
+    public void LogOut()
     {
         CurrentAccount = null;
     }
@@ -147,7 +147,6 @@ public class AccountsLogic
 
         } while (keyInfo.Key != ConsoleKey.Enter);
 
-        Console.WriteLine();
         return pass;
     }
 

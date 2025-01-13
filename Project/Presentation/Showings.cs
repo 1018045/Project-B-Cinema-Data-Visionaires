@@ -46,7 +46,7 @@ public class Showings
 
     public void ManageShowings()
     {
-        MoviesLogic moviesLogic = new();
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         int chosenId = SelectMovie(moviesLogic); 
         if (chosenId != -1)
         {

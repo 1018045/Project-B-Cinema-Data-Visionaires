@@ -245,7 +245,7 @@ public class Reservation
 
         FakeProcessingPayment(5000);
 
-        AccountantLogic accountantLogic = new();
+        AccountantLogic accountantLogic = _logicManager.AccountantLogic;
         BillModel bill;
         if (AccountsLogic.CurrentAccount != null)
         {    
@@ -588,7 +588,7 @@ public class Reservation
         MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         ShowingsLogic showingsLogic = _logicManager.ShowingsLogic;
         List<Action> actions = new();
-        moviesLogic.Movies.Where(m => moviesLogic.HasUpcomingShowingsOnDate(showingsLogic, m, date)).ToList()
+        moviesLogic.Movies.Where(m => moviesLogic.HasUpcomingShowingsOnDate(m, date)).ToList()
                             .ForEach(m => actions.Add(() => SelectShowingOnDate(m, date)));
 
         if (actions.Count == 0)
@@ -599,7 +599,7 @@ public class Reservation
             return;
         }
         
-        List<string> movieOptions = moviesLogic.Movies.Where(m => moviesLogic.HasUpcomingShowingsOnDate(showingsLogic, m, date))
+        List<string> movieOptions = moviesLogic.Movies.Where(m => moviesLogic.HasUpcomingShowingsOnDate(m, date))
                                                         .Select(m => m.Title).ToList();
 
         actions.Add(SelectDate);
