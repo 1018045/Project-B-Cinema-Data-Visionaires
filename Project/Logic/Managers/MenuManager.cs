@@ -27,6 +27,8 @@ public class MenuManager
         Reservation = new(logicManager, this);
         Showings = new(logicManager, this);
 
+        MenuHelper.setMenuManager(this);
+
         MainMenus.GuestMenu();
     }
 }
