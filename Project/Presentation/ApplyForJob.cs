@@ -1,8 +1,16 @@
-public static class ApplyForJob
+public class ApplyForJob
 {
-    private static JobVacancyLogic _vacancyLogic = new JobVacancyLogic();
+    private LogicManager _logicManager;
+    private MenuManager _menuManager;
 
-    public static void ShowJobMenu()
+
+    public ApplyForJob(LogicManager logicManager, MenuManager menuManager)
+    {
+        _logicManager = logicManager;
+        _menuManager = menuManager;
+    }
+
+    public void ShowJobMenu()
     {
 
         List<string> options = new List<string>
@@ -16,29 +24,30 @@ public static class ApplyForJob
         {
             ShowAllVacancies,
             ApplyToVacancy, // TODO: implement menu system
-            Menus.GuestMenu
+            _menuManager.Menus.GuestMenu
         };
         MenuHelper.NewMenu(options, actions, "Job Vacancies");
         
     }
 
-    private static void ShowAllVacancies()
+    private void ShowAllVacancies()
     {
         Console.Clear();
-        Console.WriteLine(_vacancyLogic.ShowAllVacancies());
+        Console.WriteLine(_logicManager.JobVacancyLogic.ShowAllVacancies());
         MenuHelper.WaitForKey(ShowJobMenu);
     }
 
-    private static void ApplyToVacancy()
+    private void ApplyToVacancy()
     {
+        JobVacancyLogic vacancyLogic = _logicManager.JobVacancyLogic;
         Console.Clear();
-        List<string> options = _vacancyLogic.Vacancies.Select(v => v.JobTitle).ToList();
+        List<string> options = vacancyLogic.Vacancies.Select(v => v.JobTitle).ToList();
 
-        List<int> indices = _vacancyLogic.Vacancies.Select(v => v.VacancyId).ToList();
+        List<int> indices = vacancyLogic.Vacancies.Select(v => v.VacancyId).ToList();
         
         int vacancyId = MenuHelper.NewMenu(options, indices, "Vacancies");
 
-        DisplayVacancy(_vacancyLogic.GetJobVacancyById(vacancyId));
+        DisplayVacancy(vacancyLogic.GetJobVacancyById(vacancyId));
         MenuHelper.WaitForKey("Press enter to continue the process");
 
         bool apply = MenuHelper.NewMenu(new List<string>() {"Yes", "No"}, new List<bool>() {true, false}, "Do you want to apply?");
@@ -52,7 +61,7 @@ public static class ApplyForJob
             Console.WriteLine("Enter your motivation:\n");
             string motivation = Console.ReadLine();
 
-            _vacancyLogic.AddApplication(vacancyId, email, motivation, DateTime.Now);
+            vacancyLogic.AddApplication(vacancyId, email, motivation, DateTime.Now);
 
             Console.Clear();
             Console.WriteLine("\nYour application has been submitted successfully!");
@@ -63,7 +72,7 @@ public static class ApplyForJob
         MenuHelper.WaitForKey(ShowJobMenu);
     }
 
-    private static void DisplayVacancy(JobVacancy vacancy)
+    private void DisplayVacancy(JobVacancy vacancy)
     {
         Console.WriteLine($"Position: {vacancy.JobTitle}");
         Console.WriteLine($"Description: {vacancy.JobDescription}");

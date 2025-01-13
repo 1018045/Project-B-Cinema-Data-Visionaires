@@ -2,6 +2,7 @@ using System.Globalization;
 
 public static class Showings
 {
+    private LogicManager _logicManager;
     static private ShowingsLogic _showingsLogic = new ShowingsLogic();
     private static CinemaLogic _cinemaLogic = new CinemaLogic();
 

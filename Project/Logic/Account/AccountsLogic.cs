@@ -8,7 +8,7 @@ namespace Project.Logic.Account;
 
 public class AccountsLogic
 {
-    public static AccountsLogic Logic { get; } = new ();
+    // public static AccountsLogic Logic { get; } = new ();
     protected List<AccountModel> Accounts { get; init; }
 
     //Static properties are shared across all instances of the class
@@ -21,7 +21,7 @@ public class AccountsLogic
         Accounts = AccountsAccess.LoadAll();
     }
 
-    public static bool CheckForExistingEmail(string email) => Logic.Accounts.Any(account => account.EmailAddress == email);
+    public bool CheckForExistingEmail(string email) => Accounts.Any(account => account.EmailAddress == email);
 
     public AccountModel UpdateList(string email, string password, string fullname, DateTime birthDate)
     {
@@ -63,7 +63,7 @@ public class AccountsLogic
         return CurrentAccount;
     }
 
-    public static bool VerifyPassword(string password)
+    public bool VerifyPassword(string password)
     {
         if (password.Length < 8)
         {
@@ -76,7 +76,7 @@ public class AccountsLogic
         return Regex.IsMatch(password, pattern);
     }
 
-    public static bool VerifyEmail(string email)
+    public bool VerifyEmail(string email)
     {
         var emailValidation = new EmailAddressAttribute();
         return emailValidation.IsValid(email);

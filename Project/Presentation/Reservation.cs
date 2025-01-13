@@ -6,13 +6,15 @@ using Project.Presentation;
 
 public static class Reservation
 {
-    private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
-    private const string EXTENDEDDATEFORMAT = "dddd d MMMM yyyy";
+    private LogicManager _logicManager;
     private static readonly ReservationsLogic _reservationsLogic = new();
     private static readonly ShowingsLogic _showingsLogic = new ();
     private static readonly MoviesLogic _moviesLogic = new ();
     private static readonly AccountsLogic _accountsLogic = new();
+    
 
+    private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
+    private const string EXTENDEDDATEFORMAT = "dddd d MMMM yyyy";
 
     private const double BASE_TICKET_PRICE = 10.00;
 

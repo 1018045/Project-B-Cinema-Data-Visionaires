@@ -5,12 +5,21 @@ using Project.DataModels;
 using Project.Logic.Account;
 using Project.Presentation;
 
-static class Menus
+class Menus
 {
-    private static CinemaLogic _cinemaLogic = new();
-    static public void ChooseCinema(Action originMenu, Action cancellationMenu)
+    private LogicManager _logicManager;
+    private MenuManager _menuManager;
+
+    public Menus(LogicManager logicManager, MenuManager menuManager)
     {
-        CinemaLogic cinemaLogic = new();
+        _logicManager = logicManager;
+        _menuManager = menuManager;
+    }
+
+
+    public void ChooseCinema(Action originMenu, Action cancellationMenu)
+    {
+        CinemaLogic cinemaLogic = _logicManager.CinemaLogic;
         List<string> options = cinemaLogic.Cinemas.Select(c => c.Name).ToList();
         List<Action> actions = new();
         foreach (CinemaModel cinema in cinemaLogic.Cinemas)
@@ -25,9 +34,9 @@ static class Menus
         MenuHelper.NewMenu(options, actions, "Please select a cinema location");
     }
 
-    static public void GuestMenu()
+    public void GuestMenu()
     {
-        MoviesLogic _moviesLogic = new();
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         List<string> options = new List<string>
         {
             "Browse movies",
@@ -50,10 +59,10 @@ static class Menus
             () => AboutContact(GuestMenu),
             () => Environment.Exit(0)
         };
-        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: _moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
+        MenuHelper.NewMenu(options, actions, "Zidane", promotedMovies: moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
     }
 
-    static public void AboutContact(Action returnMenu)
+    public void AboutContact(Action returnMenu)
     {
         Console.Clear();
         if (CinemaLogic.CurrentCinema == null)
@@ -82,9 +91,9 @@ static class Menus
     }
 
 
-    static public void LoggedInMenu()
+    public void LoggedInMenu()
     {
-        MoviesLogic _moviesLogic = new();
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
 
         List<string> options = new List<string>
         {
@@ -110,12 +119,12 @@ static class Menus
                 GuestMenu();
             }
         };
-        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", promotedMovies: _moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
+        MenuHelper.NewMenu(options, actions, $"Logged in as: {AccountsLogic.CurrentAccount.EmailAddress}", promotedMovies: moviesLogic.PromotedMovies, showCurrentLocation: true, showMenu: true);
     }
 
 
 
-    public static void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
+    public void Login(Action action = null, bool acceptOnlyCustomerLogin = false)
     {
         AccountModel acc;
         int loginAttempts = 3;
@@ -130,7 +139,7 @@ static class Menus
             SecureString pass = AccountsLogic.MaskInputstring();
             string Password = new NetworkCredential(string.Empty, pass).Password;
 
-            acc = AccountsLogic.Logic.CheckLogin(email, Password);
+            acc = _logicManager.AccountsLogic.CheckLogin(email, Password);
             loginAttempts--;
             if (acc == null)
             {
@@ -184,7 +193,7 @@ static class Menus
         }
     }
 
-    public static void WaitAfterWrongLogin(int timer)
+    public void WaitAfterWrongLogin(int timer)
     {
         for (;timer > 0; timer--)
         {
@@ -194,9 +203,9 @@ static class Menus
         }
     }
 
-    public static void AdminMenu()
+    public void AdminMenu()
     {
-        AccountantLogic accountantLogic = new();
+        AccountantLogic accountantLogic = _logicManager.AccountantLogic;
 
         List<string> options = new List<string>
         {
@@ -233,7 +242,7 @@ static class Menus
         MenuHelper.NewMenu(options, actions, "Admin menu");
     }
 
-    public static void StaffMenu()
+    public void StaffMenu()
     {
         List<string> options = new List<string>
         {
@@ -250,7 +259,7 @@ static class Menus
         MenuHelper.NewMenu(options, actions, "Staff menu");
     }
 
-    private static void MakeCustomerReservation(bool makeForGuest)
+    private void MakeCustomerReservation(bool makeForGuest)
     {
         AccountModel? customer = null;
 
@@ -274,13 +283,13 @@ static class Menus
         
     }
 
-    private static void RemoveUser()
+    private void RemoveUser()
     {
         Console.Clear();
         Console.WriteLine("Enter the email address of the user you want to remove:");
         string email = Console.ReadLine();
 
-        AccountsLogic accountsLogic = new AccountsLogic();
+        AccountsLogic accountsLogic = _logicManager.AccountsLogic;
         bool isRemoved = accountsLogic.RemoveUser(email);
 
         if (isRemoved)
@@ -295,7 +304,7 @@ static class Menus
         MenuHelper.WaitForKey(AdminMenu);
     }
 
-    private static void AddStaffAccount()
+    private void AddStaffAccount()
     {
         Console.Clear();
         Console.WriteLine("Enter staff email:");
@@ -311,7 +320,7 @@ static class Menus
             match = Console.ReadLine()!.Equals(password);
         }
 
-        new AccountManageLogic().CreateStaffAccount(password, email);
+        _logicManager.AccountManageLogic.CreateStaffAccount(password, email);
 
         Console.Clear();
         Console.WriteLine("Staff account created successfully");
@@ -322,7 +331,7 @@ static class Menus
         AdminMenu();
     }
 
-    private static void ViewUsers()
+    private void ViewUsers()
     {
         Console.Clear();
         var users = AccountsAccess.LoadAll(); 
@@ -334,8 +343,9 @@ static class Menus
         MenuHelper.WaitForKey(AdminMenu);
     }
 
-    public static void CreateAccount(Action action)
+    public void CreateAccount(Action action)
     {
+        AccountsLogic accountsLogic = _logicManager.AccountsLogic;
         Console.Clear();
         Console.WriteLine("Enter your information below");
         string userEmail;
@@ -344,13 +354,13 @@ static class Menus
             Console.WriteLine("Email: ");
             userEmail = Console.ReadLine();
         }
-        while(AccountsLogic.VerifyEmail(userEmail) == false || AccountsLogic.CheckForExistingEmail(userEmail) == true);
+        while(accountsLogic.VerifyEmail(userEmail) == false || accountsLogic.CheckForExistingEmail(userEmail) == true);
 
         Console.WriteLine("Enter your password. It must contain at least 8 characters which consist of 1 capital letter, 1 number, and 1 special character e.g. $,#,% etc.");
         SecureString pass = AccountsLogic.MaskInputstring();
         string Password = new NetworkCredential(string.Empty, pass).Password;
    
-        while (AccountsLogic.VerifyPassword(Password) == false)
+        while (accountsLogic.VerifyPassword(Password) == false)
         {
             Console.WriteLine("Password was not valid. Try again.");
             pass = AccountsLogic.MaskInputstring();
@@ -366,7 +376,7 @@ static class Menus
             SecureString confirmPass = AccountsLogic.MaskInputstring();
             confirmPassword = new NetworkCredential(string.Empty, confirmPass).Password;
 
-            if (AccountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
+            if (accountsLogic.VerifyPassword(confirmPassword) && confirmPassword == Password)
             {
                 passwordsMatch = true;
             }
@@ -385,7 +395,6 @@ static class Menus
         Console.WriteLine("Your BirthDay");
         userBirthDate = Reservation.AskAndParsePastDate();
 
-        AccountsLogic accountsLogic = new();
         accountsLogic.UpdateList(userEmail, Password, fullName, userBirthDate.Date);
 
         Console.WriteLine($"\nSuccessfully created your account, welcome {fullName}!");
@@ -397,7 +406,7 @@ static class Menus
         action.Invoke();
     }
 
-    public static void AccountantMenu()
+    public void AccountantMenu()
     {
         List<string> options = new List<string>
         {
@@ -430,24 +439,25 @@ static class Menus
         MenuHelper.NewMenu(options, actions, "Accountant Menu"); 
     }
 
-    public static void ViewIncomeByMonth(int month)
+    public void ViewIncomeByMonth(int month)
     {
-        AccountantLogic accountantLogic = new();
+        AccountantLogic accountantLogic = _logicManager.AccountantLogic;
         
         double Records = accountantLogic.GetIncomeByMonth(month);
 
         Console.WriteLine(Records);
     }
 
-   public static void ViewMonthlyExpenses()
+   public void ViewMonthlyExpenses()
    {
-        AccountantLogic accountantLogic = new (); 
+        AccountantLogic accountantLogic = _logicManager.AccountantLogic;
 
         Console.WriteLine(accountantLogic.CalculateCosts());
     }    
    
-    private static void AddJobVacancy()
+    private void AddJobVacancy()
     {
+        var vacancyLogic = _logicManager.JobVacancyLogic;
         Console.Clear();
         Console.WriteLine("Enter the job title:");
         string jobTitle = Console.ReadLine();
@@ -472,17 +482,16 @@ static class Menus
         Console.WriteLine("Enter the type of employment (Full-time/Part-time):");
         string employmentType = Console.ReadLine();
 
-        var vacancyLogic = new JobVacancyLogic();
         vacancyLogic.AddVacancy(jobTitle, jobDescription, salary, employmentType);
 
         Console.WriteLine("Job vacancy has been added.");
         MenuHelper.WaitForKey(AdminMenu);
     }
 
-    private static void RemoveJobVacancy()
+    private void RemoveJobVacancy()
     {
+        var vacancyLogic = _logicManager.JobVacancyLogic;
         Console.Clear();
-        var vacancyLogic = new JobVacancyLogic();
 
         Console.WriteLine("Current vacancies:");
         Console.WriteLine(vacancyLogic.ShowAllVacancies());
@@ -514,10 +523,10 @@ static class Menus
         MenuHelper.WaitForKey(AdminMenu);
     }
 
-    private static void ViewAllVacancies()
+    private void ViewAllVacancies()
     {
+        var vacancyLogic = _logicManager.JobVacancyLogic;
         Console.Clear();
-        var vacancyLogic = new JobVacancyLogic();
         Console.WriteLine("\nAll vacancies:");
         Console.WriteLine(vacancyLogic.ShowAllVacancies());
         Console.WriteLine("\nPress any key to go back...");
@@ -525,8 +534,9 @@ static class Menus
         AdminMenu();
     }
 
-    private static void AddEmployee()
+    private void AddEmployee()
     {
+        EmployeeLogic employeeLogic = _logicManager.EmployeeLogic;
         Console.Clear();
         Console.WriteLine("=== Add New Employee ===\n");
         
@@ -544,7 +554,7 @@ static class Menus
         string confirmation = Console.ReadLine().ToUpper();
         if (confirmation == "Y")
         {
-            EmployeeLogic employeeLogic = new();
+            
             int newId = employeeLogic.FindFirstAvailableID();
             EmployeeModel newEmployee = new(employeeName, newId, salary);
             employeeLogic.AddEmployee(newEmployee);
@@ -561,12 +571,12 @@ static class Menus
         MenuHelper.WaitForKey(AdminMenu);
     }
 
-    private static void ViewEmployeeSalaries()
+    private void ViewEmployeeSalaries()
     {
+        var employeeLogic = _logicManager.EmployeeLogic;
         Console.Clear();
         Console.WriteLine("Employee Salaries\n");
 
-        var employeeLogic = new EmployeeLogic();
         var employees = employeeLogic.ListOfEmployees;
 
         if (employees == null || employees.Count == 0) 

@@ -1,1 +1,1 @@
-﻿Menus.GuestMenu();
+﻿MenuManager program = new();

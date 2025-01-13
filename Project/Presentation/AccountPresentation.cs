@@ -3,10 +3,18 @@ using Project.Logic.Account;
 
 namespace Project.Presentation;
 
-public static class AccountPresentation
+public class AccountPresentation
 {
-    static AccountManageLogic _accountManageLogic = new();
-    public static void Menu()
+    private LogicManager _logicManager;
+    private MenuManager _menuManager;
+
+
+    public AccountPresentation(LogicManager logicManager, MenuManager menuManager)
+    {
+        _logicManager = logicManager;
+        _menuManager = menuManager;
+    }
+    public void Menu()
     {
         List<string> options = new List<string>
         {
@@ -17,15 +25,15 @@ public static class AccountPresentation
 
         List<Action> actions = new List<Action>
         {
-            () => UpdateAccountDetails(_accountManageLogic),
-            () => DeleteAccount(_accountManageLogic),           
-            Menus.LoggedInMenu
+            () => UpdateAccountDetails(),
+            () => DeleteAccount(),           
+            _menuManager.Menus.LoggedInMenu
         };
 
         MenuHelper.NewMenu(options, actions, "Manage account");
     }
 
-    private static void UpdateAccountDetails(AccountManageLogic logic)
+    private void UpdateAccountDetails()
     {
         List<string> options = new List<string>
         {
@@ -36,16 +44,17 @@ public static class AccountPresentation
 
         List<Action> actions = new List<Action>
         {
-            () => ChangeEmail(_accountManageLogic),
-            () => ChangePassword(_accountManageLogic),
+            () => ChangeEmail(),
+            () => ChangePassword(),
             Menu
         };
 
         MenuHelper.NewMenu(options, actions, "Update account");
     }
 
-    private static void ChangeEmail(AccountManageLogic logic)
+    private void ChangeEmail()
     {
+        AccountManageLogic logic = _logicManager.AccountManageLogic;
         var newEmail = "";
         for (var done = false; !done;)
         {
@@ -53,7 +62,7 @@ public static class AccountPresentation
             Console.WriteLine("New email: ");
 
             newEmail = Console.ReadLine()!;
-            done = AccountsLogic.VerifyEmail(newEmail);
+            done = logic.VerifyEmail(newEmail);
         }
 
         Console.WriteLine("Confirm email: ");
@@ -63,7 +72,7 @@ public static class AccountPresentation
             Console.Clear();
             Console.WriteLine("Emails do not match");
             Thread.Sleep(2500);
-            UpdateAccountDetails(logic);
+            UpdateAccountDetails();
             return;
         }
 
@@ -71,12 +80,13 @@ public static class AccountPresentation
 
         Console.Clear();
         Console.WriteLine($"Successfully changed your email to {newEmail}");
-        UpdateAccountDetails(logic);
-        MenuHelper.WaitForKey(() => UpdateAccountDetails(logic));
+        UpdateAccountDetails();
+        MenuHelper.WaitForKey(() => UpdateAccountDetails());
     }
 
-    private static void ChangePassword(AccountManageLogic logic)
+    private void ChangePassword()
     {
+        AccountManageLogic logic = _logicManager.AccountManageLogic;
         var newPassword = "";
         for (var done = false; !done;)
         {
@@ -85,7 +95,7 @@ public static class AccountPresentation
             Console.WriteLine("New password: ");
 
             newPassword = Console.ReadLine()!;
-            done = AccountsLogic.VerifyPassword(newPassword);
+            done = logic.VerifyPassword(newPassword);
         }
 
         Console.WriteLine("Confirm password: ");
@@ -94,7 +104,7 @@ public static class AccountPresentation
             Console.Clear();
             Console.WriteLine("Passwords do not match");
             Thread.Sleep(2500);
-            UpdateAccountDetails(logic);
+            UpdateAccountDetails();
             return;
         }
 
@@ -103,11 +113,12 @@ public static class AccountPresentation
         Console.Clear();
         Console.WriteLine($"Successfully changed your password");
         Thread.Sleep(2500);
-        MenuHelper.WaitForKey(() => UpdateAccountDetails(logic));
+        MenuHelper.WaitForKey(() => UpdateAccountDetails());
     }
 
-    private static void DeleteAccount(AccountManageLogic logic)
+    private void DeleteAccount()
     {
+        AccountManageLogic logic = _logicManager.AccountManageLogic;
         bool confirmed = MenuHelper.NewMenu(new List<string>(){ "Yes", "No"},
                                             new List<bool>() { true, false },
                                             "Are your sure you want to delete your account?");
@@ -119,7 +130,7 @@ public static class AccountPresentation
             Console.Clear();
             Console.WriteLine("Successfully deleted your account");
             Console.WriteLine("You will now be logged out");
-            MenuHelper.WaitForKey(Menus.GuestMenu);
+            MenuHelper.WaitForKey(_menuManager.Menus.GuestMenu);
         }
         else
         {

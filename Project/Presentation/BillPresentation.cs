@@ -3,21 +3,25 @@ using Project.Logic.Account;
 
 namespace Project.Presentation;
 
-public static class BillPresentation
+public class BillPresentation
 {
-    private static readonly AccountsLogic _accountsLogic = new();
-    private static readonly AccountantLogic _accountantLogic = new();
-    private static readonly ReservationsLogic _reservationsLogic = new();
-    private static readonly ShowingsLogic _showingsLogic = new();
-    private static readonly MoviesLogic _moviesLogic = new();
+    private LogicManager _logicManager;
+    private MenuManager _menuManager;
 
-    public static void ViewUserBillsAndReservations()
+
+    public BillPresentation(LogicManager logicManager, MenuManager menuManager)
+    {
+        _logicManager = logicManager;
+        _menuManager = menuManager;
+    }
+
+    public void ViewUserBillsAndReservations()
     {
         if (AccountsLogic.CurrentAccount == null)
         {
             Console.WriteLine("Please log in to view your bills.");
             Thread.Sleep(1500);
-            Menus.GuestMenu();
+            _menuManager.Menus.GuestMenu();
             return;
         }
 
@@ -30,23 +34,23 @@ public static class BillPresentation
         List<Action> actions = new List<Action>
         {
             ShowPastReservations,
-            Menus.LoggedInMenu
+            _menuManager.Menus.LoggedInMenu
         };
 
         MenuHelper.NewMenu(options, actions, "Your Reservations and Bills");
     }
 
-    private static void ShowPastReservations()
+    private void ShowPastReservations()
     {
-        var userReservations = _reservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
-            .Where(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date < DateTime.Now)
-            .OrderByDescending(r => _showingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
+        var userReservations = _logicManager.ReservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
+            .Where(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date < DateTime.Now)
+            .OrderByDescending(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
             .ToList();
 
         DisplayReservations(userReservations);
     }
 
-    private static void DisplayReservations(List<ReservationModel> reservations)
+    private void DisplayReservations(List<ReservationModel> reservations)
     {
         Console.Clear();
         Console.WriteLine("=== Your Past Reservations ===\n");
@@ -59,8 +63,8 @@ public static class BillPresentation
         {
             foreach (var reservation in reservations)
             {
-                var showing = _showingsLogic.FindShowingByIdReturnShowing(reservation.ShowingId);
-                var movie = _moviesLogic.GetMovieById(showing.MovieId);
+                var showing = _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(reservation.ShowingId);
+                var movie = _logicManager.MoviesLogic.GetMovieById(showing.MovieId);
 
                 Console.WriteLine($"Movie: {movie.Title}");
                 Console.WriteLine($"Date: {showing.Date:dd-MM-yyyy HH:mm}");

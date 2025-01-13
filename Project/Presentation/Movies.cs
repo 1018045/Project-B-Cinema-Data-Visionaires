@@ -2,25 +2,32 @@ using System.Text.RegularExpressions;
 using Project.Helpers;
 using Project.Logic.Account;
 
-public static class Movies
+public class Movies
 {
-    private static readonly MoviesLogic _moviesLogic = new ();
-    private static readonly ShowingsLogic _showingsLogic = new ();
-    private static readonly CinemaLogic _cinemaLogic = new();
     private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
     private const string EXTENDED_DATE_FORMAT = "dddd d MMMM yyyy";
 
-    public static void Start()
+    private LogicManager _logicManager;
+    private MenuManager _menuManager;
+
+
+    public Movies(LogicManager logicManager, MenuManager menuManager)
+    {
+        _logicManager = logicManager;
+        _menuManager = menuManager;
+    }
+
+    public void Start()
     {
         MenuHelper.NewMenu(
             new List<string> {"Manage movies", "Manage archived movies", "Return"},
-            new List<Action> {ManageMovies, ManageArchivedMovies, Menus.AdminMenu}
+            new List<Action> {ManageMovies, ManageArchivedMovies, _menuManager.Menus.AdminMenu}
         );
     }
 
-    private static void ManageMovies()
+    private void ManageMovies()
     {
-        int chosenId = MovieSelector(_moviesLogic.Movies, new List<(string, int)> { ("[Add movie]", -2) });
+        int chosenId = MovieSelector(_logicManager.MoviesLogic.Movies, new List<(string, int)> { ("[Add movie]", -2) });
         if (chosenId == -1)
         { 
             Start();
@@ -34,25 +41,26 @@ public static class Movies
         MovieManager(chosenId);
     }
 
-    private static void MovieManager(int id)
+    private void MovieManager(int id)
     {
         MenuHelper.NewMenu(
             new List<string> {"Edit movie details (TODO)", "Archive movie", "Return"},
             new List<Action> {() => EditMovieDetails(id), () => ArchiveMovie(id), ManageMovies},
-            _moviesLogic.GetMovieById(id).Title);
+            _logicManager.MoviesLogic.GetMovieById(id).Title);
     }
 
-    private static void ManageArchivedMovies()
+    private void ManageArchivedMovies()
     {
-        if (_moviesLogic.ArchivedMovies.Count == 0)
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
+        if (moviesLogic.ArchivedMovies.Count == 0)
         {
             Console.WriteLine("There are 0 movies in the archive");
             Thread.Sleep(1000);
-            MenuHelper.WaitForKey(Menus.AdminMenu);
+            MenuHelper.WaitForKey(_menuManager.Menus.AdminMenu);
             return;
         }
 
-        int chosenId = MovieSelector(_moviesLogic.ArchivedMovies);
+        int chosenId = MovieSelector(moviesLogic.ArchivedMovies);
 
         if (chosenId == -1)
         { 
@@ -63,14 +71,14 @@ public static class Movies
         ArchivedMovieManager(chosenId);
     }
 
-    private static void ArchivedMovieManager(int id)
+    private void ArchivedMovieManager(int id)
     {
         MenuHelper.NewMenu(
             new List<string> {"Edit movie details (TODO)", "Take movie out of archive", "Return"},
             new List<Action> {() => EditMovieDetails(id), () => BringArchivedMovieBack(id), ManageArchivedMovies});
     }
 
-    private static void AddMovie()
+    private void AddMovie()
     {
         Console.Clear();
         Console.WriteLine("Enter the movie title:");
@@ -92,7 +100,7 @@ public static class Movies
         Console.WriteLine("Enter the movie's director:");
         string director = Console.ReadLine();
 
-        _moviesLogic.AddMovie(title, duration, minimumAge, summary, actors, director);
+        _logicManager.MoviesLogic.AddMovie(title, duration, minimumAge, summary, actors, director);
         Console.WriteLine($"Movie ‘{title}’ has been added to the database.");
 
         // System.Console.WriteLine("Which extra's are mandatory for this movie?");
@@ -101,14 +109,15 @@ public static class Movies
         MenuHelper.WaitForKey(ManageMovies);
     }
 
-    private static void BringArchivedMovieBack(int id)
+    private void BringArchivedMovieBack(int id)
     { 
-        MovieModel movie = _moviesLogic.GetMovieById(id);
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
+        MovieModel movie = moviesLogic.GetMovieById(id);
 
-        _moviesLogic.Movies.Add(movie);
-        _moviesLogic.ArchivedMovies.Remove(movie);
-        MoviesAccess.WriteAll(_moviesLogic.Movies);
-        ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
+        moviesLogic.Movies.Add(movie);
+        moviesLogic.ArchivedMovies.Remove(movie);
+        MoviesAccess.WriteAll(moviesLogic.Movies);
+        ArchivedMoviesAccess.WriteAll(moviesLogic.ArchivedMovies);
 
         Console.Clear();
         Console.WriteLine($"Moved {movie.Title} from archive into active movies");
@@ -116,11 +125,12 @@ public static class Movies
         MenuHelper.WaitForKey(ManageArchivedMovies);
     }
 
-    private static void ArchiveMovie(int id)
+    private void ArchiveMovie(int id)
     {
-        MovieModel movie = _moviesLogic.GetMovieById(id);
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
+        MovieModel movie = moviesLogic.GetMovieById(id);
 
-        if (_moviesLogic.HasUpcomingShowings(_showingsLogic, movie))
+        if (moviesLogic.HasUpcomingShowings(_logicManager.ShowingsLogic, movie))
         {
             Console.WriteLine($"Error: {movie.Title} still has upcoming showings");
             Console.WriteLine("Please remove these showings and try again");
@@ -129,10 +139,10 @@ public static class Movies
             return;
         }
 
-        _moviesLogic.ArchivedMovies.Add(movie);
-        _moviesLogic.Movies.Remove(movie);
-        MoviesAccess.WriteAll(_moviesLogic.Movies);
-        ArchivedMoviesAccess.WriteAll(_moviesLogic.ArchivedMovies);
+        moviesLogic.ArchivedMovies.Add(movie);
+        moviesLogic.Movies.Remove(movie);
+        MoviesAccess.WriteAll(moviesLogic.Movies);
+        ArchivedMoviesAccess.WriteAll(moviesLogic.ArchivedMovies);
 
         Console.Clear();
         Console.WriteLine($"Moved {movie.Title} into the archive");
@@ -140,9 +150,10 @@ public static class Movies
         MenuHelper.WaitForKey(ManageMovies);
     }
 
-    private static void EditMovieDetails(int id)
+    private void EditMovieDetails(int id)
     {
-        MovieModel movie = _moviesLogic.GetMovieById(id);
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
+        MovieModel movie = moviesLogic.GetMovieById(id);
         if (movie == null)
         {
             MovieManager(id);
@@ -162,19 +173,19 @@ public static class Movies
                 Console.Clear();
                 Console.WriteLine("Enter the new movie title:");
                 movie.Title = Console.ReadLine();
-                MoviesAccess.WriteAll(_moviesLogic.Movies);
+                MoviesAccess.WriteAll(moviesLogic.Movies);
                 EditMovieDetails(id);
             },
             () => {
                 Console.WriteLine("Enter the new screen time in minutes:");
                 movie.Duration = Math.Abs(int.Parse(Console.ReadLine()));
-                MoviesAccess.WriteAll(_moviesLogic.Movies);
+                MoviesAccess.WriteAll(moviesLogic.Movies);
                 EditMovieDetails(id);
             },
             () => {
                 Console.WriteLine("Enter the new minimum age (11-18):");
                 movie.MinimumAge = Math.Clamp(int.Parse(Console.ReadLine()), 11, 18);
-                MoviesAccess.WriteAll(_moviesLogic.Movies);
+                MoviesAccess.WriteAll(moviesLogic.Movies);
                 EditMovieDetails(id);
             },
             () => MovieManager(id)
@@ -184,7 +195,7 @@ public static class Movies
     }
 
     // Shows a menu with all movies in the list. Returns the int ID of the selected movie, or -1 if the user cancelled.
-    private static int MovieSelector(List<MovieModel> movies, List<(string, int)> extras = null)
+    private int MovieSelector(List<MovieModel> movies, List<(string, int)> extras = null)
     {
         List<string> options = movies.Select(m => m.Title).ToList();
         List<int> indices = movies.Select(m => m.Id).ToList();
@@ -204,21 +215,23 @@ public static class Movies
         return MenuHelper.NewMenu(options, indices, header: "Movies");
     }
 
-    public static void MoviesBrowser(bool makeForGuest = false, int startingIndex = 0, int customerId = -1)
+    public void MoviesBrowser(bool makeForGuest = false, int startingIndex = 0, int customerId = -1)
     {
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
+        ShowingsLogic showingsLogic = _logicManager.ShowingsLogic;
         if (CinemaLogic.CurrentCinema == null)
         {
             Console.Clear();
             if (customerId != -1)
             {
-                Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), Menus.StaffMenu);
+                _menuManager.Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), _menuManager.Menus.StaffMenu);
             }
             else
             {
-                Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), () => 
+                _menuManager.Menus.ChooseCinema(() => MoviesBrowser(makeForGuest, 0, customerId), () => 
                 {
-                    if (AccountsLogic.CurrentAccount == null) Menus.GuestMenu();
-                    else Menus.LoggedInMenu();
+                    if (AccountsLogic.CurrentAccount == null) _menuManager.Menus.GuestMenu();
+                    else _menuManager.Menus.LoggedInMenu();
                 });
             }
             return;
@@ -229,17 +242,17 @@ public static class Movies
             Console.Clear();
             Console.WriteLine("Your console is not tall enough!\nPlease expand your console window to browse movies.");
             Thread.Sleep(2000);
-            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.Menus.GuestMenu : _menuManager.Menus.LoggedInMenu);
             return;
         }
-        List<MovieModel> movies = _moviesLogic.Movies;
+        List<MovieModel> movies = moviesLogic.Movies;
         // no current movies and showings
         if (movies.Count == 0)
         {
             Console.Clear();
             Console.WriteLine("It seems there aren't any movies...\nPlease be patient while we resolve this issue.");
             Thread.Sleep(2000);
-            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? Menus.GuestMenu : Menus.LoggedInMenu);
+            MenuHelper.WaitForKey(AccountsLogic.CurrentAccount == null ? _menuManager.Menus.GuestMenu : _menuManager.Menus.LoggedInMenu);
             return;
         }
 
@@ -296,15 +309,15 @@ public static class Movies
             if (key == ConsoleKey.DownArrow) showingIndices[currentIndex]++;
 
             currentIndex = Math.Clamp(currentIndex, 0, movies.Count - 1);
-            showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count - 1, 0));
+            showingIndices[currentIndex] = Math.Clamp(showingIndices[currentIndex], 0, Math.Max(showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count - 1, 0));
         } while (key != ConsoleKey.Enter && key != ConsoleKey.Backspace);
 
         if (key == ConsoleKey.Enter) 
         {
-            if (_showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count != 0)
+            if (showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id).Count != 0)
             {
                 // make a reservation of the showinngidices'th item in the list of showings of the movie in currentIndex
-                ShowingModel showing = _showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id)[showingIndices[currentIndex]];
+                ShowingModel showing = showingsLogic.FindShowingsByMovieId(movies[currentIndex].Id, CinemaLogic.CurrentCinema.Id)[showingIndices[currentIndex]];
                 Reservation.Make(showing, makeForGuest, customerId);
                 // Reservation.Make(_showingsLogic.Showings[showingIndices[currentIndex]]);
             }
@@ -316,13 +329,13 @@ public static class Movies
         else 
         {
             if (AccountsLogic.CurrentAccount == null)
-                Menus.GuestMenu();
+                _menuManager.Menus.GuestMenu();
             else
-                Menus.LoggedInMenu();
+                _menuManager.Menus.LoggedInMenu();
         }
     }
 
-    private static List<string> CreateBlock(MovieModel movie, int blockWidth, int blockIndex = -1)
+    private List<string> CreateBlock(MovieModel movie, int blockWidth, int blockIndex = -1)
     {
         string openANSI = blockIndex >= 0 ? "\u001b[1m" : "\u001b[90m";
         string resetANSI = "\u001b[0m";
@@ -344,7 +357,7 @@ public static class Movies
         outputList.Add($"Duration: {movie.Duration} minutes; {movie.MinimumAge}+");
         outputList.Add($"");
 
-        List<string> showings = VerticalScroller(_showingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id), verticalSpaceForShowings, blockIndex);
+        List<string> showings = VerticalScroller(_logicManager.ShowingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id), verticalSpaceForShowings, blockIndex);
         foreach (string showing in showings) outputList.Add(showing);
 
         for (int i = 0; i < outputList.Count(); i++)
@@ -355,7 +368,7 @@ public static class Movies
         return outputList;
     }
 
-    private static List<string> WrapString(string text, int blockWidth, int lines)
+    private List<string> WrapString(string text, int blockWidth, int lines)
     {
         List<string> wrappedString = new();
         List<string> singleWords = text.Split(' ').ToList();
@@ -386,7 +399,7 @@ public static class Movies
         return wrappedString;
     }
 
-    private static string CombineBlocks(List<string> block1, List<string> block2, List<string> block3, int blockWidth)
+    private string CombineBlocks(List<string> block1, List<string> block2, List<string> block3, int blockWidth)
     {
         string output = "";
 
@@ -400,7 +413,7 @@ public static class Movies
         return output;
     }
 
-    private static List<string> VerticalScroller(List<ShowingModel> showings, int verticalSpace, int selectedIndex)
+    private List<string> VerticalScroller(List<ShowingModel> showings, int verticalSpace, int selectedIndex)
     {
         List<string> outputList = new();
         int startingPoint = Math.Max(selectedIndex - (verticalSpace - 1), 0);
@@ -434,15 +447,16 @@ public static class Movies
 
     private static int GetLengthWithoutANSI(string text) => Regex.Replace(text, @"\u001b\[[0-9;]*m", "").Length;
 
-    public static void PromoteMovies(int slot)
+    public void PromoteMovies(int slot)
     {
-        List<string> options = _moviesLogic.Movies.Select(m => m.Title).ToList();
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
+        List<string> options = moviesLogic.Movies.Select(m => m.Title).ToList();
         options.Add("Empty slot");
         options.Add("Back");
 
         List<object> actions = new List<object> {};
-        _moviesLogic.Movies.ForEach(actions.Add);
-        actions.Add(() => _moviesLogic.RemovePromotion(slot));
+        moviesLogic.Movies.ForEach(actions.Add);
+        actions.Add(() => moviesLogic.RemovePromotion(slot));
         actions.Add(SelectPromotionSlot);
 
         Console.WriteLine($"options: {options.Count}, actions: {actions.Count}");
@@ -452,27 +466,28 @@ public static class Movies
         Console.Clear();
         if (movieToPromote is MovieModel movie) 
         {
-            _moviesLogic.PromoteMovie(movie, slot);
+            moviesLogic.PromoteMovie(movie, slot);
             Console.WriteLine($"Succesfully changed the movie in promotionslot {slot + 1} to {movie.Title}");
         }
         if (movieToPromote is null) 
         {
-            _moviesLogic.PromoteMovie(null, slot);
+            moviesLogic.PromoteMovie(null, slot);
             Console.WriteLine($"Succesfully emptied promotionslot {slot + 1}");
         }
 
         Thread.Sleep(1000);
-        MenuHelper.WaitForKey(Menus.AdminMenu);
+        MenuHelper.WaitForKey(_menuManager.Menus.AdminMenu);
     }
 
-    public static void SelectPromotionSlot()
+    public void SelectPromotionSlot()
     {
+        MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         Console.WriteLine();
-        MenuHelper.NewMenu(new List<string> {   $"1: currently promoted: {(_moviesLogic.PromotedMovies[0] != null ? _moviesLogic.PromotedMovies[0].Title : "Empty")}",
-                                                $"2: currently promoted: {(_moviesLogic.PromotedMovies[1] != null ? _moviesLogic.PromotedMovies[1].Title : "Empty")}",
+        MenuHelper.NewMenu(new List<string> {   $"1: currently promoted: {(moviesLogic.PromotedMovies[0] != null ? moviesLogic.PromotedMovies[0].Title : "Empty")}",
+                                                $"2: currently promoted: {(moviesLogic.PromotedMovies[1] != null ? moviesLogic.PromotedMovies[1].Title : "Empty")}",
 
                                                 "return"}, 
-            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), Menus.AdminMenu},
+            new List<object> {() => PromoteMovies(0), () => PromoteMovies(1), _menuManager.Menus.AdminMenu},
             "Which slot do you want to change?");
     }
 }
