@@ -53,4 +53,9 @@ public class CinemaLogic
         }
         return pointer;
     }
+
+    public static bool VerifyPostalCode(string postalCode)
+    {
+        return postalCode.Length != 6 && postalCode.Substring(0,4).All(char.IsDigit) && postalCode.Substring(4,2).All(char.IsLetter);
+    }
 }

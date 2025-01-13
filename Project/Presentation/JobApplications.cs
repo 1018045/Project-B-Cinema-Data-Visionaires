@@ -26,8 +26,7 @@ public class JobApplications
             ApplyToVacancy, // TODO: implement menu system
             _menuManager.MainMenus.GuestMenu
         };
-        MenuHelper.NewMenu(options, actions, "Job Vacancies");
-        
+        MenuHelper.NewMenu(options, actions, "Job Vacancies");    
     }
 
     private void ShowAllVacancies()
@@ -175,23 +174,20 @@ public class JobApplications
         Console.WriteLine("\nPlease confirm the following details:");
         Console.WriteLine($"Name: {employeeName}");
         Console.WriteLine($"Monthly Salary: €{salary:F2}");
-        Console.WriteLine("\nAre you sure you want to add this employee? (Y/N)");
         
-        string confirmation = Console.ReadLine().ToUpper();
-        if (confirmation == "Y")
+        
+        if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: "\nAre you sure you want to add this employee?"))
         {
-            
             int newId = employeeLogic.FindFirstAvailableID();
-            EmployeeModel newEmployee = new(employeeName, newId, salary);
-            employeeLogic.AddEmployee(newEmployee);
+            employeeLogic.AddEmployee(new EmployeeModel(employeeName, newId, salary));
  
             Console.WriteLine("\nEmployee successfully added!");
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
         }
         else
         {
             Console.WriteLine("\nEmployee addition cancelled.");
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
         }
  
         MenuHelper.WaitForKey(_menuManager.MainMenus.AdminMenu);

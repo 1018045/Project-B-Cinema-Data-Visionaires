@@ -1,3 +1,5 @@
+using Project.Logic.Account;
+
 public class ReservationsLogic
 {
     public List<ReservationModel> Reservations {get; private set;}
@@ -6,9 +8,12 @@ public class ReservationsLogic
                 {
                     "ABNA","INGB","RABO","SNSB","ASNB","TRIO","KNAB","BUNQ","MOYO","FVLN","FRBK","REVO"
                 };
+
+    private LogicManager _logicManager;
         
-    public ReservationsLogic()
+    public ReservationsLogic(LogicManager logicManager)
     {
+        _logicManager = logicManager;
         Reservations = ReservationsAccess.LoadAll();
     }
 
@@ -103,5 +108,21 @@ public class ReservationsLogic
             Reservations[index] = reservation;
             ReservationsAccess.WriteAll(Reservations);
         }
+    }
+
+    public List<ReservationModel> GetFutureReservations()
+    {
+        return _logicManager.ReservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
+                .Where(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date > DateTime.Now)
+                .OrderBy(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
+                .ToList();
+    }
+
+    public List<ReservationModel> GetPastReservations()
+    {
+        return _logicManager.ReservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
+                .Where(r =>_logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date < DateTime.Now)
+                .OrderByDescending(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
+                .ToList();
     }
 }

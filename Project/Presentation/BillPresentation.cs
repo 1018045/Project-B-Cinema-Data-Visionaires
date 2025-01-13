@@ -44,21 +44,15 @@ public class BillPresentation
 
     private void ShowPastReservations()
     {
-        var userReservations = _logicManager.ReservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
-            .Where(r =>_logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date < DateTime.Now)
-            .OrderByDescending(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
-            .ToList();
+        var userReservations = _logicManager.ReservationsLogic.GetPastReservations();
 
         DisplayReservations(userReservations, true);
     }
 
     private void ShowFutureReservations()
-    {
-        var userReservations = _logicManager.ReservationsLogic.FindReservationByUserID(AccountsLogic.CurrentAccount.Id)
-            .Where(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date > DateTime.Now)
-            .OrderBy(r => _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(r.ShowingId).Date)
-            .ToList();
-
+    {    
+        var userReservations = _logicManager.ReservationsLogic.GetFutureReservations();
+        
         DisplayReservations(userReservations, false);
     }
 

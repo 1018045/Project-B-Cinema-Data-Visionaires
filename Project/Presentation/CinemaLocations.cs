@@ -101,7 +101,7 @@ public class CinemaLocations
         {
             System.Console.WriteLine("Please enter the new postal code of the cinema: (format: 0000AA)");
             postal = Console.ReadLine().Trim();
-        }while (postal.Length != 6 && postal.Substring(0,4).All(char.IsDigit) && postal.Substring(4,2).All(char.IsLetter));
+        }while (!CinemaLogic.VerifyPostalCode(postal));
 
         if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, subtext: $"Are you sure you want to change the location of {cinema.Name} to {address} {postal} in {city}?"))
         {
@@ -150,7 +150,7 @@ public class CinemaLocations
         {
             System.Console.WriteLine("Please enter the postal code of the new cinema location: (format: 0000AA)");
             postal = Console.ReadLine().Trim();
-        }while (postal.Length != 6 && postal.Substring(0,4).All(char.IsDigit) && postal.Substring(4,2).All(char.IsLetter));
+        }while (!CinemaLogic.VerifyPostalCode(postal));
 
         System.Console.WriteLine("Please enter the phone number that the cinema will be reachable on:");
         string phoneNumber = Console.ReadLine();

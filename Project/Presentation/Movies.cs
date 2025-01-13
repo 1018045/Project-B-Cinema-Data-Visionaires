@@ -1,12 +1,8 @@
-using System.Text.RegularExpressions;
 using Project.Helpers;
 using Project.Logic.Account;
 
 public class Movies
 {
-    private const string DATEFORMAT = "dd-MM-yyyy HH:mm:ss";
-    private const string EXTENDED_DATE_FORMAT = "dddd d MMMM yyyy";
-
     private LogicManager _logicManager;
     private MenuManager _menuManager;
 
@@ -114,10 +110,7 @@ public class Movies
         MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         MovieModel movie = moviesLogic.GetMovieById(id);
 
-        moviesLogic.Movies.Add(movie);
-        moviesLogic.ArchivedMovies.Remove(movie);
-        MoviesAccess.WriteAll(moviesLogic.Movies);
-        ArchivedMoviesAccess.WriteAll(moviesLogic.ArchivedMovies);
+        moviesLogic.BringMovieBackFromArchive(movie);
 
         Console.Clear();
         Console.WriteLine($"Moved {movie.Title} from archive into active movies");
@@ -139,10 +132,7 @@ public class Movies
             return;
         }
 
-        moviesLogic.ArchivedMovies.Add(movie);
-        moviesLogic.Movies.Remove(movie);
-        MoviesAccess.WriteAll(moviesLogic.Movies);
-        ArchivedMoviesAccess.WriteAll(moviesLogic.ArchivedMovies);
+        moviesLogic.ArchiveMovie(movie);
 
         Console.Clear();
         Console.WriteLine($"Moved {movie.Title} into the archive");
@@ -293,12 +283,12 @@ public class Movies
             for (int i = 0; i < 3; i++)
             {
                 if (movies[currentIndex].Id == moviesOnScreen[i].Id)
-                    blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth, showingIndices[currentIndex]));
+                    blocks.Add(_logicManager.MoviesLogic.CreateBlock(moviesOnScreen[i], blockWidth, showingIndices[currentIndex]));
                 else
-                    blocks.Add(CreateBlock(moviesOnScreen[i], blockWidth));
+                    blocks.Add(_logicManager.MoviesLogic.CreateBlock(moviesOnScreen[i], blockWidth));
             }
 
-            Console.WriteLine(CombineBlocks(blocks[0], blocks[1], blocks[2], blockWidth));
+            Console.WriteLine(_logicManager.MoviesLogic.CombineBlocks(blocks[0], blocks[1], blocks[2], blockWidth));
 
             var keyInfo = Console.ReadKey(intercept: true);
             key = keyInfo.Key;
@@ -334,118 +324,6 @@ public class Movies
                 _menuManager.MainMenus.LoggedInMenu();
         }
     }
-
-    private List<string> CreateBlock(MovieModel movie, int blockWidth, int blockIndex = -1)
-    {
-        string openANSI = blockIndex >= 0 ? "\u001b[1m" : "\u001b[90m";
-        string resetANSI = "\u001b[0m";
-
-        int verticalSpaceForShowings = Math.Max(Console.WindowHeight - 18, 1);
-
-        List<string> wrappedTitle = WrapString(movie.Title, blockWidth, 2);
-        List<string> wrappedSummary = WrapString(movie.Summary, blockWidth, 4);
-        List<string> wrappedActors = WrapString(String.Join(", ", movie.Actors), blockWidth, 3);
-
-        List<string> outputList = new();
-
-        foreach (string line in wrappedTitle) outputList.Add(line);
-        foreach (string line in wrappedSummary) outputList.Add(line);
-        outputList.Add("");
-        foreach (string line in wrappedActors) outputList.Add(line);
-        outputList.Add($"Directed by {movie.Director}");
-        outputList.Add("");
-        outputList.Add($"Duration: {movie.Duration} minutes; {movie.MinimumAge}+");
-        outputList.Add($"");
-
-        List<string> showings = VerticalScroller(_logicManager.ShowingsLogic.FindShowingsByMovieId(movie.Id, CinemaLogic.CurrentCinema.Id), verticalSpaceForShowings, blockIndex);
-        foreach (string showing in showings) outputList.Add(showing);
-
-        for (int i = 0; i < outputList.Count(); i++)
-        {
-            outputList[i] = $"{openANSI}{outputList[i]}{resetANSI}";
-        }
-
-        return outputList;
-    }
-
-    private List<string> WrapString(string text, int blockWidth, int lines)
-    {
-        List<string> wrappedString = new();
-        List<string> singleWords = text.Split(' ').ToList();
-
-        string line = "";
-        foreach (string word in singleWords)
-        {
-            if (blockWidth > line.Length + word.Length) 
-                line += word + " ";
-            else 
-            {
-                wrappedString.Add(line);
-                line = word + " ";
-            }
-        }
-        wrappedString.Add(line);
-
-        if (text.Length > blockWidth * lines)
-        {
-            // replace last 3 characters with dots
-        }
-
-        while (wrappedString.Count() < lines)
-        {
-            wrappedString.Add("");
-        }
-
-        return wrappedString;
-    }
-
-    private string CombineBlocks(List<string> block1, List<string> block2, List<string> block3, int blockWidth)
-    {
-        string output = "";
-
-        for (int i = 0; i < block1.Count; i++)
-        {
-            string line1 = block1[i] + new String(' ', blockWidth - GetLengthWithoutANSI(block1[i]));
-            string line2 = block2[i] + new String(' ', blockWidth - GetLengthWithoutANSI(block2[i]));
-            string line3 = block3[i] + new String(' ', blockWidth - GetLengthWithoutANSI(block3[i]));
-            output += $"{line1}|{line2}|{line3}\n";
-        }
-        return output;
-    }
-
-    private List<string> VerticalScroller(List<ShowingModel> showings, int verticalSpace, int selectedIndex)
-    {
-        List<string> outputList = new();
-        int startingPoint = Math.Max(selectedIndex - (verticalSpace - 1), 0);
-
-        if (showings == null || showings.Count() == 0)
-        {
-            outputList.Add("No showings planned!");
-            for (int i = 1; i <= verticalSpace - 1; i++)
-            {
-                outputList.Add(" ");
-            }
-            return outputList;
-        }
-
-        // size = 8, verticalspace = 5
-        // selectedindex 0 => startingpoint 0
-        // selectedindex 4 => startingpoint 0
-        // selectedindex 5 => staringpoint 1
-        // selectedindex 6 => startingpoint 2
-        // selectedindex 7 => staringpoint 3
-        for (int i = Math.Max(startingPoint, 0); i < startingPoint + verticalSpace; i++)
-        {
-            if (i < showings.Count())
-                if (showings[i].Is3D) outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))} in 3D        {SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
-                else outputList.Add($"{(selectedIndex == i ? $" > {showings[i].Date.ToString(EXTENDED_DATE_FORMAT)}" : showings[i].Date.ToString(EXTENDED_DATE_FORMAT))}              {SeatSelectionHelpers.GetTakenSeats(showings[i].Id).Count}/168");
-            else
-                outputList.Add("");
-        }
-        return outputList;
-    }
-
-    private static int GetLengthWithoutANSI(string text) => Regex.Replace(text, @"\u001b\[[0-9;]*m", "").Length;
 
     public void PromoteMovies(int slot)
     {

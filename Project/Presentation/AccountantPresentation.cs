@@ -35,7 +35,7 @@ public class AccountantPresentation
 
         if (employees == null || employees.Count == 0) 
         {
-            Console.WriteLine("check if there are no empoyee.");
+            Console.WriteLine("check if there are no employees.");
         }
         else
         {

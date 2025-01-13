@@ -19,7 +19,7 @@ public class LogicManager
         EmployeeLogic = new();
         JobVacancyLogic = new();
         MoviesLogic = new(this);
-        ReservationsLogic = new();
+        ReservationsLogic = new(this);
         ShowingsLogic = new(this);
         AccountsLogic = new();
         AccountManageLogic = new();

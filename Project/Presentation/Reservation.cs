@@ -133,8 +133,7 @@ public class Reservation
                 if (foodChoice == "4") break; 
             }
         }
-
-        
+     
         if (MenuHelper.NewMenu(new List<string> { "Yes", "No" }, new List<bool> { true, false }, subtext: "Would you like to order drinks?"))
         {
             while (true)
@@ -268,7 +267,7 @@ public class Reservation
             );
         }
         accountantLogic.AddBill(bill);
-        // ID == -1 ? guest user... ID == -1 && makeForGuest ? guest staff
+
         int userId;
         Action returnMenu;
         if (customerId != -1)
@@ -297,7 +296,7 @@ public class Reservation
         }
         else
         {
-            // you shouldn't end up here but alas
+            // you shouldn't have ended up here but alas...
             Console.Clear();
             System.Console.WriteLine("How did you get here?");
             Thread.Sleep(1000);
@@ -336,22 +335,21 @@ public class Reservation
 
         if (!makeForGuest)
         {
+            
             while (customer == null)
             {
                 Console.Clear();
                 Console.WriteLine("Please enter the email of the customer: ");
                 var email = Console.ReadLine()!;
 
-                var accounts = AccountsAccess.LoadAll();
-                customer = accounts.Find(a => a.EmailAddress.ToLower().Equals(email.ToLower()));
+                customer = _logicManager.AccountsLogic.GetUserByEmail(email.ToLower());
             }
             _menuManager.Movies.MoviesBrowser(makeForGuest, customerId: customer.Id);
         }
         else
         {
             _menuManager.Movies.MoviesBrowser(makeForGuest);
-        }
-        
+        } 
     }
 
     private void ShowBill(ShowingModel showing, List<string> selectedFoods, List<string> selectedDrinks, List<ExtraModel> selectedExtras, int numberOfTickets, double totalPrice, bool clear = true)
@@ -438,7 +436,6 @@ public class Reservation
 
     private void FakeProcessingPayment(int lengthInMilliSeconds)
     {
-
         for (int i = 0; i < lengthInMilliSeconds/400; i++)
         {
             Console.Clear();
@@ -509,7 +506,6 @@ public class Reservation
         MenuHelper.NewMenu(options, actions);
     }
 
-    // CHANGE SEAT IMPLEMENTATION AFTER YOURI IS DONE
     private void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
     {
         ShowingsLogic showingsLogic = _logicManager.ShowingsLogic;
@@ -548,7 +544,6 @@ public class Reservation
             reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true, oldReservation.Price + 5,oldReservation.SelectedExtras);
             Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString(DATEFORMAT)}");
         }
-
         MenuHelper.WaitForKey(() => Adjust(oldReservation.UserId));
     }
 
@@ -588,8 +583,8 @@ public class Reservation
         MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         ShowingsLogic showingsLogic = _logicManager.ShowingsLogic;
         List<Action> actions = new();
-        moviesLogic.Movies.Where(m => moviesLogic.HasUpcomingShowingsOnDate(m, date)).ToList()
-                            .ForEach(m => actions.Add(() => SelectShowingOnDate(m, date)));
+        
+        _logicManager.MoviesLogic.GetMoviesWithUpcomingShowingsOnDate(date).ForEach(m => actions.Add(() => SelectShowingOnDate(m, date)));
 
         if (actions.Count == 0)
         {
@@ -599,8 +594,7 @@ public class Reservation
             return;
         }
         
-        List<string> movieOptions = moviesLogic.Movies.Where(m => moviesLogic.HasUpcomingShowingsOnDate(m, date))
-                                                        .Select(m => m.Title).ToList();
+        List<string> movieOptions = _logicManager.MoviesLogic.GetMoviesWithUpcomingShowingsOnDate(date).Select(m => m.Title).ToList();
 
         actions.Add(SelectDate);
         movieOptions.Add("Return");
@@ -632,19 +626,6 @@ public class Reservation
             dateInput = Console.ReadLine();
         }
         while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) || DateTime.Now.Date > date.Date);             
-        return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-    }
-
-    public DateTime AskAndParsePastDate()
-    {  
-        string dateInput;
-        do
-        {
-            Console.Clear();
-            System.Console.WriteLine("Please enter a future date in this format 'dd-MM-yyyy'");
-            dateInput = Console.ReadLine();
-        }
-        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) || DateTime.Now.Date < date.Date);             
         return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
 }

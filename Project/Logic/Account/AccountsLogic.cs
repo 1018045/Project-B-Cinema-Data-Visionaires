@@ -9,7 +9,7 @@ namespace Project.Logic.Account;
 public class AccountsLogic
 {
     // public static AccountsLogic Logic { get; } = new ();
-    protected List<AccountModel> Accounts { get; init; }
+    public List<AccountModel> Accounts { get; init; }
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
@@ -166,5 +166,10 @@ public class AccountsLogic
     public bool IsOldEnough(int minimumAge) 
     {
         return CurrentAccount is UserModel acc && DateTime.Now.Year - acc.BirthDate.Year >= minimumAge;
+    }
+
+    public AccountModel GetUserByEmail(string email)
+    {
+        return Accounts.Find(a => a.EmailAddress.Equals(email.ToLower()));
     }
 }

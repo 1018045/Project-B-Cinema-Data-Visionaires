@@ -2,6 +2,7 @@ using System.Security;
 using System.Net;
 using Project.Logic.Account;
 using Project.DataModels;
+using System.Globalization;
 
 namespace Project.Presentation;
 
@@ -273,7 +274,7 @@ public class AccountPresentation
         DateTime userBirthDate;
 
         Console.WriteLine("Your BirthDay");
-        userBirthDate = _menuManager.Reservation.AskAndParsePastDate();
+        userBirthDate = AskAndParsePastDate();
 
         accountsLogic.UpdateList(userEmail, Password, fullName, userBirthDate.Date);
 
@@ -289,8 +290,8 @@ public class AccountPresentation
     public void ViewUsers()
     {
         Console.Clear();
-        var users = AccountsAccess.LoadAll(); 
-        foreach (var user in users)
+    
+        foreach (var user in _logicManager.AccountsLogic.Accounts)
         {
             Console.WriteLine($"User: {user.EmailAddress}");
         }
@@ -344,5 +345,18 @@ public class AccountPresentation
         Console.ReadKey();
 
         _menuManager.MainMenus.AdminMenu();
+    }
+
+    private DateTime AskAndParsePastDate()
+    {  
+        string dateInput;
+        do
+        {
+            Console.Clear();
+            System.Console.WriteLine("Please enter a future date in this format 'dd-MM-yyyy'");
+            dateInput = Console.ReadLine();
+        }
+        while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) || DateTime.Now.Date < date.Date);             
+        return DateTime.ParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
 }
