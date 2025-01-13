@@ -147,7 +147,7 @@ public class LayoutGenerator
                     { IsSelected: true } => ConsoleColor.White,
                     { IsDecoy: true } => ConsoleColor.Black,
                     { IsTaken: true} => ConsoleColor.Gray,
-                    { IsReserved: true } => ConsoleColor.Cyan
+                    { IsReserved: true } => ConsoleColor.Magenta
                     ,
                     _ => seat.Color
                 };
