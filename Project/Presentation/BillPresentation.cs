@@ -27,6 +27,7 @@ public class BillPresentation
 
         List<string> options = new List<string>
         {
+            "Edit upcoming reservation",
             "View Past Reservations",
             "View Future Reservations",
             "Return to Menu"
@@ -34,6 +35,7 @@ public class BillPresentation
 
         List<Action> actions = new List<Action>
         {
+            _menuManager.Reservation.Adjust,
             ShowPastReservations,
             ShowFutureReservations,
             _menuManager.MainMenus.LoggedInMenu

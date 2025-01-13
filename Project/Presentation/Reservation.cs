@@ -445,10 +445,18 @@ public class Reservation
         }
     }
 
-    public void Adjust(int userId)
+    public void Adjust()
     {
+        if (AccountsLogic.CurrentAccount == null)
+        {
+            System.Console.WriteLine("ERROR: not logged in!");
+            MenuHelper.WaitForKey(_menuManager.MainMenus.GuestMenu);
+            return;
+        }
+        int userId = AccountsLogic.CurrentAccount.Id;
+        
         ReservationsLogic reservationsLogic = _logicManager.ReservationsLogic;
-        List<ReservationModel> reservations = reservationsLogic.Reservations.Where(r => r.UserId == userId).ToList();
+        List<ReservationModel> reservations = reservationsLogic.GetFutureReservations();// reservationsLogic.Reservations.Where(r => r.UserId == userId).ToList();
         
         if (reservations.Count == 0)
         {
@@ -481,7 +489,6 @@ public class Reservation
         ReservationsLogic reservationsLogic = _logicManager.ReservationsLogic;
         List<string> options = new List<string>() 
         {
-            "Change or add seats (NOT YET IMPLEMENTED!!!)",
             "Change date",
             "Cancel reservation",
             "Return"
@@ -489,21 +496,16 @@ public class Reservation
 
         List<Action> actions = new List<Action>() 
         {
-            () => {
-                Console.Clear();
-                Console.WriteLine("(NOT YET IMPLEMENTED!!!)");
-                MenuHelper.WaitForKey(() => AdjustmentMenu(reservation, showing));
-                },
             () => ChangeReservationDate(reservation, showing),
             () => {
                 if (MenuHelper.NewMenu(new List<string> {"Yes", "No"}, new List<bool> {true, false}, "Are you sure you want to cancel your reservation?"))
                     reservationsLogic.RemoveReservation(reservation);
-                Adjust(reservation.UserId);
+                Adjust();
             },
-            () => Adjust(reservation.UserId)
+            Adjust
         };
 
-        MenuHelper.NewMenu(options, actions);
+        MenuHelper.NewMenu(options, actions, subtext: $"Edit reservation on {_logicManager.ShowingsLogic.FindShowingByIdReturnShowing(reservation.ShowingId).Date.ToString(EXTENDEDDATEFORMAT)}:");
     }
 
     private void ChangeReservationDate(ReservationModel oldReservation, string movieTitle)
@@ -544,7 +546,7 @@ public class Reservation
             reservationsLogic.AddReservation(oldReservation.UserId, newShowing.Id, oldReservation.Seats, true, oldReservation.Price + 5,oldReservation.SelectedExtras);
             Console.WriteLine($"The date of your reservation has been succesfully changed to: {newShowing.Date.ToString(DATEFORMAT)}");
         }
-        MenuHelper.WaitForKey(() => Adjust(oldReservation.UserId));
+        MenuHelper.WaitForKey(() => Adjust());
     }
 
     public void SelectDate()
