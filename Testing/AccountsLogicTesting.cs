@@ -1,3 +1,4 @@
+using System.Globalization;
 using Project.Logic.Account;
 
 namespace Testing;
@@ -53,6 +54,30 @@ public class TestAccountLogic
     {
         int actual = AccountsLogic.ParseInt(input);
        
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void CheckLoginTest()
+    {
+        AccountsLogic al = new LogicManager().AccountsLogic;
+        al.UpdateList("test@test", "test", "Meneer Test", DateTime.Now);
+        al.CheckLogin("test@test", "test");
+
+        Assert.AreEqual(AccountsLogic.CurrentAccount.EmailAddress, "test@test");
+    }
+
+    [TestMethod]
+    [DataRow(-17, 0, 17)]
+    [DataRow(-16, -1, 15)]
+    [DataRow(-16, 0, 16)]
+    [DataRow(-16, 1, 16)]
+    [DataRow(-15, 0, 15)]
+    [DataRow(-15, -1, 14)]
+    public void CalculateAgeTest(int years, int days, int expected)
+    {
+        int actual = AccountsLogic.CalculateAge(DateTime.Now.AddYears(years).AddDays(days));
+
         Assert.AreEqual(expected, actual);
     }
 }

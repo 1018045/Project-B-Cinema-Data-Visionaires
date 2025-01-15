@@ -12,7 +12,7 @@ public class UserModel : AccountModel
     public UserModel(int id, string emailAddress, string password, string fullName, DateTime birthDate) : base(id, "user", emailAddress, password)
     {   
         FullName = fullName;
-        BirthDate = birthDate;        
+        BirthDate = birthDate;
     }
 
 }

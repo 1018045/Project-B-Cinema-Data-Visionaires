@@ -17,7 +17,7 @@ public class AccountManageLogic : AccountsLogic
             throw new ApplicationException("DEV-ERROR: Should not be able to get here without being logged in!");
 
         Accounts.Find(a => a.Id == CurrentAccount.Id)!.EmailAddress = newEmail;
-        AccountsAccess.WriteAll(Accounts); //todo verify that the currentAccount is the same instance as in the list so it is properly written
+        AccountsAccess.WriteAll(Accounts);
     }
     public void ChangePassword(string newPassword)
     {
@@ -25,7 +25,7 @@ public class AccountManageLogic : AccountsLogic
             throw new ApplicationException("DEV-ERROR: Should not be able to get here without being logged in!");
 
         Accounts.Find(a => a.Id == CurrentAccount.Id)!.Password = newPassword;
-        AccountsAccess.WriteAll(Accounts); //todo verify that the currentAccount is the same instance as in the list so it is properly written
+        AccountsAccess.WriteAll(Accounts);
     }
 
     public void DeleteAccount()

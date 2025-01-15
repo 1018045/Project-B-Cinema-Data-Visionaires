@@ -13,13 +13,11 @@ public class EmployeeLogic
 
     }
 
-
     public void RemoveEmployee(EmployeeModel employeeToRemove)
     {
         ListOfEmployees.Remove(employeeToRemove);
         EmployeesAccess.WriteAll(ListOfEmployees);
     }
-
 
     public int FindFirstAvailableID()
     {

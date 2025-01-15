@@ -54,5 +54,19 @@
     "emailAddress": "staff@staff",
     "password": "staff",
     "totalSpent": 0
+  },
+  {
+    "id": 3,
+    "role": "user",
+    "emailAddress": "xx@xx.xx",
+    "password": "L3tsgof@m",
+    "totalSpent": 0
+  },
+  {
+    "id": 4,
+    "role": "user",
+    "emailAddress": "aaa@bb.com",
+    "password": "L3tsgof@m",
+    "totalSpent": 0
   }
 ]

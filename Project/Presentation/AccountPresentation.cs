@@ -354,7 +354,7 @@ public class AccountPresentation
         do
         {
             Console.Clear();
-            System.Console.WriteLine("Please enter a future date in this format 'dd-MM-yyyy'");
+            System.Console.WriteLine("Please enter a past date in this format 'dd-MM-yyyy'");
             dateInput = Console.ReadLine();
         }
         while(!DateTime.TryParseExact(dateInput, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) || DateTime.Now.Date < date.Date);             

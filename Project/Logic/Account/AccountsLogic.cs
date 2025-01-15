@@ -37,7 +37,7 @@ public class AccountsLogic
         else
         {
             //add new model
-            Accounts.Add(acc);
+            Accounts.Add((UserModel)acc);
         }
 
         AccountsAccess.WriteAll(Accounts);
@@ -52,9 +52,6 @@ public class AccountsLogic
 
     public AccountModel? CheckLogin(string? email, string? password)
     {
-        Accounts.Clear();
-        Accounts.AddRange(AccountsAccess.LoadAll());
-
         if (email == null || password == null)
         {
             return null;
@@ -165,7 +162,23 @@ public class AccountsLogic
 
     public bool IsOldEnough(int minimumAge) 
     {
-        return CurrentAccount is UserModel acc && DateTime.Now.Year - acc.BirthDate.Year >= minimumAge;
+        if (CurrentAccount is UserModel acc) 
+        {
+            System.Console.WriteLine(acc.BirthDate);
+            return CalculateAge(acc.BirthDate) >= minimumAge;
+        }
+        else return false;
+    }
+
+    public static int CalculateAge(DateTime birthDate)
+    {
+        if (birthDate.Month > DateTime.Now.Month || 
+            (birthDate.Month >= DateTime.Now.Month && birthDate.Day >= DateTime.Now.Day))
+            return DateTime.Now.Year - birthDate.Year;
+        else
+        {
+            return DateTime.Now.Year - birthDate.Year - 1;
+        }
     }
 
     public AccountModel GetUserByEmail(string email)

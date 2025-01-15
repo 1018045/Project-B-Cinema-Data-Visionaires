@@ -123,7 +123,7 @@ public class Movies
         MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         MovieModel movie = moviesLogic.GetMovieById(id);
 
-        if (moviesLogic.HasUpcomingShowings(movie))
+        if (!moviesLogic.ArchiveMovie(movie))
         {
             Console.WriteLine($"Error: {movie.Title} still has upcoming showings");
             Console.WriteLine("Please remove these showings and try again");
@@ -131,8 +131,6 @@ public class Movies
             MenuHelper.WaitForKey(ManageMovies);
             return;
         }
-
-        moviesLogic.ArchiveMovie(movie);
 
         Console.Clear();
         Console.WriteLine($"Moved {movie.Title} into the archive");

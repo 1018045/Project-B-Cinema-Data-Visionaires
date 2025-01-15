@@ -173,5 +173,12 @@
     "totalAmount": 128.95,
     "paymentDate": "2025-01-15T14:10:10.789948+01:00",
     "userId": -1
+  },
+  {
+    "id": 25,
+    "paymentCompleted": true,
+    "totalAmount": 35,
+    "paymentDate": "2025-01-15T21:17:53.2391+01:00",
+    "userId": 1
   }
 ]

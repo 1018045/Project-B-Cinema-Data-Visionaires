@@ -103,8 +103,7 @@ public class AccountantLogic: IReportable
     }
 
     public double GetIncomeByMonth(int month)
-    {
-    
+    { 
       List<BillModel> BillsToView =  FindBy(month); 
 
       double TotalAmount = 0;

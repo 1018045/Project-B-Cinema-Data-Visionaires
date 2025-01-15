@@ -4,6 +4,31 @@ namespace Testing;
 public class TestShowingsLogic
 {
     [TestMethod]
+    [DataRow(0, false)]
+    [DataRow(1, false)]
+    [DataRow(2, false)]
+    [DataRow(3, true)]
+    [DataRow(4, true)]
+    [DataRow(-1, false)]
+    [DataRow(-2, false)]
+    [DataRow(-3, true)]
+    [DataRow(-4, true)]
+    public void AddShowing_RoomUnavailable_Test(int hourDiff, bool expected)
+    {
+        LogicManager lm = new();
+        ShowingsLogic sl = lm.ShowingsLogic;
+
+        int cinemaId = 0;
+        int roomId = 1;
+
+        sl.Showings.Clear();
+        sl.Showings.Add(new ShowingModel(13000, -1, DateTime.Now, roomId, cinemaId, new(), false, ""));
+
+        bool actual = sl.IsRoomFree(DateTime.Now.AddHours(hourDiff), roomId, 120, cinemaId);
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
     public void AddExtrasTest()
     {
         ShowingsLogic sl = new(new LogicManager());

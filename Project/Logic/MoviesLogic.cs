@@ -113,20 +113,28 @@ public class MoviesLogic
         MoviesAccess.WriteAll(Movies);
     }
 
-    public void ArchiveMovie(MovieModel movieToMove)
+    public bool ArchiveMovie(MovieModel movieToMove)
     {
-        ArchivedMovies.Add(movieToMove);
-        Movies.Remove(movieToMove);
-        MoviesAccess.WriteAll(Movies);
-        ArchivedMoviesAccess.WriteAll(ArchivedMovies);
+        if (movieToMove != null && !HasUpcomingShowings(movieToMove))
+        {
+            ArchivedMovies.Add(movieToMove);
+            Movies.Remove(movieToMove);
+            MoviesAccess.WriteAll(Movies);
+            ArchivedMoviesAccess.WriteAll(ArchivedMovies);
+            return true;
+        }
+        else return false;
     }
 
     public void BringMovieBackFromArchive(MovieModel archivedMovie)
     {
-        Movies.Add(archivedMovie);
-        ArchivedMovies.Remove(archivedMovie);
-        MoviesAccess.WriteAll(Movies);
-        ArchivedMoviesAccess.WriteAll(ArchivedMovies);
+        if (archivedMovie != null)
+        {
+            Movies.Add(archivedMovie);
+            ArchivedMovies.Remove(archivedMovie);
+            MoviesAccess.WriteAll(Movies);
+            ArchivedMoviesAccess.WriteAll(ArchivedMovies);
+        }
     }
 
     public List<string> CreateBlock(MovieModel movie, int blockWidth, int blockIndex = -1)
