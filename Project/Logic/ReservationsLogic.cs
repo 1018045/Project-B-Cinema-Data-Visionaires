@@ -17,9 +17,19 @@ public class ReservationsLogic
         Reservations = ReservationsAccess.LoadAll();
     }
 
-    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price,List<ExtraModel> selectedExtras)
+    public ReservationModel AddReservation(int userId, int showingId, string seats, bool paymentComplete, double price, List<ExtraModel> selectedExtras)
     {
-        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price,selectedExtras);
+        IEnumerable<ExtraModel> mandatoryExtras = _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(showingId).Extras.Where(e => e.IsMandatory);
+        foreach (ExtraModel extra in mandatoryExtras)
+        {
+            if (!selectedExtras.Contains(extra))
+            {
+                // DEV-Error, not all mandatory extra's selected
+                return null;
+            }
+        }
+        
+        ReservationModel reservation = new ReservationModel(FindFirstAvailableID(), userId, showingId, seats, paymentComplete, price, selectedExtras);
         Reservations.Add(reservation);
         ReservationsAccess.WriteAll(Reservations);
         return reservation;

@@ -1,6 +1,6 @@
 public class AccountantLogic: IReportable
 {
-    public static List<BillModel> Bills = new();
+    public List<BillModel> Bills;
 
     private LogicManager _logicManager;
 

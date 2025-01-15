@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using Project.Helpers;
 using Project.Logic.Account;
+using Project.Logic.SeatSelection;
 using Project.Presentation;
 
 public class Reservation
@@ -80,18 +81,18 @@ public class Reservation
         Console.Clear();
 
         bool confirmSeats = false;
-        List<string> selectedSeats;
+        List<Seat> selectedSeats;
         do        
         {  
-            selectedSeats = SeatingPresentation.Present(showing.Id);
+            selectedSeats = SeatingPresentation.Present(showing.Id, _logicManager);
             confirmSeats = MenuHelper.NewMenu(
                 new List<string> {"Confirm", "Retry"},
                 new List<bool> {true, false}, 
                 subtext: "You have selected the following seats: " +
-                $"{SeatSelectionHelpers.PositionsToRowSeatString(SeatSelectionHelpers.StringToPositions(selectedSeats))}"
+                $"{SeatSelectionHelpers.SeatsToRowSeatString(selectedSeats)}"
             );
         } while(!confirmSeats);
-
+    
         List<string> selectedFoods = new List<string>();
         List<string> selectedDrinks = new List<string>();
         double totalFoodPrice = 0;
@@ -228,14 +229,16 @@ public class Reservation
             specialPrice += 3.50;
         }
   
-        double totalPrice = (basePrice + specialPrice) * selectedSeats.Count + totalFoodPrice + totalDrinkPrice + extrasPrice;       
-        ShowBill(showing, selectedFoods, selectedDrinks, selectedExtras, selectedSeats.Count, totalPrice);
+        double seatsPrice = 0.0;
+        selectedSeats.ForEach(s => seatsPrice += (basePrice * s.PriceMultiplier) + specialPrice);
+        double totalPrice = seatsPrice + totalFoodPrice + totalDrinkPrice + extrasPrice;       
+        ShowBill(showing, selectedFoods, selectedDrinks, selectedExtras, selectedSeats, totalPrice);
         
         string payment;        
         do
         {
             Console.Clear();
-            ShowBill(showing, selectedFoods, selectedDrinks, selectedExtras, selectedSeats.Count, totalPrice);
+            ShowBill(showing, selectedFoods, selectedDrinks, selectedExtras, selectedSeats, totalPrice);
             Console.WriteLine("Please enter your bank details: (example NL91ABNA0417164300)");
             Console.Write("IBAN: ");
             payment = reservationsLogic.ValidateBankDetails(Console.ReadLine());
@@ -307,7 +310,8 @@ public class Reservation
         userId = customerId == -1 ? (AccountsLogic.CurrentAccount != null ? AccountsLogic.CurrentAccount.Id : -1): customerId;
         ReservationModel reservation;
 
-        reservation = reservationsLogic.AddReservation(userId, showing.Id, string.Join(",", selectedSeats), true, totalPrice, selectedExtras);
+        // reservation = reservationsLogic.AddReservation(userId, showing.Id, string.Join(",", selectedSeats.Select()), true, totalPrice, selectedExtras);
+        reservation = reservationsLogic.AddReservation(userId, showing.Id, SeatSelectionHelpers.PositionsToStrings(selectedSeats.Select(s => s.Position).ToList()), true, totalPrice, selectedExtras);
         
         reservation.SetBillId(bill.ID);
         reservationsLogic.UpdateReservation(reservation);
@@ -321,7 +325,7 @@ public class Reservation
             Console.ForegroundColor = ConsoleColor.Red;
             System.Console.WriteLine("IMPORTANT: Remember this unique reservation code and print your bill! Since you booked as a guest these are your only proof of reservation!\n");
             Console.ResetColor();
-            ShowBill(showing, selectedFoods, selectedDrinks, selectedExtras, selectedSeats.Count, totalPrice, clear: false);
+            ShowBill(showing, selectedFoods, selectedDrinks, selectedExtras, selectedSeats, totalPrice, clear: false);
         }
         Console.ResetColor();
 
@@ -351,14 +355,19 @@ public class Reservation
         } 
     }
 
-    private void ShowBill(ShowingModel showing, List<string> selectedFoods, List<string> selectedDrinks, List<ExtraModel> selectedExtras, int numberOfTickets, double totalPrice, bool clear = true)
+    private void ShowBill(ShowingModel showing, List<string> selectedFoods, List<string> selectedDrinks, List<ExtraModel> selectedExtras, List<Seat> selectedSeats, double totalPrice, bool clear = true)
     {
         MoviesLogic moviesLogic = _logicManager.MoviesLogic;
         if (clear) Console.Clear();
 
         Console.WriteLine("===== Order Summary =====\n");
-    
-        Console.WriteLine($"Tickets: {numberOfTickets} x {moviesLogic.GetMovieById(showing.MovieId).Title} on {showing.Date.ToString(DATEFORMAT)} x €{BASE_TICKET_PRICE:F2}");
+        Console.WriteLine($"Tickets:");
+        if (selectedSeats.Where(s => s.PriceMultiplier == 1.0).Count() > 0)
+            System.Console.WriteLine($"{selectedSeats.Where(s => s.PriceMultiplier == 1.0).Count()} x basic seat for {moviesLogic.GetMovieById(showing.MovieId).Title} on {showing.Date.ToString(DATEFORMAT)} x €{BASE_TICKET_PRICE:F2}");
+        if (selectedSeats.Where(s => s.PriceMultiplier == 1.25).Count() > 0)
+            System.Console.WriteLine($"{selectedSeats.Where(s => s.PriceMultiplier == 1.25).Count()} x basic+ seat for {moviesLogic.GetMovieById(showing.MovieId).Title} on {showing.Date.ToString(DATEFORMAT)} x €{BASE_TICKET_PRICE * 1.25:F2}");
+        if (selectedSeats.Where(s => s.PriceMultiplier == 1.5).Count() > 0)
+            System.Console.WriteLine($"{selectedSeats.Where(s => s.PriceMultiplier == 1.5).Count()} x premium seat for {moviesLogic.GetMovieById(showing.MovieId).Title} on {showing.Date.ToString(DATEFORMAT)} x €{BASE_TICKET_PRICE * 1.5:F2}");
      
         if (selectedFoods.Count > 0)
         {
@@ -412,9 +421,10 @@ public class Reservation
 
         if (showings.Count() == 0)
         {
+            Action menu = AccountsLogic.CurrentAccount == null ? _menuManager.MainMenus.GuestMenu : _menuManager.MainMenus.LoggedInMenu;
             System.Console.WriteLine("There are no upcoming showings for this movie");
             Thread.Sleep(1000);
-            MenuHelper.WaitForKey(() => _menuManager.Movies.MoviesBrowser());
+            MenuHelper.WaitForKey(menu);
             return;
         }
         

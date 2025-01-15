@@ -10,6 +10,7 @@ public class MenuManager
     public MainMenus MainMenus {get; private set;}
     public Movies Movies {get; private set;}
     public Reservation Reservation {get; private set;}
+    public SeatingPresentation SeatingPresentation {get; set;}
     public Showings Showings {get; private set;}
 
 

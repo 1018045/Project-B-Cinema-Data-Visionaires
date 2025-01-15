@@ -54,6 +54,5 @@ public class TestAccountLogic
         int actual = AccountsLogic.ParseInt(input);
        
         Assert.AreEqual(expected, actual);
-       
     }
 }

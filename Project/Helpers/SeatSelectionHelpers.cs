@@ -1,4 +1,5 @@
-﻿using Project.Logic.SeatSelection;
+﻿using System.Runtime.InteropServices;
+using Project.Logic.SeatSelection;
 using static Project.Logic.SeatSelection.GridNavigator;
 
 namespace Project.Helpers;
@@ -34,31 +35,48 @@ public static class SeatSelectionHelpers
         var relevantReservations = ReservationsAccess.LoadAll()
             .FindAll(rm => rm.ShowingId == showingId);
 
+        // foreach (ReservationModel res in relevantReservations)
+        // {
+        //     System.Console.WriteLine(res.Seats);
+        // }
+        // Thread.Sleep(10000);
         // Transform the seats into a list of Position objects
-        var takenSeats = relevantReservations
-            .SelectMany(rm => rm.Seats.Split(",")) // Split seat strings by ","
-            .Select(seat =>
-            {
-                // Remove parentheses and split into coordinates
-                var coordinates = seat.Trim('(', ')').Split(';');
-                return new Position(int.Parse(coordinates[1]) - 1, int.Parse(coordinates[0]) - 1);
-            })
-            .ToList();
+        // var takenSeats = relevantReservations
+        //     .SelectMany(rm => rm.Seats.Split(",")) // Split seat strings by ","
+        //     .Select(seat =>
+        //     {
+        //         // Remove parentheses and split into coordinates
+        //         var coordinates = seat.Trim('(', ')').Split(';');
+        //         System.Console.WriteLine(coordinates[0]);
+        //         System.Console.WriteLine(coordinates[1]);
+        //         return new Position(int.Parse(coordinates[1]) - 1, int.Parse(coordinates[0]) - 1);
+        //     })
+        //     .ToList();
+        var takenSeats = StringToPositions(relevantReservations.Select(r => r.Seats).ToList());
 
         return takenSeats;
     }
 
-    public static List<string> PositionsToStrings(List<Position> positions)
+    public static string PositionsToStrings(List<Position> positions)
     {
-        return positions.Select(p => $"{p.Y + 1};{p.X + 1}").ToList();
+        return string.Join(", ", positions.Select(p => $"{p.Y + 1};{p.X + 1}").ToList());
     }
 
     public static List<Position> StringToPositions(List<string> seats)
     {
         List<Position> positions = new();
-        foreach (string seat in seats)
+        foreach (string reservation in seats)
         {
-            positions.Add(new Position(Convert.ToInt32(seat.Split(';')[1])-1, Convert.ToInt32(seat.Split(';')[0])-1));
+            foreach (string seat in reservation.Split(','))
+            {
+                if (seat.Split(';').Count() < 2)
+                {
+                    System.Console.WriteLine("ERROR");
+                    Thread.Sleep(2500);
+                    continue;
+                }
+                positions.Add(new Position(Convert.ToInt32(seat.Split(';')[1])-1, Convert.ToInt32(seat.Split(';')[0])-1));
+            }
         }
         return positions;
     }
@@ -66,6 +84,11 @@ public static class SeatSelectionHelpers
     public static string PositionsToRowSeatString(List<Position> positions)
     {
         return string.Join(", ", positions.Select(p => $"row: {Alphabet[p.Y]}, seat: {p.X + 1}"));
+    }
+
+    public static string SeatsToRowSeatString(List<Seat> seats)
+    {
+        return string.Join(", ", seats.Select(s => s.Position).Select(p => $"row: {Alphabet[p.Y]}, seat: {p.X + 1}"));
     }
 
     public static bool IsAdjacentOnSameRow(Position newSeat, List<Position> selectedSeats)

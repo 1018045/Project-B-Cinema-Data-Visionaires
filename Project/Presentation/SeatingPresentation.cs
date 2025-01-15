@@ -1,11 +1,10 @@
 ﻿using Project.Logic.SeatSelection;
-using static Project.Helpers.SeatSelectionHelpers;
 
 namespace Project.Presentation;
 
 public class SeatingPresentation
 {
-    public static List<string> Present(int showingId)
+    public static List<Seat> Present(int showingId, LogicManager logicManager)
     {
         var seatCount = -1;
         for (var resolved = false; resolved == false;)
@@ -19,7 +18,7 @@ public class SeatingPresentation
         if (seatCount == -1)
             return [];
 
-        var logic = new SeatSelectionLogic(showingId, seatCount);
+        var logic = new SeatSelectionLogic(showingId, seatCount, logicManager);
         return logic.StartSeatSelection();
     }
 

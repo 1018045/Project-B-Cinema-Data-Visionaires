@@ -26,9 +26,18 @@ public static class CinemaLayoutParser
                     'r' => ConsoleColor.Red,
                     _   => ConsoleColor.Black //signifies error
                 };
+                
+                double priceMultiplier = c switch
+                {
+                    'x' => 0,
+                    'b' => 1.0,
+                    'o' => 1.25,
+                    'r' => 1.5,
+                    _   => 0 //signifies error
+                };
 
                 var isDecoy = 'x' == c;
-                rowSeats.Add(new Seat(new Position(x, y), color, isDecoy: isDecoy));
+                rowSeats.Add(new Seat(new Position(x, y), color, priceMultiplier, isDecoy: isDecoy));
                 x++;
             }
             layout.Add(rowSeats);
@@ -50,4 +59,12 @@ public static class CinemaLayoutParser
 
     public static Position GetFirstNonDecoyPosition(List<List<Seat>> seats) => seats[0].First(seat => !seat.IsDecoy)!.Position;
 
+    public static Seat GetSeatByPosition(Position position, int roomId)
+    {
+        Seat seat;
+
+        seat = GetSeatingLayoutMap(roomId)[position.Y][position.X];
+
+        return seat;
+    }
 }

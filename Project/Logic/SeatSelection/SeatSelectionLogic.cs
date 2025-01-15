@@ -10,11 +10,12 @@ public class SeatSelectionLogic
     public LayoutGenerator LayoutGenerator { get; }
 
     private readonly int _seatCount;
-    private readonly List<Position> _selectedSeats = [];
+    private readonly List<Seat> _selectedSeats = [];
     private readonly List<Position> _takenSeats;
     private readonly int _showingId;
+    private LogicManager _logicManager;
 
-    public SeatSelectionLogic(int showingId, int seatCount)
+    public SeatSelectionLogic(int showingId, int seatCount, LogicManager logicManager)
     {
         _showingId = showingId;
         var room = GetRoomByShowing(showingId);
@@ -22,9 +23,10 @@ public class SeatSelectionLogic
         _takenSeats = GetTakenSeats(showingId);
         GridGenerator = new GridNavigator();
         LayoutGenerator = new LayoutGenerator(room.Id,  showingId, GridGenerator, ref _selectedSeats);
+        _logicManager = logicManager;
     }
 
-    public List<string> StartSeatSelection()
+    public List<Seat> StartSeatSelection()
     {
         var layout = CinemaLayoutParser.GetSeatingLayoutMap(GetRoomByShowing(_showingId).Id);
         var allowedSeats = CinemaLayoutParser.GenerateNonDecoyPositions(layout);
@@ -33,20 +35,20 @@ public class SeatSelectionLogic
         GridGenerator.X = firstPosAvailable.X;
         GridGenerator.Y = firstPosAvailable.Y;
 
-        GridGenerator.SelectAction = ActionMethod;
+        GridGenerator.SelectAction = (nav) => ActionMethod(nav, _logicManager.ShowingsLogic.FindShowingByIdReturnShowing(_showingId).Room);
         GridGenerator.MovePredicate = futurePos => allowedSeats.Contains(futurePos);
         GridGenerator.RefreshAction = _ =>
             UpdateSeatingPresentation(LayoutGenerator.BuildSeatingLayoutV3, layout, _seatCount - _selectedSeats.Count);
         GridGenerator.ConfirmationAction = nav =>
         {
             var curPos = nav.Cursor;
-            if (_selectedSeats.Contains(curPos) || _takenSeats.Contains(curPos))
+            if (_selectedSeats.Any(s => s.Position == curPos) || _takenSeats.Contains(curPos))
             {
                 NotAdjacentResult();
                 return false;
             }
 
-            if (!IsAdjacentOnSameRow(curPos, _selectedSeats) && _selectedSeats.Count != 0)
+            if (!IsAdjacentOnSameRow(curPos, _selectedSeats.Select(s => s.Position).ToList()) && _selectedSeats.Count != 0)
             {
                 AlreadyTakenResult();
                 return false;
@@ -63,7 +65,7 @@ public class SeatSelectionLogic
 
         GridGenerator.Start();
 
-        return PositionsToStrings(_selectedSeats);
+        return _selectedSeats;
 
         /*var seatSelector = new SeatSelector();
         seatSelector.Start(_showingId);
@@ -81,16 +83,16 @@ public class SeatSelectionLogic
     }
 
     //return true if the WHOLE selection is done
-    private Func<bool> ActionMethod(GridNavigator navigator)
+    private Func<bool> ActionMethod(GridNavigator navigator, int roomId)
     {
         var curPos = navigator.Cursor;
-        _selectedSeats.Add(curPos with {}); //deep copy
+        _selectedSeats.Add(CinemaLayoutParser.GetSeatByPosition(curPos with {}, roomId)); //deep copy
 
         if (_selectedSeats.Count < _seatCount)
             return () => false;
 
         Console.Clear();
-        return () => SuccessfulSelection(PositionsToRowSeatString(_selectedSeats));
+        return () => SuccessfulSelection(PositionsToRowSeatString(_selectedSeats.Select(s => s.Position).ToList()));
     }
 }
 

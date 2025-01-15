@@ -60,6 +60,7 @@ public class AccountPresentation
                 {
                     WaitAfterWrongLogin(30);
                     _menuManager.MainMenus.GuestMenu();
+                    return;
                 }
             }    
         }

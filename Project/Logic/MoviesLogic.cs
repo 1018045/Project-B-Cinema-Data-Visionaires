@@ -92,6 +92,7 @@ public class MoviesLogic
 
     public void PromoteMovie(MovieModel movie, int position)
     {
+        if (position < 0 || position > 2) return;
         if (movie == null)
         {
             PromotedMovies[position] = null;
@@ -105,7 +106,8 @@ public class MoviesLogic
 
     public void RemovePromotion(int position)
     {
-        if (position < 0 && position > 2) return;
+        if (PromotedMovies[position] == null) return;
+        if (position < 0 || position > 2) return;
         PromotedMovies[position].IsPromoted = false;
         PromotedMovies[position] = null;
         MoviesAccess.WriteAll(Movies);

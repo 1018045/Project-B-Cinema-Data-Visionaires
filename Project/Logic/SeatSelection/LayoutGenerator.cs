@@ -10,7 +10,7 @@ public class LayoutGenerator
 {
     private static readonly List<char> Alphabet = [.."ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray()];
     public List<Position> TakenSeats { get; }
-    public List<Position> SelectedSeats { get; }
+    public List<Seat> SelectedSeats { get; }
 
     private const string SeatChar = " \u2588\u2588 ";
     private const ConsoleColor TakenColor = ConsoleColor.Magenta;
@@ -19,7 +19,7 @@ public class LayoutGenerator
     private readonly RoomModel _room;
     private readonly GridNavigator _navigator;
 
-    public LayoutGenerator(int roomId, int showingId, GridNavigator navigator, ref List<Position> selectedSeats)
+    public LayoutGenerator(int roomId, int showingId, GridNavigator navigator, ref List<Seat> selectedSeats)
     {
         _room = GetRoom(roomId);
         _navigator = navigator;
